@@ -1,18 +1,30 @@
-const vagas = [
-  {
-    id: 1,
-    titulo: "Desenvolvedor Front-end",
-    empresa: "TechNova",
-    local: "Remoto",
-    tipo: "CLT"
-  },
-  {
-    id: 2,
-    titulo: "Analista de Dados",
-    empresa: "DataHub",
-    local: "São Paulo",
-    tipo: "PJ"
-  }
-];
+const Vaga = require('./vagasModel');
 
-module.exports = { vagas };
+async function obterTodasVagas() {
+  return await Vaga.find();
+}
+
+async function criarVaga(dados) {
+  const vaga = new Vaga(dados);
+  return await vaga.save();
+}
+
+async function obterVagaPorId(id) {
+  return await Vaga.findById(id);
+}
+
+async function atualizarVaga(id, dados) {
+  return await Vaga.findByIdAndUpdate(id, dados, { new: true });
+}
+
+async function deletarVaga(id) {
+  return await Vaga.findByIdAndDelete(id);
+}
+
+module.exports = {
+  obterTodasVagas,
+  criarVaga,
+  obterVagaPorId,
+  atualizarVaga,
+  deletarVaga
+};
