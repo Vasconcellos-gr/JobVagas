@@ -1,10 +1,10 @@
 const express = require('express');
 const path = require('path');
 
-const { vagas } = require('./services/vagas/vagasService');
-const { empresas } = require('./services/empresas/empresasService');
-const { candidatos } = require('./services/candidatos/candidatosService');
-const { candidaturas } = require('./services/candidaturas/candidaturasService');
+const { vagas } = require('./servicos/vagas/vagasSrc');
+const { empresas } = require('./servicos/empresas/empresasSrc');
+const { candidatos } = require('./servicos/candidatos/candidatosSrc');
+const { candidaturas } = require('./servicos/candidaturas/candidaturasSrc');
 
 const app = express();
 const PORT = 3000;
