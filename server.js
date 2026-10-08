@@ -17,7 +17,7 @@ const candidaturasService = require('./servicos/candidaturas/candidaturasSrc');
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-// Rotas de vagas
+// ==================== ROTAS DE VAGAS ====================
 app.get('/api/vagas', async (req, res) => {
   try {
     const vagas = await vagasService.obterTodasVagas();
@@ -54,7 +54,7 @@ app.delete('/api/vagas/:id', async (req, res) => {
   }
 });
 
-// Rotas de empresas
+// ==================== ROTAS DE EMPRESAS ====================
 app.get('/api/empresas', async (req, res) => {
   try {
     const empresas = await empresasService.obterTodasEmpresas();
@@ -73,7 +73,25 @@ app.post('/api/empresas', async (req, res) => {
   }
 });
 
-// Rotas de candidatos
+app.put('/api/empresas/:id', async (req, res) => {
+  try {
+    const empresa = await empresasService.atualizarEmpresa(req.params.id, req.body);
+    res.json(empresa);
+  } catch (error) {
+    res.status(400).json({ erro: error.message });
+  }
+});
+
+app.delete('/api/empresas/:id', async (req, res) => {
+  try {
+    await empresasService.deletarEmpresa(req.params.id);
+    res.json({ mensagem: 'Empresa deletada' });
+  } catch (error) {
+    res.status(400).json({ erro: error.message });
+  }
+});
+
+// ==================== ROTAS DE CANDIDATOS ====================
 app.get('/api/candidatos', async (req, res) => {
   try {
     const candidatos = await candidatosService.obterTodosCandidatos();
@@ -92,7 +110,25 @@ app.post('/api/candidatos', async (req, res) => {
   }
 });
 
-// Rotas de candidaturas
+app.put('/api/candidatos/:id', async (req, res) => {
+  try {
+    const candidato = await candidatosService.atualizarCandidato(req.params.id, req.body);
+    res.json(candidato);
+  } catch (error) {
+    res.status(400).json({ erro: error.message });
+  }
+});
+
+app.delete('/api/candidatos/:id', async (req, res) => {
+  try {
+    await candidatosService.deletarCandidato(req.params.id);
+    res.json({ mensagem: 'Candidato deletado' });
+  } catch (error) {
+    res.status(400).json({ erro: error.message });
+  }
+});
+
+// ==================== ROTAS DE CANDIDATURAS ====================
 app.get('/api/candidaturas', async (req, res) => {
   try {
     const candidaturas = await candidaturasService.obterTodasCandidaturas();
@@ -111,6 +147,25 @@ app.post('/api/candidaturas', async (req, res) => {
   }
 });
 
+app.put('/api/candidaturas/:id', async (req, res) => {
+  try {
+    const candidatura = await candidaturasService.atualizarCandidatura(req.params.id, req.body);
+    res.json(candidatura);
+  } catch (error) {
+    res.status(400).json({ erro: error.message });
+  }
+});
+
+app.delete('/api/candidaturas/:id', async (req, res) => {
+  try {
+    await candidaturasService.deletarCandidatura(req.params.id);
+    res.json({ mensagem: 'Candidatura deletada' });
+  } catch (error) {
+    res.status(400).json({ erro: error.message });
+  }
+});
+
+// Rota raiz para servir o HTML principal
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
