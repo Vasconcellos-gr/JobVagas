@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <!-- Define a codificação dos caracteres -->
+  <meta charset="UTF-8">
+
+  <!-- Permite que a página seja responsiva em celulares e tablets -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Descrição da página para mecanismos de busca -->
+  <meta
+    name="description"
+    content="Crie sua conta na JOBVAGAS como empresa ou candidato."
+  >
+
+  <!-- Título exibido na aba do navegador -->
+  <title>Cadastre-se | JOBVAGAS</title>
+
+  <!-- Arquivo principal de estilos -->
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+
+<!-- Página de escolha do tipo de cadastro -->
+<body class="jobs-page registration-page">
+
+  <!-- ==================== CABEÇALHO ==================== -->
+  <header class="site-header">
+    <div class="jobs-container header-inner">
+
+      <!-- Logo que direciona para a página inicial -->
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="JOBVAGAS - início"
+      >
+        <span class="brand-mark" aria-hidden="true">J</span>
+        <span>JOBVAGAS</span>
+      </a>
+
+
+      <!-- Menu principal -->
+      <nav class="main-nav" aria-label="Menu principal">
+        <a href="index.html">Início</a>
+        <a href="vagas.html">Vagas</a>
+      </nav>
+
+
+      <!-- Links de login e cadastro -->
+      <div class="header-actions">
+        <a class="link-muted" href="login.html">Entrar</a>
+
+        <!-- Página atual de cadastro -->
+        <a
+          class="btn btn-primary"
+          href="cadastro.html"
+          aria-current="page"
+        >
+          Cadastrar
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
+  <main class="jobs-container registration-main">
+
+    <!-- ==================== INTRODUÇÃO ==================== -->
+    <section
+      class="registration-intro"
+      aria-labelledby="registration-title"
+    >
+
+      <!-- Texto de destaque acima do título -->
+      <span class="eyebrow">
+        SEJA BEM-VINDO À JOBVAGAS
+      </span>
+
+      <!-- Título principal da página -->
+      <h1 id="registration-title">
+        Como você quer se cadastrar?
+      </h1>
+
+      <!-- Texto explicativo -->
+      <p>
+        Escolha o perfil que melhor combina com você para começar.
+      </p>
+
+    </section>
+
+
+    <!-- ==================== OPÇÕES DE CADASTRO ==================== -->
+    <div class="registration-options">
+
+      <!-- Opção de cadastro para empresas -->
+      <article class="registration-option">
+
+        <!-- Ícone de empresa -->
+        <span
+          class="registration-icon"
+          aria-hidden="true"
+        >
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M4 20V7h16v13M8 7V4h8v3M2 20h20M8 11h2m4 0h2m-8 4h2m4 0h2"></path>
+          </svg>
+        </span>
+
+        <!-- Título da opção -->
+        <h2>
+          Sou uma empresa
+        </h2>
+
+        <!-- Descrição da opção -->
+        <p>
+          Cadastre sua empresa e encontre os talentos certos para suas vagas.
+        </p>
+
+        <!-- Direciona para o cadastro de empresa -->
+        <a
+          class="btn btn-primary"
+          href="empresa.html"
+        >
+          Cadastrar empresa
+        </a>
+
+      </article>
+
+
+      <!-- Opção de cadastro para candidatos -->
+      <article class="registration-option">
+
+        <!-- Ícone de candidato -->
+        <span
+          class="registration-icon"
+          aria-hidden="true"
+        >
+          <svg viewBox="0 0 24 24" focusable="false">
+            <circle cx="12" cy="8" r="3.5"></circle>
+            <path d="M5 20a7 7 0 0 1 14 0"></path>
+          </svg>
+        </span>
+
+        <!-- Título da opção -->
+        <h2>
+          Sou candidato(a)
+        </h2>
+
+        <!-- Descrição da opção -->
+        <p>
+          Crie seu perfil profissional e prepare-se para sua próxima oportunidade.
+        </p>
+
+        <!-- Direciona para o cadastro de candidato -->
+        <a
+          class="btn btn-primary"
+          href="candidato.html"
+        >
+          Cadastrar como candidato
+        </a>
+
+      </article>
+
+    </div>
+
+
+    <!-- Link para usuários que já possuem uma conta -->
+    <p class="registration-login">
+      Já tem uma conta?
+      <a href="login.html">Entrar</a>
+    </p>
+
+  </main>
+
+</body>
+</html>

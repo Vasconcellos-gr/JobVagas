@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Define a codificação de caracteres -->
+  <meta charset="UTF-8">
+  <!-- Faz a página se adaptar a celulares e tablets -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Descrição utilizada por mecanismos de busca -->
+  <meta
+    name="description"
+    content="Encontre oportunidades de emprego e descubra a vaga ideal para sua carreira."
+  >
+
+  <!-- Título exibido na aba do navegador -->
+  <title>Vagas de Emprego | JOBVAGAS</title>
+
+  <!-- Arquivo principal de estilos -->
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body class="jobs-page">
+
+  <!-- ==================== CABEÇALHO ==================== -->
+  <header class="site-header">
+    <div class="jobs-container header-inner">
+
+      <!-- Logo que leva para a página inicial -->
+      <a class="brand" href="index.html" aria-label="JOBVAGAS - início">
+        <span class="brand-mark" aria-hidden="true">J</span>
+        <span>JOBVAGAS</span>
+      </a>
+
+      <!-- Menu principal do site -->
+      <nav class="main-nav" aria-label="Menu principal">
+        <a href="index.html">Início</a>
+        <a class="active" href="vagas.html" aria-current="page">Vagas</a>
+      </nav>
+
+      <!-- Ações disponíveis no cabeçalho -->
+      <div class="header-actions">
+        <a class="link-muted" href="login.html">Entrar</a>
+        <a class="btn btn-primary" href="cadastro.html">Cadastrar</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
+  <main class="jobs-container jobs-main">
+
+    <!-- Título e introdução da página -->
+    <section class="jobs-intro" aria-labelledby="page-title">
+
+      <!-- Pequeno destaque acima do título -->
+      <span class="eyebrow">OPORTUNIDADES</span>
+
+      <div class="intro-heading">
+        <h1 id="page-title">Vagas de Emprego</h1>
+        <p>Encontre a vaga ideal para sua carreira.</p>
+      </div>
+    </section>
+
+    <!-- ==================== BUSCA E FILTROS ==================== -->
+    <section class="search-panel" aria-label="Busca e filtros de vagas">
+
+      <!-- Formulário utilizado para pesquisar e filtrar vagas -->
+      <form id="filtrosVagas" class="jobs-filters">
+
+        <!-- Campo de pesquisa principal -->
+        <div class="search-row">
+          <label class="field search-field" for="buscaVagas">
+            <span>Busca</span>
+
+            <input
+              id="buscaVagas"
+              name="busca"
+              type="search"
+              placeholder="Cargo, empresa ou tecnologia"
+              autocomplete="off"
+            >
+          </label>
+
+          <!-- Envia os filtros para pesquisa -->
+          <button class="btn btn-primary search-button" type="submit">
+            Buscar
+          </button>
+        </div>
+
+        <!-- Filtros adicionais -->
+        <div class="filter-grid">
+
+          <!-- Filtro por localização -->
+          <label class="field" for="filtroLocalizacao">
+            <span>Localização</span>
+
+            <select id="filtroLocalizacao" name="localizacao">
+              <option value="">Qualquer</option>
+            </select>
+          </label>
+
+          <!-- Filtro por área profissional -->
+          <label class="field" for="filtroArea">
+            <span>Área</span>
+
+            <select id="filtroArea" name="area">
+              <option value="">Qualquer</option>
+            </select>
+          </label>
+
+          <!-- Filtro por modalidade de trabalho -->
+          <label class="field" for="filtroModalidade">
+            <span>Modalidade</span>
+
+            <select id="filtroModalidade" name="modalidade">
+              <option value="">Qualquer</option>
+            </select>
+          </label>
+        </div>
+      </form>
+    </section>
+
+    <!-- ==================== RESULTADOS ==================== -->
+    <section class="results-section" aria-labelledby="results-title">
+
+      <!-- Título e quantidade de resultados -->
+      <div class="results-heading">
+        <div>
+          <h2 id="results-title">Vagas disponíveis</h2>
+
+          <!-- Atualizado pelo JavaScript -->
+          <p id="contagemVagas" aria-live="polite">
+            Carregando vagas...
+          </p>
+        </div>
+      </div>
+
+      <!-- Mensagens de erro ou aviso -->
+      <p id="mensagemVagas" class="notice" role="status" hidden></p>
+
+      <!-- As vagas são inseridas aqui pelo JavaScript -->
+      <div id="listaVagas" class="job-list" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script src="./js/app.js"></script>
+</body>
+</html>

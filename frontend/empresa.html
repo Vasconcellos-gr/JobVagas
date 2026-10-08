@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <!-- Define a codificação dos caracteres -->
+  <meta charset="UTF-8">
+
+  <!-- Permite que a página se adapte a celulares e tablets -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Descrição da página para mecanismos de busca -->
+  <meta
+    name="description"
+    content="Cadastre sua empresa na JOBVAGAS e encontre novos talentos."
+  >
+
+  <!-- Título exibido na aba do navegador -->
+  <title>Cadastro de empresa | JOBVAGAS</title>
+
+  <!-- Arquivo principal de estilos -->
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+
+<!-- Página de cadastro de empresa -->
+<body class="jobs-page registration-page">
+
+  <!-- ==================== CABEÇALHO ==================== -->
+  <header class="site-header">
+    <div class="jobs-container header-inner">
+
+      <!-- Logo que direciona para a página inicial -->
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="JOBVAGAS - início"
+      >
+        <span class="brand-mark" aria-hidden="true">J</span>
+        <span>JOBVAGAS</span>
+      </a>
+
+
+      <!-- Menu principal -->
+      <nav class="main-nav" aria-label="Menu principal">
+        <a href="index.html">Início</a>
+        <a href="vagas.html">Vagas</a>
+      </nav>
+
+
+      <!-- Links de login e cadastro -->
+      <div class="header-actions">
+        <a class="link-muted" href="login.html">Entrar</a>
+        <a class="btn btn-primary" href="cadastro.html">Cadastrar</a>
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
+  <main class="jobs-container registration-main">
+
+    <!-- Card que contém o formulário de cadastro da empresa -->
+    <section
+      class="registration-form-card"
+      aria-labelledby="registration-title"
+    >
+
+      <!-- Link para voltar à escolha de perfil -->
+      <a
+        class="registration-back"
+        href="cadastro.html"
+      >
+        Voltar à escolha de perfil
+      </a>
+
+
+      <!-- ==================== TÍTULO DO FORMULÁRIO ==================== -->
+      <div class="registration-form-heading">
+
+        <!-- Ícone que representa uma empresa -->
+        <span
+          class="registration-icon"
+          aria-hidden="true"
+        >
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M4 20V7h16v13M8 7V4h8v3M2 20h20M8 11h2m4 0h2m-8 4h2m4 0h2"></path>
+          </svg>
+        </span>
+
+        <!-- Título da página -->
+        <h1 id="registration-title">
+          Cadastro de Empresa
+        </h1>
+
+        <!-- Texto explicativo -->
+        <p>
+          Preencha os dados da sua empresa para encontrar os talentos certos.
+        </p>
+
+      </div>
+
+
+      <!-- ==================== FORMULÁRIO ==================== -->
+      <form
+        id="formEmpresa"
+        class="registration-form"
+      >
+
+        <!-- Nome da empresa -->
+        <label
+          class="registration-field"
+          for="empresaNome"
+        >
+          <span>
+            Nome da empresa
+            <span aria-hidden="true">*</span>
+          </span>
+
+          <input
+            id="empresaNome"
+            name="nome"
+            type="text"
+            autocomplete="organization"
+            placeholder="Digite o nome da empresa"
+            required
+          >
+        </label>
+
+
+        <!-- CNPJ da empresa -->
+        <label
+          class="registration-field"
+          for="empresaCnpj"
+        >
+          <span>
+            CNPJ
+            <span aria-hidden="true">*</span>
+          </span>
+
+          <input
+            id="empresaCnpj"
+            name="cnpj"
+            type="text"
+            inputmode="numeric"
+            autocomplete="off"
+            placeholder="00.000.000/0000-00"
+            pattern="[0-9./-]{14,18}"
+            title="Informe um CNPJ válido."
+            required
+          >
+        </label>
+
+
+        <!-- E-mail corporativo -->
+        <label
+          class="registration-field"
+          for="empresaEmail"
+        >
+          <span>
+            E-mail corporativo
+            <span aria-hidden="true">*</span>
+          </span>
+
+          <input
+            id="empresaEmail"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="contato@empresa.com"
+            required
+          >
+        </label>
+
+
+        <!-- Senha da conta da empresa -->
+        <label
+          class="registration-field"
+          for="empresaSenha"
+        >
+          <span>
+            Senha
+            <span aria-hidden="true">*</span>
+          </span>
+
+          <input
+            id="empresaSenha"
+            name="senha"
+            type="password"
+            autocomplete="new-password"
+            placeholder="Crie uma senha"
+            minlength="8"
+            required
+          >
+        </label>
+
+
+        <!-- Telefone da empresa -->
+        <label
+          class="registration-field"
+          for="empresaTelefone"
+        >
+          <span>
+            Telefone
+            <span aria-hidden="true">*</span>
+          </span>
+
+          <input
+            id="empresaTelefone"
+            name="telefone"
+            type="tel"
+            autocomplete="tel"
+            placeholder="(11) 99999-9999"
+            required
+          >
+        </label>
+
+
+        <!--
+          Linha com dois campos:
+          setor e localização.
+        -->
+        <div class="registration-field-row">
+
+          <!-- Setor de atuação da empresa -->
+          <label
+            class="registration-field"
+            for="empresaSetor"
+          >
+            <span>
+              Setor
+              <span aria-hidden="true">*</span>
+            </span>
+
+            <input
+              id="empresaSetor"
+              name="setor"
+              type="text"
+              placeholder="Ex.: Tecnologia"
+              required
+            >
+          </label>
+
+
+          <!-- Localização da empresa -->
+          <label
+            class="registration-field"
+            for="empresaLocalizacao"
+          >
+            <span>
+              Localização
+              <span aria-hidden="true">*</span>
+            </span>
+
+            <input
+              id="empresaLocalizacao"
+              name="localizacao"
+              type="text"
+              autocomplete="address-level2"
+              placeholder="Cidade - UF"
+              required
+            >
+          </label>
+
+        </div>
+
+
+        <!-- Site da empresa -->
+        <label
+          class="registration-field"
+          for="empresaWebsite"
+        >
+          <span>
+            Site
+            <span class="optional-label">(opcional)</span>
+          </span>
+
+          <input
+            id="empresaWebsite"
+            name="website"
+            type="url"
+            autocomplete="url"
+            placeholder="https://www.empresa.com.br"
+          >
+        </label>
+
+
+        <!-- Descrição da empresa -->
+        <label
+          class="registration-field"
+          for="empresaDescricao"
+        >
+          <span>
+            Descrição da empresa
+            <span class="optional-label">(opcional)</span>
+          </span>
+
+          <textarea
+            id="empresaDescricao"
+            name="descricao"
+            rows="3"
+            placeholder="Conte um pouco sobre a sua empresa."
+          ></textarea>
+        </label>
+
+
+        <!--
+          Área utilizada pelo JavaScript
+          para mostrar mensagens de sucesso ou erro.
+        -->
+        <p
+          id="mensagemEmpresa"
+          class="registration-message"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></p>
+
+
+        <!-- Envia os dados do cadastro -->
+        <button
+          class="btn btn-primary registration-submit"
+          type="submit"
+        >
+          Cadastrar empresa
+        </button>
+
+      </form>
+    </section>
+  </main>
+
+
+  <!-- JavaScript responsável pelo funcionamento do cadastro da empresa -->
+  <script src="./js/empresa.js"></script>
+
+</body>
+</html>

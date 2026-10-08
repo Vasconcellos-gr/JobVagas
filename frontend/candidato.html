@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <!-- Define a codificação dos caracteres -->
+  <meta charset="UTF-8">
+
+  <!-- Permite que a página se adapte a celulares e tablets -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Descrição da página para mecanismos de busca -->
+  <meta
+    name="description"
+    content="Cadastre seu perfil profissional na JOBVAGAS e encontre novas oportunidades."
+  >
+
+  <!-- Título exibido na aba do navegador -->
+  <title>Cadastro de candidato | JOBVAGAS</title>
+
+  <!-- Arquivo principal de estilos -->
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+
+<!-- Página de cadastro do candidato -->
+<body class="jobs-page registration-page">
+
+  <!-- ==================== CABEÇALHO ==================== -->
+  <header class="site-header">
+    <div class="jobs-container header-inner">
+
+      <!-- Logo que direciona para a página inicial -->
+      <a
+        class="brand"
+        href="index.html"
+        aria-label="JOBVAGAS - início"
+      >
+        <span class="brand-mark" aria-hidden="true">J</span>
+        <span>JOBVAGAS</span>
+      </a>
+
+
+      <!-- Menu principal -->
+      <nav class="main-nav" aria-label="Menu principal">
+        <a href="index.html">Início</a>
+        <a href="vagas.html">Vagas</a>
+      </nav>
+
+
+      <!-- Links de login e cadastro -->
+      <div class="header-actions">
+        <a class="link-muted" href="login.html">Entrar</a>
+        <a class="btn btn-primary" href="cadastro.html">Cadastrar</a>
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
+  <main class="jobs-container registration-main">
+
+    <!-- Card que contém todo o formulário de cadastro -->
+    <section
+      class="registration-form-card"
+      aria-labelledby="registration-title"
+    >
+
+      <!-- Volta para a tela de escolha do tipo de cadastro -->
+      <a
+        class="registration-back"
+        href="cadastro.html"
+      >
+        Voltar à escolha de perfil
+      </a>
+
+
+      <!-- ==================== TÍTULO DO FORMULÁRIO ==================== -->
+      <div class="registration-form-heading">
+
+        <!-- Ícone de usuário -->
+        <span
+          class="registration-icon"
+          aria-hidden="true"
+        >
+          <svg viewBox="0 0 24 24" focusable="false">
+            <circle cx="12" cy="8" r="3.5"></circle>
+            <path d="M5 20a7 7 0 0 1 14 0"></path>
+          </svg>
+        </span>
+
+        <!-- Título da página -->
+        <h1 id="registration-title">
+          Cadastro de Candidato
+        </h1>
+
+        <!-- Texto explicativo -->
+        <p>
+          Preencha seu perfil para se candidatar às vagas da JOBVAGAS.
+        </p>
+
+      </div>
+
+
+      <!-- ==================== FORMULÁRIO ==================== -->
+      <form
+        id="formCandidato"
+        class="registration-form"
+      >
+
+        <!-- Nome completo -->
+        <label
+          class="registration-field"
+          for="candidatoNome"
+        >
+          <span>
+            Nome completo
+            <span aria-hidden="true">*</span>
+          </span>
+
+          <input
+            id="candidatoNome"
+            name="nome"
+            type="text"
+            autocomplete="name"
+            placeholder="Digite seu nome"
+            required
+          >
+        </label>
+
+
+        <!-- E-mail -->
+        <label
+          class="registration-field"
+          for="candidatoEmail"
+        >
+          <span>
+            E-mail
+            <span aria-hidden="true">*</span>
+          </span>
+
+          <input
+            id="candidatoEmail"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="seu@email.com"
+            required
+          >
+        </label>
+
+
+        <!-- Senha da conta do candidato -->
+        <label
+          class="registration-field"
+          for="candidatoSenha"
+        >
+          <span>
+            Senha
+            <span aria-hidden="true">*</span>
+          </span>
+
+          <input
+            id="candidatoSenha"
+            name="senha"
+            type="password"
+            autocomplete="new-password"
+            placeholder="Crie uma senha"
+            minlength="8"
+            required
+          >
+        </label>
+
+
+        <!-- Telefone -->
+        <label
+          class="registration-field"
+          for="candidatoTelefone"
+        >
+          <span>
+            Telefone
+            <span aria-hidden="true">*</span>
+          </span>
+
+          <input
+            id="candidatoTelefone"
+            name="telefone"
+            type="tel"
+            autocomplete="tel"
+            placeholder="(11) 99999-9999"
+            required
+          >
+        </label>
+
+
+        <!-- Data de nascimento -->
+        <label
+          class="registration-field"
+          for="candidatoNascimento"
+        >
+          <span>
+            Data de nascimento
+            <span aria-hidden="true">*</span>
+          </span>
+
+          <input
+            id="candidatoNascimento"
+            name="dataNascimento"
+            type="date"
+            autocomplete="bday"
+            required
+          >
+        </label>
+
+
+        <!-- Área ou cargo desejado -->
+        <label
+          class="registration-field"
+          for="candidatoPerfil"
+        >
+          <span>
+            Área ou cargo de interesse
+            <span aria-hidden="true">*</span>
+          </span>
+
+          <input
+            id="candidatoPerfil"
+            name="perfil"
+            type="text"
+            placeholder="Ex.: Desenvolvedor(a) front-end"
+            required
+          >
+        </label>
+
+
+        <!-- Experiência profissional -->
+        <label
+          class="registration-field"
+          for="candidatoExperiencia"
+        >
+          <span>
+            Experiência profissional
+            <span aria-hidden="true">*</span>
+          </span>
+
+          <textarea
+            id="candidatoExperiencia"
+            name="experiencia"
+            rows="3"
+            placeholder="Conte um pouco sobre sua experiência e habilidades."
+            required
+          ></textarea>
+        </label>
+
+
+        <!-- Perfil do LinkedIn -->
+        <label
+          class="registration-field"
+          for="candidatoLinkedin"
+        >
+          <span>
+            LinkedIn
+            <span class="optional-label">(opcional)</span>
+          </span>
+
+          <input
+            id="candidatoLinkedin"
+            name="linkedin"
+            type="url"
+            autocomplete="url"
+            placeholder="https://www.linkedin.com/in/seu-perfil"
+          >
+        </label>
+
+
+        <!-- Upload do currículo -->
+        <label
+          class="registration-field"
+          for="candidatoCurriculo"
+        >
+          <span>
+            Currículo
+            <span class="optional-label">(opcional)</span>
+          </span>
+
+          <!-- Permite selecionar arquivos PDF ou Word -->
+          <input
+            id="candidatoCurriculo"
+            name="curriculo"
+            type="file"
+            accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          >
+
+          <!-- Informação sobre o tamanho e formato do arquivo -->
+          <small>
+            Envie um arquivo PDF ou Word de até 2 MB.
+          </small>
+        </label>
+
+
+        <!--
+          Área utilizada pelo JavaScript para exibir
+          mensagens de sucesso ou erro.
+        -->
+        <p
+          id="mensagemCandidato"
+          class="registration-message"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></p>
+
+
+        <!-- Envia o formulário de cadastro -->
+        <button
+          class="btn btn-primary registration-submit"
+          type="submit"
+        >
+          Cadastrar
+        </button>
+
+      </form>
+    </section>
+  </main>
+
+
+  <!-- JavaScript responsável pelo funcionamento do cadastro -->
+  <script src="./js/candidato.js"></script>
+
+</body>
+</html>
