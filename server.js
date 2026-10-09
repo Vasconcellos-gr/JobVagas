@@ -27,6 +27,19 @@ app.get('/api/vagas', async (req, res) => {
   }
 });
 
+// Consultar vaga por ID
+app.get('/api/vagas/:id', async (req, res) => {
+  try {
+    const vaga = await vagasService.obterVagaPorId(req.params.id);
+    if (!vaga) {
+      return res.status(404).json({ erro: 'Vaga não encontrada' });
+    }
+    res.json(vaga);
+  } catch (error) {
+    res.status(500).json({ erro: error.message });
+  }
+});
+
 app.post('/api/vagas', async (req, res) => {
   try {
     const vaga = await vagasService.criarVaga(req.body);
@@ -113,6 +126,19 @@ app.get('/api/candidatos', async (req, res) => {
   }
 });
 
+// Consultar candidato por ID
+app.get('/api/candidatos/:id', async (req, res) => {
+  try {
+    const candidato = await candidatosService.obterCandidatoPorId(req.params.id);
+    if (!candidato) {
+      return res.status(404).json({ erro: 'Candidato não encontrado' });
+    }
+    res.json(candidato);
+  } catch (error) {
+    res.status(500).json({ erro: error.message });
+  }
+});
+
 app.post('/api/candidatos', async (req, res) => {
   try {
     const candidato = await candidatosService.criarCandidato(req.body);
@@ -145,6 +171,19 @@ app.get('/api/candidaturas', async (req, res) => {
   try {
     const candidaturas = await candidaturasService.obterTodasCandidaturas();
     res.json(candidaturas);
+  } catch (error) {
+    res.status(500).json({ erro: error.message });
+  }
+});
+
+// Consultar candidatura por ID
+app.get('/api/candidaturas/:id', async (req, res) => {
+  try {
+    const candidatura = await candidaturasService.obterCandidaturaPorId(req.params.id);
+    if (!candidatura) {
+      return res.status(404).json({ erro: 'Candidatura não encontrada' });
+    }
+    res.json(candidatura);
   } catch (error) {
     res.status(500).json({ erro: error.message });
   }
