@@ -73,5 +73,25 @@
       </p>
     </section>
   </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Le a URL do navegador buscando por ?cadastrado=true
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      if (urlParams.get('cadastrado') === 'true') {
+        // Tenta encontrar uma tag de mensagem na tela
+        const mensagem = document.getElementById('mensagemLogin');
+        
+        if (mensagem) {
+          mensagem.textContent = 'Empresa cadastrada com sucesso! Faça seu login para continuar.';
+          mensagem.style.color = 'green';
+          mensagem.hidden = false;
+        } else {
+          // Caso não tenha uma tag de mensagem, usa o alerta padrão do navegador
+          alert('Empresa cadastrada com sucesso! Faça seu login para continuar.');
+        }
+      }
+    });
+  </script>
 </body>
 </html>

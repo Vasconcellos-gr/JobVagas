@@ -64,6 +64,18 @@ app.get('/api/empresas', async (req, res) => {
   }
 });
 
+app.get('/api/empresas/:id', async (req, res) => {
+  try {
+    const empresa = await empresasService.obterEmpresaPorId(req.params.id);
+    if (!empresa) {
+      return res.status(404).json({ erro: 'Empresa não encontrada' });
+    }
+    res.json(empresa);
+  } catch (error) {
+    res.status(500).json({ erro: error.message });
+  }
+});
+
 app.post('/api/empresas', async (req, res) => {
   try {
     const empresa = await empresasService.criarEmpresa(req.body);
