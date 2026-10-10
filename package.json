@@ -20,8 +20,10 @@
   },
   "homepage": "https://github.com/Vasconcellos-gr/JobVagas#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "express": "^5.2.1",
     "mogoose": "^0.0.1-security",
-    "mongoose": "^9.11.1"
+    "mongoose": "^9.11.1",
+    "validator": "^13.15.35"
   }
 }
