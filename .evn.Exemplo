@@ -1,0 +1,3 @@
+MONGODB_URI= mongodb://localhost:"Porta do Mongo DB"/jobvagas
+NODE_ENV= development
+PORT= "Porta do server.js"
