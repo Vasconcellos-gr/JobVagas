@@ -991,6 +991,413 @@ button {
   background: var(--jobs-white);
 }
 
+.candidate-home-page {
+  background: #f5f8fc;
+}
+
+.candidate-header-name {
+  max-width: 190px;
+  overflow: hidden;
+  color: var(--jobs-navy);
+  font-size: 14px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.candidate-logout {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.candidate-main {
+  padding-top: 42px;
+  padding-bottom: 72px;
+}
+
+.candidate-welcome {
+  margin-bottom: 28px;
+}
+
+.candidate-welcome h1 {
+  margin: 14px 0 7px;
+  color: var(--jobs-navy);
+  font-size: clamp(30px, 4vw, 40px);
+  font-weight: 800;
+  letter-spacing: -1.3px;
+}
+
+.candidate-welcome > p,
+.candidate-section-heading p {
+  margin: 0;
+  color: var(--jobs-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.candidate-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.6fr);
+  align-items: start;
+  gap: 24px;
+}
+
+.candidate-profile-card,
+.candidate-search-panel {
+  border: 1px solid var(--jobs-border);
+  border-radius: 14px;
+  background: var(--jobs-white);
+  box-shadow: 0 8px 24px rgb(18 59 93 / 5%);
+}
+
+.candidate-profile-card {
+  padding: 24px;
+}
+
+.candidate-avatar {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  border-radius: 16px;
+  background: #edf6ff;
+  color: var(--jobs-blue);
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.candidate-profile-card h2,
+.candidate-section-heading h2 {
+  margin: 17px 0 6px;
+  color: var(--jobs-navy);
+  font-size: 20px;
+  font-weight: 750;
+  letter-spacing: -0.4px;
+}
+
+.candidate-profile-hint {
+  margin: 0 0 20px;
+  color: var(--jobs-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.candidate-profile-form {
+  display: grid;
+  gap: 14px;
+}
+
+.candidate-profile-form .registration-field {
+  font-size: 13px;
+}
+
+.candidate-profile-form .registration-field input,
+.candidate-profile-form .registration-field textarea {
+  min-height: 44px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.candidate-profile-form .registration-field textarea {
+  min-height: 96px;
+}
+
+.candidate-profile-form .registration-submit {
+  margin-top: 2px;
+}
+
+.candidate-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.candidate-section-heading h2 {
+  margin: 12px 0 5px;
+  font-size: 24px;
+}
+
+.candidate-section-heading p {
+  max-width: 540px;
+}
+
+.candidate-all-jobs {
+  flex: 0 0 auto;
+  padding-bottom: 2px;
+  color: var(--jobs-blue);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.candidate-all-jobs:hover {
+  color: var(--jobs-blue-hover);
+}
+
+.candidate-search-panel {
+  padding: 18px;
+}
+
+.candidate-search-panel .filter-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.candidate-jobs .results-section {
+  margin-top: 25px;
+}
+
+@media (max-width: 992px) {
+  .candidate-layout {
+    grid-template-columns: minmax(230px, 0.8fr) minmax(0, 1.4fr);
+    gap: 16px;
+  }
+
+  .candidate-profile-card {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .candidate-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .candidate-profile-card {
+    order: 1;
+  }
+
+  .candidate-jobs {
+    order: 2;
+  }
+
+  .candidate-search-panel .filter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .candidate-header-name {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .candidate-main {
+    padding-top: 30px;
+    padding-bottom: 48px;
+  }
+
+  .candidate-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .candidate-search-panel {
+    padding: 14px;
+  }
+}
+
+.company-home-page {
+  background: #f5f8fc;
+}
+
+.company-layout {
+  grid-template-columns: minmax(280px, 0.75fr) minmax(0, 1.6fr);
+}
+
+.company-avatar {
+  background: #edf8f3;
+  color: #16835b;
+}
+
+.company-vacancy-publisher {
+  margin-bottom: 34px;
+}
+
+.company-vacancy-form {
+  display: grid;
+  gap: 15px;
+}
+
+.company-vacancy-form .registration-field {
+  font-size: 13px;
+}
+
+.company-vacancy-form .registration-field input,
+.company-vacancy-form .registration-field select,
+.company-vacancy-form .registration-field textarea {
+  min-height: 44px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.company-vacancy-form .registration-field textarea {
+  min-height: 110px;
+}
+
+.company-candidates .results-section {
+  margin-top: 25px;
+}
+
+.candidate-profile-result {
+  display: grid;
+  gap: 14px;
+}
+
+.candidate-experience {
+  margin: 0 0 0 60px;
+  color: var(--jobs-muted);
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.candidate-linkedin {
+  width: fit-content;
+  margin-left: 60px;
+  color: var(--jobs-blue);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.candidate-linkedin:hover {
+  color: var(--jobs-blue-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.vacancy-detail-main {
+  max-width: 1000px;
+  padding-top: 42px;
+  padding-bottom: 72px;
+}
+
+.vacancy-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(240px, 0.8fr);
+  align-items: start;
+  gap: 22px;
+}
+
+.vacancy-detail-card,
+.vacancy-company-card {
+  padding: 28px;
+  border: 1px solid var(--jobs-border);
+  border-radius: 14px;
+  background: var(--jobs-white);
+  box-shadow: 0 8px 24px rgb(18 59 93 / 5%);
+}
+
+.vacancy-detail-card h1 {
+  margin: 16px 0 6px;
+  color: var(--jobs-navy);
+  font-size: clamp(30px, 4vw, 40px);
+  font-weight: 800;
+  letter-spacing: -1.2px;
+}
+
+.vacancy-detail-company {
+  margin: 0;
+  color: var(--jobs-muted);
+  font-size: 16px;
+}
+
+.vacancy-detail-meta {
+  margin: 20px 0 14px;
+}
+
+.vacancy-detail-salary {
+  display: block;
+  margin: 0;
+}
+
+.vacancy-description-section {
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid #eef2f6;
+}
+
+.vacancy-description-section h2,
+.vacancy-company-card h2 {
+  margin: 0 0 12px;
+  color: var(--jobs-navy);
+  font-size: 20px;
+}
+
+.vacancy-description-section p,
+.vacancy-company-info,
+.vacancy-company-note {
+  margin: 0;
+  color: var(--jobs-muted);
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.vacancy-detail-date {
+  margin: 24px 0 0;
+  color: var(--jobs-muted);
+  font-size: 12px;
+}
+
+.vacancy-company-card h2 {
+  margin-top: 14px;
+}
+
+.vacancy-company-info dt {
+  margin-top: 14px;
+  color: var(--jobs-navy);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.vacancy-company-info dd {
+  margin: 3px 0 0;
+}
+
+.vacancy-company-info a {
+  color: var(--jobs-blue);
+}
+
+.vacancy-company-note {
+  margin-top: 10px;
+}
+
+@media (max-width: 992px) {
+  .company-layout {
+    grid-template-columns: minmax(250px, 0.8fr) minmax(0, 1.4fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .company-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .vacancy-detail-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .candidate-experience,
+  .candidate-linkedin {
+    margin-left: 0;
+  }
+
+  .vacancy-detail-main {
+    padding-top: 30px;
+    padding-bottom: 48px;
+  }
+
+  .vacancy-detail-card,
+  .vacancy-company-card {
+    padding: 20px;
+  }
+}
+
 .home-page .home-main {
   padding-bottom: 42px;
 }

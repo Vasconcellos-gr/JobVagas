@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gerencie seu perfil profissional e encontre oportunidades na JOBVAGAS.">
+  <title>Meu perfil | JOBVAGAS</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="jobs-page candidate-home-page" data-page="candidate-home">
+  <!-- Cabeçalho da área autenticada do candidato e atalhos internos da página. -->
+  <header class="site-header">
+    <div class="jobs-container header-inner">
+      <a class="brand" href="index.html" aria-label="JOBVAGAS - início">
+        <span class="brand-mark" aria-hidden="true">J</span>
+        <span>JOBVAGAS</span>
+      </a>
+      <nav class="main-nav" aria-label="Menu principal">
+        <a href="index.html">Início</a>
+        <a href="#vagas">Vagas</a>
+        <a class="active" href="#perfil" aria-current="page">Meu perfil</a>
+      </nav>
+      <div class="header-actions">
+        <span id="nomeNoCabecalho" class="candidate-header-name"></span>
+        <button id="sairConta" class="link-muted candidate-logout" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="jobs-container candidate-main">
+    <!-- Saudação preenchida com os dados da conta guardados após o login. -->
+    <section class="candidate-welcome" aria-labelledby="candidate-title">
+      <span class="eyebrow">ÁREA DO CANDIDATO</span>
+      <h1 id="candidate-title">Olá, <span id="nomeCandidato">candidato(a)</span>!</h1>
+      <p>Cuide do seu perfil e descubra oportunidades para o próximo passo da sua carreira.</p>
+    </section>
+
+    <div class="candidate-layout">
+      <!-- Formulário de edição do perfil profissional do candidato. -->
+      <aside id="perfil" class="candidate-profile-card" aria-labelledby="profile-title">
+        <div class="candidate-avatar" aria-hidden="true"><span id="iniciaisCandidato">C</span></div>
+        <h2 id="profile-title">Seu perfil profissional</h2>
+        <p class="candidate-profile-hint">Mantenha suas informações atualizadas para se apresentar melhor às empresas.</p>
+        <form id="formPerfilCandidato" class="candidate-profile-form">
+          <label class="registration-field" for="perfilCandidato">
+            <span>Sobre mim</span>
+            <textarea id="perfilCandidato" name="perfil" maxlength="1000" placeholder="Conte um pouco sobre seus objetivos e pontos fortes."></textarea>
+          </label>
+          <label class="registration-field" for="experienciaCandidato">
+            <span>Experiência profissional</span>
+            <textarea id="experienciaCandidato" name="experiencia" maxlength="1500" placeholder="Resuma sua experiência e principais competências."></textarea>
+          </label>
+          <label class="registration-field" for="linkedinCandidato">
+            <span>LinkedIn <span class="optional-label">(opcional)</span></span>
+            <input id="linkedinCandidato" name="linkedin" type="url" placeholder="https://www.linkedin.com/in/seu-perfil">
+          </label>
+          <p id="mensagemPerfil" class="registration-message" role="status" aria-live="polite" hidden></p>
+          <button class="btn btn-primary registration-submit" type="submit">Salvar perfil</button>
+        </form>
+      </aside>
+
+      <section id="vagas" class="candidate-jobs" aria-labelledby="vacancies-title">
+        <!-- Os filtros e cartões são conectados ao carregador de vagas compartilhado. -->
+        <div class="candidate-section-heading">
+          <div>
+            <span class="eyebrow">OPORTUNIDADES</span>
+            <h2 id="vacancies-title">Vagas para você</h2>
+            <p>Explore as vagas publicadas e filtre pelas que combinam com seu perfil.</p>
+          </div>
+          <a class="candidate-all-jobs" href="vagas.html">Todas as vagas <span aria-hidden="true">→</span></a>
+        </div>
+
+        <section class="candidate-search-panel" aria-label="Busca e filtros de vagas">
+          <form id="filtrosVagas" class="jobs-filters">
+            <div class="search-row">
+              <label class="field search-field" for="buscaVagas">
+                <span>Buscar vagas</span>
+                <input id="buscaVagas" name="busca" type="search" placeholder="Cargo, empresa ou tecnologia" autocomplete="off">
+              </label>
+              <button class="btn btn-primary search-button" type="submit">Buscar</button>
+            </div>
+            <div class="filter-grid">
+              <label class="field" for="filtroLocalizacao">
+                <span>Localização</span>
+                <select id="filtroLocalizacao" name="localizacao"><option value="">Qualquer</option></select>
+              </label>
+              <label class="field" for="filtroArea">
+                <span>Área</span>
+                <select id="filtroArea" name="area"><option value="">Qualquer</option></select>
+              </label>
+              <label class="field" for="filtroModalidade">
+                <span>Modalidade</span>
+                <select id="filtroModalidade" name="modalidade"><option value="">Qualquer</option></select>
+              </label>
+            </div>
+          </form>
+        </section>
+
+        <section class="results-section" aria-labelledby="results-title">
+          <div class="results-heading">
+            <div>
+              <h2 id="results-title">Vagas disponíveis</h2>
+              <p id="contagemVagas" aria-live="polite">Carregando vagas...</p>
+            </div>
+          </div>
+          <p id="mensagemVagas" class="notice" role="status" hidden></p>
+          <ul id="listaVagas" class="job-list" aria-live="polite"></ul>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <script src="./js/app.js"></script>
+</body>
+</html>
