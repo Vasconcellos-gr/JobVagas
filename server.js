@@ -241,14 +241,13 @@ app.delete('/api/candidaturas/:id', async (req, res) => {
   }
 });
 
-// Rota para o dashboard do candidato (se preferir acessar /dashboard-candidato)
-app.get('/dashboard-candidato', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'dashboard-candidato.html'));
+// ▶️ NOVAS ROTAS DE DASHBOARD
+app.get('/home-candidato', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'home_candidato.html'));
 });
 
-// Rota para o dashboard da empresa (se preferir acessar /dashboard-empresa)
-app.get('/dashboard-empresa', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'dashboard-empresa.html'));
+app.get('/home-empresa', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'home_empresa.html'));
 });
 
 // Rota raiz para servir o HTML principal
