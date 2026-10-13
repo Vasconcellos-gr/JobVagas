@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gerencie o perfil da sua empresa e conheça profissionais na JOBVAGAS.">
+  <title>Área da empresa | JOBVAGAS</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="jobs-page company-home-page">
+  <!-- Navegação da área da empresa, com links para publicação e busca de talentos. -->
+  <header class="site-header">
+    <div class="jobs-container header-inner">
+      <a class="brand" href="index.html" aria-label="JOBVAGAS - início">
+        <span class="brand-mark" aria-hidden="true">J</span>
+        <span>JOBVAGAS</span>
+      </a>
+      <nav class="main-nav" aria-label="Menu principal">
+        <a href="index.html">Início</a>
+        <a href="vagas.html">Vagas</a>
+        <a href="#nova-vaga">Publicar vaga</a>
+        <a class="active" href="#candidates-title" aria-current="page">Candidatos</a>
+      </nav>
+      <div class="header-actions">
+        <span id="nomeEmpresaCabecalho" class="candidate-header-name"></span>
+        <button id="sairEmpresa" class="link-muted candidate-logout" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="jobs-container candidate-main">
+    <!-- Dados básicos da empresa são inseridos pelo JavaScript após a leitura da sessão. -->
+    <section class="candidate-welcome" aria-labelledby="company-title">
+      <span class="eyebrow">ÁREA DA EMPRESA</span>
+      <h1 id="company-title">Bem-vinda, <span id="nomeEmpresa">sua empresa</span>!</h1>
+      <p>Apresente sua empresa e encontre profissionais alinhados às suas oportunidades.</p>
+    </section>
+
+    <div class="candidate-layout company-layout">
+      <!-- A empresa pode atualizar os dados usados na apresentação pública do perfil. -->
+      <aside id="perfilEmpresa" class="candidate-profile-card" aria-labelledby="company-profile-title">
+        <div class="candidate-avatar company-avatar" aria-hidden="true"><span id="iniciaisEmpresa">E</span></div>
+        <h2 id="company-profile-title">Perfil da empresa</h2>
+        <p class="candidate-profile-hint">Mantenha as informações da sua empresa atualizadas.</p>
+        <form id="formPerfilEmpresa" class="candidate-profile-form">
+          <label class="registration-field" for="setorEmpresa">
+            <span>Setor</span>
+            <input id="setorEmpresa" name="setor" type="text" required>
+          </label>
+          <label class="registration-field" for="descricaoEmpresa">
+            <span>Sobre a empresa</span>
+            <textarea id="descricaoEmpresa" name="descricao" maxlength="1500" placeholder="Conte sobre a missão, cultura e atuação da empresa."></textarea>
+          </label>
+          <label class="registration-field" for="siteEmpresa">
+            <span>Site <span class="optional-label">(opcional)</span></span>
+            <input id="siteEmpresa" name="website" type="url" placeholder="https://www.empresa.com.br">
+          </label>
+          <label class="registration-field" for="telefoneEmpresa">
+            <span>Telefone</span>
+            <input id="telefoneEmpresa" name="telefone" type="tel" required>
+          </label>
+          <div class="registration-field-row">
+            <label class="registration-field" for="cidadeEmpresa">
+              <span>Cidade</span>
+              <input id="cidadeEmpresa" name="cidade" type="text" required>
+            </label>
+            <label class="registration-field" for="estadoEmpresa">
+              <span>Estado (UF)</span>
+              <input id="estadoEmpresa" name="estado" type="text" maxlength="2" required>
+            </label>
+          </div>
+          <p id="mensagemPerfilEmpresa" class="registration-message" role="status" aria-live="polite" hidden></p>
+          <button class="btn btn-primary registration-submit" type="submit">Salvar perfil</button>
+        </form>
+      </aside>
+
+      <section id="perfis" class="company-candidates" aria-labelledby="candidates-title">
+        <!-- Campos do formulário correspondem aos dados obrigatórios do modelo de vaga. -->
+        <section id="nova-vaga" class="company-vacancy-publisher" aria-labelledby="publish-vacancy-title">
+          <!-- A lista abaixo recebe perfis públicos carregados pela API e filtrados no navegador. -->
+          <div class="candidate-section-heading">
+            <div>
+              <span class="eyebrow">RECRUTAMENTO</span>
+              <h2 id="publish-vacancy-title">Publique uma vaga</h2>
+              <p>Compartilhe uma oportunidade e encontre profissionais para sua equipe.</p>
+            </div>
+          </div>
+          <form id="formNovaVaga" class="candidate-search-panel company-vacancy-form">
+            <label class="registration-field" for="vagaTitulo">
+              <span>Cargo ou título da vaga</span>
+              <input id="vagaTitulo" name="titulo" type="text" maxlength="120" placeholder="Ex.: Desenvolvedor(a) Front-end" required>
+            </label>
+            <div class="registration-field-row">
+              <label class="registration-field" for="vagaLocal">
+                <span>Localização</span>
+                <input id="vagaLocal" name="local" type="text" maxlength="120" placeholder="Ex.: São Paulo - SP" required>
+              </label>
+              <label class="registration-field" for="vagaTipo">
+                <span>Tipo de contratação</span>
+                <select id="vagaTipo" name="tipo" required>
+                  <option value="">Selecione</option>
+                  <option value="CLT">CLT</option>
+                  <option value="PJ">PJ</option>
+                  <option value="Temporário">Temporário</option>
+                </select>
+              </label>
+            </div>
+            <label class="registration-field" for="vagaSalario">
+              <span>Salário ou faixa salarial</span>
+              <input id="vagaSalario" name="salario" type="text" maxlength="80" placeholder="Ex.: R$ 4.000 a R$ 5.500" required>
+            </label>
+            <label class="registration-field" for="vagaDescricao">
+              <span>Descrição da vaga <span class="optional-label">(opcional)</span></span>
+              <textarea id="vagaDescricao" name="descricao" maxlength="3000" rows="5" placeholder="Descreva as responsabilidades, requisitos e benefícios da vaga."></textarea>
+            </label>
+            <p id="mensagemNovaVaga" class="registration-message" role="status" aria-live="polite" hidden></p>
+            <button class="btn btn-primary registration-submit" type="submit">Publicar vaga</button>
+          </form>
+        </section>
+
+        <div class="candidate-section-heading">
+          <div>
+            <span class="eyebrow">TALENTOS</span>
+            <h2 id="candidates-title">Perfis de candidatos</h2>
+            <p>Conheça profissionais, suas áreas de interesse e experiências.</p>
+          </div>
+        </div>
+        <section class="candidate-search-panel" aria-label="Busca de candidatos">
+          <form id="buscaCandidatosForm" class="jobs-filters">
+            <div class="search-row">
+              <label class="field search-field" for="buscaCandidatos">
+                <span>Buscar profissionais</span>
+                <input id="buscaCandidatos" name="busca" type="search" placeholder="Nome, área ou experiência" autocomplete="off">
+              </label>
+              <button class="btn btn-primary search-button" type="submit">Buscar</button>
+            </div>
+          </form>
+        </section>
+        <section class="results-section" aria-labelledby="candidate-results-title">
+          <div class="results-heading">
+            <div>
+              <h2 id="candidate-results-title">Profissionais disponíveis</h2>
+              <p id="contagemCandidatos" aria-live="polite">Carregando perfis...</p>
+            </div>
+          </div>
+          <p id="mensagemCandidatos" class="notice" role="status" hidden></p>
+          <ul id="listaCandidatos" class="job-list candidate-list" aria-live="polite"></ul>
+        </section>
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>
