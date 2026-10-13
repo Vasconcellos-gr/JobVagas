@@ -3,10 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta
-    name="description"
-    content="Acesse sua conta da JOBVAGAS."
-  >
+  <meta name="description" content="Acesse sua conta da JOBVAGAS.">
   <title>Entrar | JOBVAGAS</title>
   <link rel="stylesheet" href="./css/style.css">
 </head>
@@ -41,7 +38,12 @@
         <p>Entre na sua conta JOBVAGAS para continuar.</p>
       </div>
 
-      <form class="registration-form" action="/api/login" method="post">
+      <!-- Adicionado um ID no formulário para controlarmos via JS -->
+      <form class="registration-form" id="formLogin">
+        
+        <!-- Elemento para exibir mensagens de erro ou sucesso -->
+        <div id="mensagemLogin" style="margin-bottom: 15px; font-weight: bold;" hidden></div>
+
         <label class="registration-field" for="loginEmail">
           <span>E-mail</span>
           <input
@@ -53,6 +55,7 @@
             required
           >
         </label>
+
         <label class="registration-field" for="loginSenha">
           <span>Senha</span>
           <input
@@ -64,6 +67,16 @@
             required
           >
         </label>
+
+        <!-- NOVO: Campo para o usuário escolher se é Candidato ou Empresa -->
+        <label class="registration-field" for="tipoUsuario">
+          <span>Entrar como</span>
+          <select id="tipoUsuario" class="registration-input" style="padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 4px;">
+            <option value="candidato">Candidato</option>
+            <option value="empresa">Empresa</option>
+          </select>
+        </label>
+
         <button class="btn btn-primary registration-submit" type="submit">Entrar</button>
       </form>
 
@@ -73,14 +86,14 @@
       </p>
     </section>
   </main>
+
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Lê a URL do navegador buscando por ?cadastrado=true
       const urlParams = new URLSearchParams(window.location.search);
+      const mensagem = document.getElementById('mensagemLogin');
       
+      // Verifica se veio redirecionado do cadastro
       if (urlParams.get('cadastrado') === 'true') {
-        const mensagem = document.getElementById('mensagemLogin');
-        
         if (mensagem) {
           mensagem.textContent = 'Cadastro realizado com sucesso! Faça seu login para continuar.';
           mensagem.style.color = 'green';
@@ -88,6 +101,61 @@
         } else {
           alert('Cadastro realizado com sucesso! Faça seu login para continuar.');
         }
+      }
+
+      // Intercepta o envio do formulário para usar fetch (AJAX)
+      const formLogin = document.getElementById('formLogin');
+      if (formLogin) {
+        formLogin.addEventListener('submit', async (e) => {
+          e.preventDefault(); // Evita o recarregamento padrão da página
+
+          const email = document.getElementById('loginEmail').value;
+          const senha = document.getElementById('loginSenha').value;
+          const tipo = document.getElementById('tipoUsuario').value; // 'candidato' ou 'empresa'
+
+          // Define a rota correta dependendo da escolha do usuário
+          const rotaApi = tipo === 'empresa' ? '/api/empresas/login' : '/api/candidatos/login';
+
+          try {
+            const resposta = await fetch(rotaApi, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ email, senha })
+            });
+
+            const resultado = await resposta.json();
+
+            if (resposta.ok) {
+              mensagem.style.color = 'green';
+              mensagem.textContent = 'Login realizado com sucesso! Redirecionando...';
+              mensagem.hidden = false;
+
+              // Salva os dados no localStorage
+              localStorage.setItem('usuarioLogado', JSON.stringify(resultado));
+
+              // Redireciona para o painel correto após 1 segundo
+              setTimeout(() => {
+                if (tipo === 'empresa') {
+                  window.location.href = 'dashboard-empresa.html';
+                } else {
+                  window.location.href = 'dashboard-candidato.html';
+                }
+              }, 1000);
+
+            } else {
+              mensagem.style.color = 'red';
+              mensagem.textContent = resultado.erro || 'E-mail ou senha inválidos.';
+              mensagem.hidden = false;
+            }
+          } catch (error) {
+            console.error('Erro na requisição:', error);
+            mensagem.style.color = 'red';
+            mensagem.textContent = 'Erro de conexão com o servidor.';
+            mensagem.hidden = false;
+          }
+        });
       }
     });
   </script>

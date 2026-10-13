@@ -27,7 +27,6 @@ app.get('/api/vagas', async (req, res) => {
   }
 });
 
-// Consultar vaga por ID
 app.get('/api/vagas/:id', async (req, res) => {
   try {
     const vaga = await vagasService.obterVagaPorId(req.params.id);
@@ -116,6 +115,20 @@ app.delete('/api/empresas/:id', async (req, res) => {
   }
 });
 
+// ▶️ NOVO: Rota de Login para Empresas
+app.post('/api/empresas/login', async (req, res) => {
+  try {
+    const { email, senha } = req.body;
+    if (!email || !senha) {
+      return res.status(400).json({ erro: 'Informe o e-mail e a senha.' });
+    }
+    const resultado = await empresasService.loginEmpresa(email, senha);
+    res.status(200).json(resultado);
+  } catch (error) {
+    res.status(401).json({ erro: error.message });
+  }
+});
+
 // ==================== ROTAS DE CANDIDATOS ====================
 app.get('/api/candidatos', async (req, res) => {
   try {
@@ -126,7 +139,6 @@ app.get('/api/candidatos', async (req, res) => {
   }
 });
 
-// Consultar candidato por ID
 app.get('/api/candidatos/:id', async (req, res) => {
   try {
     const candidato = await candidatosService.obterCandidatoPorId(req.params.id);
@@ -166,6 +178,20 @@ app.delete('/api/candidatos/:id', async (req, res) => {
   }
 });
 
+// ▶️ NOVO: Rota de Login para Candidatos
+app.post('/api/candidatos/login', async (req, res) => {
+  try {
+    const { email, senha } = req.body;
+    if (!email || !senha) {
+      return res.status(400).json({ erro: 'Informe o e-mail e a senha.' });
+    }
+    const resultado = await candidatosService.loginCandidato(email, senha);
+    res.status(200).json(resultado);
+  } catch (error) {
+    res.status(401).json({ erro: error.message });
+  }
+});
+
 // ==================== ROTAS DE CANDIDATURAS ====================
 app.get('/api/candidaturas', async (req, res) => {
   try {
@@ -176,7 +202,6 @@ app.get('/api/candidaturas', async (req, res) => {
   }
 });
 
-// Consultar candidatura por ID
 app.get('/api/candidaturas/:id', async (req, res) => {
   try {
     const candidatura = await candidaturasService.obterCandidaturaPorId(req.params.id);
@@ -214,6 +239,16 @@ app.delete('/api/candidaturas/:id', async (req, res) => {
   } catch (error) {
     res.status(400).json({ erro: error.message });
   }
+});
+
+// Rota para o dashboard do candidato (se preferir acessar /dashboard-candidato)
+app.get('/dashboard-candidato', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'dashboard-candidato.html'));
+});
+
+// Rota para o dashboard da empresa (se preferir acessar /dashboard-empresa)
+app.get('/dashboard-empresa', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'dashboard-empresa.html'));
 });
 
 // Rota raiz para servir o HTML principal

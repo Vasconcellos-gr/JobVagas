@@ -32,10 +32,35 @@ async function deletarCandidato(id) {
   return await Candidato.findByIdAndDelete(id);
 }
 
+async function loginCandidato(email, senha) {
+  // 1. Busca o candidato pelo e-mail
+  const candidato = await Candidato.findOne({ email });
+  if (!candidato) {
+    throw new Error('E-mail ou senha inválidos.');
+  }
+
+  // 2. Compara a senha digitada com o hash salvo no banco
+  const senhaCorreta = await bcrypt.compare(senha, candidato.senha);
+  if (!senhaCorreta) {
+    throw new Error('E-mail ou senha inválidos.');
+  }
+
+  // 3. Retorna dados úteis (sem expor a senha)
+  return {
+    mensagem: 'Login realizado com sucesso!',
+    usuario: {
+      id: candidato._id,
+      nome: candidato.nome,
+      email: candidato.email
+    }
+  };
+}
+
 module.exports = {
   obterTodosCandidatos,
   criarCandidato,
   obterCandidatoPorId,
   atualizarCandidato,
-  deletarCandidato
+  deletarCandidato,
+  loginCandidato
 };
