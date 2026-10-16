@@ -110,6 +110,69 @@
     </div>
   </main>
 
-  <script src="./js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Recupera os dados salvos no login
+      const dadosStr = localStorage.getItem('usuarioLogado');
+      if (!dadosStr) {
+        alert('Você precisa fazer login para acessar esta página.');
+        window.location.href = 'login.html';
+        return;
+      }
+    
+      const usuario = JSON.parse(dadosStr);
+    
+      // Preenche os campos da tela com os dados do candidato
+      document.getElementById('nomeCandidato').textContent = usuario.nome || 'Candidato';
+      document.getElementById('nomeNoCabecalho').textContent = usuario.nome || '';
+      if (usuario.nome) {
+        document.getElementById('iniciaisCandidato').textContent = usuario.nome.charAt(0).toUpperCase();
+      }
+    
+      // Preenche formulário de perfil se já tiver dados
+      if (document.getElementById('perfilCandidato')) {
+        document.getElementById('perfilCandidato').value = usuario.perfil || '';
+        document.getElementById('experienciaCandidato').value = usuario.experiencia || '';
+        document.getElementById('linkedinCandidato').value = usuario.linkedin || '';
+      }
+    
+      // Botão de Sair (Logout)
+      document.getElementById('sairConta').addEventListener('click', () => {
+        localStorage.clear();
+        window.location.href = 'index.html';
+      });
+    
+      // Envio do formulário de atualização de perfil do candidato
+      const formPerfil = document.getElementById('formPerfilCandidato');
+      if (formPerfil) {
+        formPerfil.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const atualizacoes = {
+            perfil: document.getElementById('perfilCandidato').value,
+            experiencia: document.getElementById('experienciaCandidato').value,
+            linkedin: document.getElementById('linkedinCandidato').value
+          };
+        
+          try {
+            const resposta = await fetch(`/api/candidatos/${usuario._id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(atualizacoes)
+            });
+          
+            if (resposta.ok) {
+              const candidatoAtualizado = await resposta.json();
+              localStorage.setItem('usuarioLogado', JSON.stringify(candidatoAtualizado));
+              alert('Perfil atualizado com sucesso!');
+            } else {
+              alert('Erro ao atualizar perfil.');
+            }
+          } catch (error) {
+            console.error('Erro:', error);
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>

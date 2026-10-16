@@ -149,6 +149,111 @@
       </section>
     </div>
   </main>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Recupera a sessão
+      const dadosStr = localStorage.getItem('usuarioLogado');
+      if (!dadosStr) {
+        alert('Você precisa fazer login para acessar esta página.');
+        window.location.href = 'login.html';
+        return;
+      }
 
+      const empresa = JSON.parse(dadosStr);
+
+      // Preenche dados da empresa na tela
+      document.getElementById('nomeEmpresa').textContent = empresa.nome || 'Empresa';
+      document.getElementById('nomeEmpresaCabecalho').textContent = empresa.nome || '';
+      if (empresa.nome) {
+        document.getElementById('iniciaisEmpresa').textContent = empresa.nome.charAt(0).toUpperCase();
+      }
+
+      // Preenche o formulário de perfil da empresa
+      document.getElementById('setorEmpresa').value = empresa.setor || '';
+      document.getElementById('descricaoEmpresa').value = empresa.descricao || '';
+      document.getElementById('siteEmpresa').value = empresa.website || '';
+      document.getElementById('telefoneEmpresa').value = empresa.telefone || '';
+      document.getElementById('cidadeEmpresa').value = empresa.cidade || '';
+      document.getElementById('estadoEmpresa').value = empresa.estado || '';
+
+      // Botão de Sair (Logout)
+      document.getElementById('sairEmpresa').addEventListener('click', () => {
+        localStorage.clear();
+        window.location.href = 'index.html';
+      });
+
+      // 1. Atualizar Perfil da Empresa
+      const formPerfilEmpresa = document.getElementById('formPerfilEmpresa');
+      if (formPerfilEmpresa) {
+        formPerfilEmpresa.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const dadosAtualizados = {
+            setor: document.getElementById('setorEmpresa').value,
+            descricao: document.getElementById('descricaoEmpresa').value,
+            website: document.getElementById('siteEmpresa').value,
+            telefone: document.getElementById('telefoneEmpresa').value,
+            cidade: document.getElementById('cidadeEmpresa').value,
+            estado: document.getElementById('estadoEmpresa').value
+          };
+
+          try {
+            const resposta = await fetch(`/api/empresas/${empresa._id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(dadosAtualizados)
+            });
+
+            if (resposta.ok) {
+              const atualizada = await resposta.json();
+              localStorage.setItem('usuarioLogado', JSON.stringify(atualizada));
+              alert('Perfil da empresa atualizado com sucesso!');
+            } else {
+              alert('Erro ao atualizar perfil.');
+            }
+          } catch (error) {
+            console.error('Erro:', error);
+          }
+        });
+      }
+
+      // 2. Publicar Vaga (Vinculada ao ID da Empresa)
+      const formNovaVaga = document.getElementById('formNovaVaga');
+      if (formNovaVaga) {
+        formNovaVaga.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          const novaVaga = {
+            titulo: document.getElementById('vagaTitulo').value,
+            local: document.getElementById('vagaLocal').value,
+            tipo: document.getElementById('vagaTipo').value,
+            salario: document.getElementById('vagaSalario').value,
+            descricao: document.getElementById('vagaDescricao').value,
+            empresaId: empresa._id // Vincula a vaga à empresa logada!
+          };
+
+          try {
+            const resposta = await fetch('/api/vagas', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(novaVaga)
+            });
+
+            const resultado = await resposta.json();
+
+            if (resposta.ok) {
+              alert('Vaga publicada com sucesso!');
+              formNovaVaga.reset();
+            } else {
+              alert('Erro ao publicar vaga: ' + (resultado.erro || 'Verifique os campos'));
+            }
+          } catch (error) {
+            console.error('Erro na requisição:', error);
+            alert('Erro de conexão com o servidor.');
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
