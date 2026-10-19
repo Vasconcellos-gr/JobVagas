@@ -7,7 +7,7 @@
   <title>Meu perfil | JOBVAGAS</title>
   <link rel="stylesheet" href="./css/style.css">
 </head>
-<body class="jobs-page candidate-home-page" data-page="candidate-home">
+<body class="jobs-page candidate-home-page" data-page="candidate-home" data-profile-type="candidato">
   <!-- Cabeçalho da área autenticada do candidato e atalhos internos da página. -->
   <header class="site-header">
     <div class="jobs-container header-inner">
@@ -17,12 +17,12 @@
       </a>
       <nav class="main-nav" aria-label="Menu principal">
         <a href="index.html">Início</a>
-        <a href="#vagas">Vagas</a>
-        <a class="active" href="#perfil" aria-current="page">Meu perfil</a>
+        <a href="vagas.html">Vagas</a>
+        <a href="#minhas-candidaturas">Minhas Candidaturas</a>
       </nav>
       <div class="header-actions">
         <span id="nomeNoCabecalho" class="candidate-header-name"></span>
-        <button id="sairConta" class="link-muted candidate-logout" type="button">Sair</button>
+        <button id="sairConta" class="btn btn-primary" type="button">Sair</button>
       </div>
     </div>
   </header>
@@ -35,170 +35,252 @@
       <p>Cuide do seu perfil e descubra oportunidades para o próximo passo da sua carreira.</p>
     </section>
 
-    <div class="candidate-layout">
-      <!-- Formulário de edição do perfil profissional do candidato. -->
-      <aside id="perfil" class="candidate-profile-card" aria-labelledby="profile-title">
-        <div class="candidate-avatar" aria-hidden="true"><span id="iniciaisCandidato">C</span></div>
-        <h2 id="profile-title">Seu perfil profissional</h2>
-        <p class="candidate-profile-hint">Mantenha suas informações atualizadas para se apresentar melhor às empresas.</p>
-        <form id="formPerfilCandidato" class="candidate-profile-form">
-          <label class="registration-field" for="perfilCandidato">
-            <span>Sobre mim</span>
-            <textarea id="perfilCandidato" name="perfil" maxlength="1000" placeholder="Conte um pouco sobre seus objetivos e pontos fortes."></textarea>
-          </label>
-          <label class="registration-field" for="experienciaCandidato">
-            <span>Experiência profissional</span>
-            <textarea id="experienciaCandidato" name="experiencia" maxlength="1500" placeholder="Resuma sua experiência e principais competências."></textarea>
-          </label>
-          <label class="registration-field" for="linkedinCandidato">
-            <span>LinkedIn <span class="optional-label">(opcional)</span></span>
-            <input id="linkedinCandidato" name="linkedin" type="url" placeholder="https://www.linkedin.com/in/seu-perfil">
-          </label>
-          <p id="mensagemPerfil" class="registration-message" role="status" aria-live="polite" hidden></p>
-          <button class="btn btn-primary registration-submit" type="submit">Salvar perfil</button>
-        </form>
-      </aside>
-
-      <section id="vagas" class="candidate-jobs" aria-labelledby="vacancies-title">
-        <!-- Os filtros e cartões são conectados ao carregador de vagas compartilhado. -->
-        <div class="candidate-section-heading">
-          <div>
-            <span class="eyebrow">OPORTUNIDADES</span>
-            <h2 id="vacancies-title">Vagas para você</h2>
-            <p>Explore as vagas publicadas e filtre pelas que combinam com seu perfil.</p>
-          </div>
-          <a class="candidate-all-jobs" href="vagas.html">Todas as vagas <span aria-hidden="true">→</span></a>
+    <div class="account-tabs" data-account-tabs>
+      <div class="account-tabs-navigation">
+        <div class="account-tab-list" role="tablist" aria-label="Área do candidato">
+          <button id="tab-candidaturas" class="account-tab" type="button" role="tab" aria-controls="panel-candidaturas" aria-selected="true">Minhas candidaturas</button>
+          <button id="tab-perfil" class="account-tab" type="button" role="tab" aria-controls="panel-perfil" aria-selected="false">Ver perfil</button>
+          <button id="tab-editar-perfil" class="account-tab" type="button" role="tab" aria-controls="panel-editar-perfil" aria-selected="false">Editar perfil</button>
         </div>
+        <a class="account-tab curriculum-tab-link" href="curriculo.html">Currículo</a>
+      </div>
 
-        <section class="candidate-search-panel" aria-label="Busca e filtros de vagas">
-          <form id="filtrosVagas" class="jobs-filters">
-            <div class="search-row">
-              <label class="field search-field" for="buscaVagas">
-                <span>Buscar vagas</span>
-                <input id="buscaVagas" name="busca" type="search" placeholder="Cargo, empresa ou tecnologia" autocomplete="off">
-              </label>
-              <button class="btn btn-primary search-button" type="submit">Buscar</button>
+      <section id="panel-candidaturas" class="account-tab-panel" data-tab-hash="#minhas-candidaturas" role="tabpanel" aria-labelledby="tab-candidaturas">
+        <div class="candidate-layout candidate-layout-no-profile">
+          <section id="minhas-candidaturas" class="candidate-jobs candidate-applications" aria-labelledby="my-applications-title">
+            <div class="candidate-section-heading">
+              <div>
+                <span class="eyebrow">ACOMPANHAMENTO</span>
+                <h2 id="my-applications-title">Minhas candidaturas</h2>
+                <p>Acompanhe as empresas e vagas para as quais você enviou seu currículo.</p>
+              </div>
             </div>
-            <div class="filter-grid">
-              <label class="field" for="filtroLocalizacao">
-                <span>Localização</span>
-                <select id="filtroLocalizacao" name="localizacao"><option value="">Qualquer</option></select>
-              </label>
-              <label class="field" for="filtroArea">
-                <span>Área</span>
-                <select id="filtroArea" name="area"><option value="">Qualquer</option></select>
-              </label>
-              <label class="field" for="filtroModalidade">
-                <span>Modalidade</span>
-                <select id="filtroModalidade" name="modalidade"><option value="">Qualquer</option></select>
-              </label>
-            </div>
-          </form>
-        </section>
+            <p id="mensagemMinhasCandidaturas" class="notice" role="status" aria-live="polite">Carregando candidaturas...</p>
+            <ul id="listaMinhasCandidaturas" class="job-list application-list" aria-live="polite"></ul>
+          </section>
+        </div>
+      </section>
 
-        <section class="results-section" aria-labelledby="results-title">
-          <div class="results-heading">
-            <div>
-              <h2 id="results-title">Vagas disponíveis</h2>
-              <p id="contagemVagas" aria-live="polite">Carregando vagas...</p>
-            </div>
-          </div>
-          <p id="mensagemVagas" class="notice" role="status" hidden></p>
-          <ul id="listaVagas" class="job-list" aria-live="polite"></ul>
-        </section>
+      <section id="panel-perfil" class="account-tab-panel" data-tab-hash="#perfil" role="tabpanel" aria-labelledby="tab-perfil" hidden>
+      <section id="perfil" class="candidate-profile-card account-profile-section" aria-labelledby="candidate-profile-title">
+      <div class="candidate-section-heading">
+        <div>
+          <span class="eyebrow">MEU PERFIL</span>
+          <h2 id="candidate-profile-title">Perfil profissional</h2>
+          <p>Confira os dados vinculados à sua conta.</p>
+        </div>
+      </div>
+      <p id="mensagemPerfil" class="notice" role="status" aria-live="polite">Carregando perfil...</p>
+      <dl class="account-profile-details">
+        <div><dt>Nome</dt><dd data-profile-value="nome">—</dd></div>
+        <div><dt>E-mail</dt><dd data-profile-value="email">—</dd></div>
+        <div><dt>Telefone</dt><dd data-profile-value="telefone">—</dd></div>
+        <div><dt>Data de nascimento</dt><dd data-profile-value="dataNascimento">—</dd></div>
+        <div><dt>Área ou cargo de interesse</dt><dd data-profile-value="perfil">—</dd></div>
+        <div><dt>Experiência</dt><dd data-profile-value="experiencia">—</dd></div>
+        <div><dt>LinkedIn</dt><dd data-profile-value="linkedin">—</dd></div>
+      </dl>
+    </section>
+      </section>
+
+      <section id="panel-editar-perfil" class="account-tab-panel" data-tab-hash="#editar-perfil" role="tabpanel" aria-labelledby="tab-editar-perfil" hidden>
+      <section id="editar-perfil" class="candidate-profile-card account-profile-section" aria-labelledby="edit-candidate-profile-title">
+      <div class="candidate-section-heading">
+        <div>
+          <span class="eyebrow">CONFIGURAÇÕES DA CONTA</span>
+          <h2 id="edit-candidate-profile-title">Editar perfil</h2>
+          <p>Atualize seus dados profissionais. Deixe a senha em branco para mantê-la.</p>
+        </div>
+      </div>
+      <form id="formPerfil" class="candidate-profile-form">
+        <label class="registration-field" for="perfilNome">
+          <span>Nome completo</span>
+          <input id="perfilNome" name="nome" type="text" autocomplete="name" required>
+        </label>
+        <label class="registration-field" for="perfilEmail">
+          <span>E-mail</span>
+          <input id="perfilEmail" name="email" type="email" autocomplete="email" required>
+        </label>
+        <label class="registration-field" for="perfilTelefone">
+          <span>Telefone</span>
+          <input id="perfilTelefone" name="telefone" type="tel" autocomplete="tel" maxlength="15" required>
+        </label>
+        <label class="registration-field" for="perfilDataNascimento">
+          <span>Data de nascimento</span>
+          <input id="perfilDataNascimento" name="dataNascimento" type="date" autocomplete="bday" required>
+        </label>
+        <label class="registration-field" for="perfilArea">
+          <span>Área ou cargo de interesse</span>
+          <input id="perfilArea" name="perfil" type="text" required>
+        </label>
+        <label class="registration-field" for="perfilExperiencia">
+          <span>Experiência profissional</span>
+          <textarea id="perfilExperiencia" name="experiencia" rows="3" required></textarea>
+        </label>
+        <label class="registration-field" for="perfilLinkedin">
+          <span>LinkedIn <span class="optional-label">(opcional)</span></span>
+          <input id="perfilLinkedin" name="linkedin" type="url" autocomplete="url">
+        </label>
+        <label class="registration-field" for="perfilSenha">
+          <span>Nova senha <span class="optional-label">(opcional)</span></span>
+          <input id="perfilSenha" name="senha" type="password" autocomplete="new-password" minlength="6">
+        </label>
+        <p id="mensagemEdicaoPerfil" class="registration-message" role="status" aria-live="polite" hidden></p>
+        <button class="btn btn-primary registration-submit" type="submit">Salvar perfil</button>
+      </form>
+    </section>
       </section>
     </div>
   </main>
 
+  <script src="./js/tabs.js"></script>
+  <script src="./js/perfil.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Recupera os dados salvos no login
+      // Lê a sessão criada no login e exige autenticação para acessar a área do candidato.
       const dadosStr = localStorage.getItem('usuarioLogado');
       if (!dadosStr) {
         alert('Você precisa fazer login para acessar esta página.');
-        window.location.href = 'login.html';
+        window.location.replace('login.html');
         return;
       }
-    
-      const usuario = JSON.parse(dadosStr);
-    
-      // Preenche os campos da tela com os dados do candidato
+
+      // O login atual guarda os dados em sessao.usuario; a alternativa mantém suporte
+      // a sessões antigas que armazenavam diretamente os dados do candidato.
+      const sessao = JSON.parse(dadosStr);
+      const usuario = sessao.usuario || sessao;
+
+      // Preenche a saudação com o nome disponível na sessão.
       document.getElementById('nomeCandidato').textContent = usuario.nome || 'Candidato';
-      document.getElementById('nomeNoCabecalho').textContent = usuario.nome || '';
-      if (usuario.nome) {
-        document.getElementById('iniciaisCandidato').textContent = usuario.nome.charAt(0).toUpperCase();
-      }
-    
-      // Preenche formulário de perfil se já tiver dados
-      if (document.getElementById('perfilCandidato')) {
-        document.getElementById('perfilCandidato').value = usuario.perfil || '';
-        document.getElementById('experienciaCandidato').value = usuario.experiencia || '';
-        document.getElementById('linkedinCandidato').value = usuario.linkedin || '';
-      }
-    
-      // Botão de Sair (Logout)
-      document.getElementById('sairConta').addEventListener('click', () => {
-        localStorage.clear();
-        window.location.href = 'index.html';
-      });
-    
-      // Envio do formulário de atualização de perfil do candidato
-      const formPerfil = document.getElementById('formPerfilCandidato');
-      if (formPerfil) {
-        formPerfil.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const atualizacoes = {
-            perfil: document.getElementById('perfilCandidato').value,
-            experiencia: document.getElementById('experienciaCandidato').value,
-            linkedin: document.getElementById('linkedinCandidato').value
-          };
-        
-          try {
-            const resposta = await fetch(`/api/candidatos/${usuario._id}`, {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(atualizacoes)
-            });
-          
-            if (resposta.ok) {
-              const candidatoAtualizado = await resposta.json();
-              localStorage.setItem('usuarioLogado', JSON.stringify(candidatoAtualizado));
-              alert('Perfil atualizado com sucesso!');
-            } else {
-              alert('Erro ao atualizar perfil.');
-            }
-          } catch (error) {
-            console.error('Erro:', error);
-          }
-        });
-      }
     });
   </script>
-
   <script src="./js/auth.js"></script>
-  
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // 🔒 COLOCA AQUI ESTA VERIFICAÇÃO NO INÍCIO DE TUDO:
-      const dadosUsuario = localStorage.getItem('usuarioLogado');
-      if (!dadosUsuario) {
-        window.location.replace('login.html'); // .replace impede voltar pelo histórico
+    // Carrega as candidaturas do candidato atual após a página estar pronta.
+    document.addEventListener("DOMContentLoaded", async () => {
+      const list = document.querySelector("#listaMinhasCandidaturas");
+      const message = document.querySelector("#mensagemMinhasCandidaturas");
+
+      // Atualiza a mensagem da lista e aplica o estilo de erro quando necessário.
+      function showMessage(text, isError = false) {
+        message.textContent = text;
+        message.hidden = !text;
+        message.classList.toggle("is-error", isError);
+      }
+
+      // Cria o cartão de uma candidatura com os dados da vaga e da empresa.
+      function createApplicationCard(application) {
+        const vacancy = application.vagaId && typeof application.vagaId === "object"
+          ? application.vagaId
+          : {};
+        const company = vacancy.empresaId && typeof vacancy.empresaId === "object"
+          ? vacancy.empresaId
+          : {};
+        const card = document.createElement("li");
+        card.className = "job-card application-card";
+
+        const heading = document.createElement("div");
+        heading.className = "job-card-top";
+        const identity = document.createElement("div");
+        identity.className = "job-identity";
+        const icon = document.createElement("span");
+        icon.className = "company-icon";
+        icon.setAttribute("aria-hidden", "true");
+        icon.textContent = (company.nome || "E").trim().charAt(0).toUpperCase() || "E";
+
+        const companyInfo = document.createElement("div");
+        companyInfo.className = "job-title-company";
+        const companyName = document.createElement("h3");
+        companyName.textContent = company.nome || "Empresa não identificada";
+        const vacancyTitle = document.createElement("p");
+        vacancyTitle.className = "company-name";
+        vacancyTitle.textContent = vacancy.titulo || "Vaga não disponível";
+        companyInfo.append(companyName, vacancyTitle);
+        identity.append(icon, companyInfo);
+
+        const status = document.createElement("span");
+        status.className = "application-status";
+        status.textContent = application.status || "Em análise";
+        heading.append(identity, status);
+        card.append(heading);
+
+        const metadata = document.createElement("div");
+        metadata.className = "job-meta";
+        if (vacancy.local) {
+          const location = document.createElement("span");
+          location.textContent = vacancy.local;
+          metadata.append(location);
+        }
+        const sentDate = new Date(application.dataCandidatura);
+        if (!Number.isNaN(sentDate.getTime())) {
+          const date = document.createElement("span");
+          date.textContent = `Currículo enviado em ${new Intl.DateTimeFormat("pt-BR").format(sentDate)}`;
+          metadata.append(date);
+        }
+        if (metadata.childElementCount) card.append(metadata);
+
+        const vacancyId = vacancy._id || (
+          typeof application.vagaId === "string" ? application.vagaId : ""
+        );
+        if (vacancyId) {
+          const link = document.createElement("a");
+          link.className = "details-link";
+          link.href = `vaga_detalhes.html?id=${encodeURIComponent(vacancyId)}`;
+          link.textContent = "Ver vaga";
+          const footer = document.createElement("div");
+          footer.className = "job-card-footer";
+          footer.append(link);
+          card.append(footer);
+        }
+
+        return card;
+      }
+
+      // Usa a sessão do navegador para solicitar somente as candidaturas deste candidato.
+      let session;
+      try {
+        session = JSON.parse(localStorage.getItem("usuarioLogado") || "null");
+      } catch (error) {
+        showMessage("Não foi possível ler os dados da sua conta.", true);
         return;
       }
 
-      // ... (o restante do seu código existente do candidato continua daqui para baixo)
-      const resultado = JSON.parse(dadosUsuario);
-      const spanNome = document.getElementById('nomeCandidato');
-      if (spanNome && resultado.usuario) {
-        spanNome.textContent = resultado.usuario.nome;
+      const candidate = session && (session.usuario || session);
+      const candidateId = candidate && (candidate.id || candidate._id);
+      if (!session || session.tipo !== "candidato" || !candidateId) {
+        showMessage("Entre como candidato para visualizar suas candidaturas.", true);
+        return;
       }
 
-      document.getElementById('btnSair').addEventListener('click', () => {
-        localStorage.removeItem('usuarioLogado');
-        window.location.replace('login.html'); // Garante que ao sair também use o replace
-      });
+      try {
+        const response = await fetch(
+          `/api/candidaturas/candidato/${encodeURIComponent(candidateId)}`
+        );
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+          throw new Error(
+            "A API de candidaturas não retornou JSON. Reinicie o servidor Node com `npm start` e acesse a aplicação por http://localhost:3000."
+          );
+        }
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.erro || "Não foi possível carregar suas candidaturas.");
+        }
+        if (!Array.isArray(result)) {
+          throw new Error("A resposta do servidor não contém uma lista de candidaturas.");
+        }
+
+        if (result.length === 0) {
+          showMessage("Você ainda não enviou seu currículo para nenhuma empresa.");
+          return;
+        }
+
+        list.replaceChildren(...result.map(createApplicationCard));
+        showMessage("");
+      } catch (error) {
+        showMessage(error.message || "Erro ao carregar suas candidaturas.", true);
+      }
     });
   </script>
-  
 </body>
 </html>

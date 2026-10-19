@@ -7,7 +7,7 @@
   <title>Área da empresa | JOBVAGAS</title>
   <link rel="stylesheet" href="./css/style.css">
 </head>
-<body class="jobs-page company-home-page">
+<body class="jobs-page company-home-page" data-profile-type="empresa">
   <!-- Navegação da área da empresa, com links para publicação e busca de talentos. -->
   <header class="site-header">
     <div class="jobs-container header-inner">
@@ -16,10 +16,9 @@
         <span>JOBVAGAS</span>
       </a>
       <nav class="main-nav" aria-label="Menu principal">
-        <a href="index.html">Início</a>
-        <a href="vagas.html">Vagas</a>
         <a href="#nova-vaga">Publicar vaga</a>
-        <a class="active" href="#candidates-title" aria-current="page">Candidatos</a>
+        <a href="#minhas-vagas">Minhas vagas</a>
+        <a href="candidaturas_empresa.html">Candidatos</a>
       </nav>
       <div class="header-actions">
         <span id="nomeEmpresaCabecalho" class="candidate-header-name"></span>
@@ -36,120 +35,271 @@
       <p>Apresente sua empresa e encontre profissionais alinhados às suas oportunidades.</p>
     </section>
 
-    <div class="candidate-layout company-layout">
-      <!-- A empresa pode atualizar os dados usados na apresentação pública do perfil. -->
-      <aside id="perfilEmpresa" class="candidate-profile-card" aria-labelledby="company-profile-title">
-        <div class="candidate-avatar company-avatar" aria-hidden="true"><span id="iniciaisEmpresa">E</span></div>
-        <h2 id="company-profile-title">Perfil da empresa</h2>
-        <p class="candidate-profile-hint">Mantenha as informações da sua empresa atualizadas.</p>
-        <form id="formPerfilEmpresa" class="candidate-profile-form">
-          <label class="registration-field" for="setorEmpresa">
-            <span>Setor</span>
-            <input id="setorEmpresa" name="setor" type="text" required>
-          </label>
-          <label class="registration-field" for="descricaoEmpresa">
-            <span>Sobre a empresa</span>
-            <textarea id="descricaoEmpresa" name="descricao" maxlength="1500" placeholder="Conte sobre a missão, cultura e atuação da empresa."></textarea>
-          </label>
-          <label class="registration-field" for="siteEmpresa">
-            <span>Site <span class="optional-label">(opcional)</span></span>
-            <input id="siteEmpresa" name="website" type="url" placeholder="https://www.empresa.com.br">
-          </label>
-          <label class="registration-field" for="telefoneEmpresa">
-            <span>Telefone</span>
-            <input id="telefoneEmpresa" name="telefone" type="tel" required>
+    <div class="account-tabs" data-account-tabs>
+      <div class="account-tab-list" role="tablist" aria-label="Área da empresa">
+        <button id="tab-vagas" class="account-tab" type="button" role="tab" aria-controls="panel-vagas" aria-selected="true">Publicar vaga</button>
+        <button id="tab-minhas-vagas" class="account-tab" type="button" role="tab" aria-controls="panel-vagas-publicadas" aria-selected="false">Minhas vagas</button>
+        <button id="tab-perfil" class="account-tab" type="button" role="tab" aria-controls="panel-perfil" aria-selected="false">Ver perfil</button>
+        <button id="tab-editar-perfil" class="account-tab" type="button" role="tab" aria-controls="panel-editar-perfil" aria-selected="false">Editar perfil</button>
+      </div>
+
+      <section id="panel-vagas" class="account-tab-panel" data-tab-hash="#nova-vaga" role="tabpanel" aria-labelledby="tab-vagas">
+      <div class="company-content">
+      <section id="nova-vaga" class="company-vacancy-publisher" aria-labelledby="publish-vacancy-title">
+        <div class="candidate-section-heading">
+          <div>
+            <span class="eyebrow">RECRUTAMENTO</span>
+            <h2 id="publish-vacancy-title">Publique uma vaga</h2>
+            <p>Compartilhe uma oportunidade e encontre profissionais para sua equipe.</p>
+          </div>
+        </div>
+        <form id="formNovaVaga" class="candidate-search-panel company-vacancy-form">
+          <label class="registration-field" for="vagaTitulo">
+            <span>Cargo ou título da vaga</span>
+            <input id="vagaTitulo" name="titulo" type="text" maxlength="120" placeholder="Ex.: Desenvolvedor(a) Front-end" required>
           </label>
           <div class="registration-field-row">
-            <label class="registration-field" for="cidadeEmpresa">
-              <span>Cidade</span>
-              <input id="cidadeEmpresa" name="cidade" type="text" required>
+            <label class="registration-field" for="vagaLocal">
+              <span>Localização</span>
+              <input id="vagaLocal" name="local" type="text" maxlength="120" placeholder="Ex.: São Paulo - SP" required>
             </label>
-            <label class="registration-field" for="estadoEmpresa">
-              <span>Estado (UF)</span>
-              <input id="estadoEmpresa" name="estado" type="text" maxlength="2" required>
+            <label class="registration-field" for="vagaTipo">
+              <span>Tipo de contratação</span>
+              <select id="vagaTipo" name="tipo" required>
+                <option value="">Selecione</option>
+                <option value="CLT">CLT</option>
+                <option value="PJ">PJ</option>
+                <option value="Temporário">Temporário</option>
+              </select>
             </label>
           </div>
-          <p id="mensagemPerfilEmpresa" class="registration-message" role="status" aria-live="polite" hidden></p>
-          <button class="btn btn-primary registration-submit" type="submit">Salvar perfil</button>
+          <label class="registration-field" for="vagaSalario">
+            <span>Salário ou faixa salarial</span>
+            <input id="vagaSalario" name="salario" type="text" maxlength="80" placeholder="Ex.: R$ 4.000 a R$ 5.500" required>
+          </label>
+          <label class="registration-field" for="vagaDescricao">
+            <span>Descrição da vaga <span class="optional-label">(opcional)</span></span>
+            <textarea id="vagaDescricao" name="descricao" maxlength="3000" rows="5" placeholder="Descreva as responsabilidades, requisitos e benefícios da vaga."></textarea>
+          </label>
+          <p id="mensagemNovaVaga" class="registration-message" role="status" aria-live="polite" hidden></p>
+          <button class="btn btn-primary registration-submit" type="submit">Publicar vaga</button>
         </form>
-      </aside>
+      </section>
+      </div>
+      </section>
 
-      <section id="perfis" class="company-candidates" aria-labelledby="candidates-title">
-        <!-- Campos do formulário correspondem aos dados obrigatórios do modelo de vaga. -->
-        <section id="nova-vaga" class="company-vacancy-publisher" aria-labelledby="publish-vacancy-title">
-          <!-- A lista abaixo recebe perfis públicos carregados pela API e filtrados no navegador. -->
+      <section id="panel-perfil" class="account-tab-panel" data-tab-hash="#perfil" role="tabpanel" aria-labelledby="tab-perfil" hidden>
+    <section id="perfil" class="candidate-profile-card account-profile-section" aria-labelledby="company-profile-title">
+      <div class="candidate-section-heading">
+        <div>
+          <span class="eyebrow">PERFIL DA EMPRESA</span>
+          <h2 id="company-profile-title">Dados da empresa</h2>
+          <p>Confira as informações vinculadas à sua conta.</p>
+        </div>
+      </div>
+      <p id="mensagemPerfil" class="notice" role="status" aria-live="polite">Carregando perfil...</p>
+      <dl class="account-profile-details">
+        <div><dt>Nome</dt><dd data-profile-value="nome">—</dd></div>
+        <div><dt>CNPJ</dt><dd data-profile-value="cnpj">—</dd></div>
+        <div><dt>E-mail</dt><dd data-profile-value="email">—</dd></div>
+        <div><dt>Telefone</dt><dd data-profile-value="telefone">—</dd></div>
+        <div><dt>Setor</dt><dd data-profile-value="setor">—</dd></div>
+        <div><dt>Endereço</dt><dd data-profile-value="endereco">—</dd></div>
+        <div><dt>Bairro</dt><dd data-profile-value="bairro">—</dd></div>
+        <div><dt>Cidade</dt><dd data-profile-value="cidade">—</dd></div>
+        <div><dt>Estado</dt><dd data-profile-value="estado">—</dd></div>
+        <div><dt>Site</dt><dd data-profile-value="website">—</dd></div>
+        <div><dt>Descrição</dt><dd data-profile-value="descricao">—</dd></div>
+      </dl>
+    </section>
+      </section>
+
+      <section id="panel-editar-perfil" class="account-tab-panel" data-tab-hash="#editar-perfil" role="tabpanel" aria-labelledby="tab-editar-perfil" hidden>
+    <section id="editar-perfil" class="candidate-profile-card account-profile-section" aria-labelledby="edit-company-profile-title">
+      <div class="candidate-section-heading">
+        <div>
+          <span class="eyebrow">CONFIGURAÇÕES DA CONTA</span>
+          <h2 id="edit-company-profile-title">Editar perfil</h2>
+          <p>Atualize os dados da sua empresa. Deixe a senha em branco para mantê-la.</p>
+        </div>
+      </div>
+      <form id="formPerfil" class="candidate-profile-form">
+        <label class="registration-field" for="perfilNome">
+          <span>Nome da empresa</span>
+          <input id="perfilNome" name="nome" type="text" autocomplete="organization" required>
+        </label>
+        <label class="registration-field" for="perfilCnpj">
+          <span>CNPJ</span>
+          <input id="perfilCnpj" name="cnpj" type="text" maxlength="18" required>
+        </label>
+        <label class="registration-field" for="perfilEmail">
+          <span>E-mail corporativo</span>
+          <input id="perfilEmail" name="email" type="email" autocomplete="email" required>
+        </label>
+        <label class="registration-field" for="perfilTelefone">
+          <span>Telefone</span>
+          <input id="perfilTelefone" name="telefone" type="tel" autocomplete="tel" maxlength="15" required>
+        </label>
+        <label class="registration-field" for="perfilSetor">
+          <span>Setor</span>
+          <input id="perfilSetor" name="setor" type="text" required>
+        </label>
+        <label class="registration-field" for="perfilEndereco">
+          <span>Endereço <span class="optional-label">(opcional)</span></span>
+          <input id="perfilEndereco" name="endereco" type="text">
+        </label>
+        <label class="registration-field" for="perfilBairro">
+          <span>Bairro <span class="optional-label">(opcional)</span></span>
+          <input id="perfilBairro" name="bairro" type="text">
+        </label>
+        <div class="registration-field-row">
+          <label class="registration-field" for="perfilCidade">
+            <span>Cidade</span>
+            <input id="perfilCidade" name="cidade" type="text" required>
+          </label>
+          <label class="registration-field" for="perfilEstado">
+            <span>Estado (UF)</span>
+            <input id="perfilEstado" name="estado" type="text" maxlength="2" required>
+          </label>
+        </div>
+        <label class="registration-field" for="perfilWebsite">
+          <span>Site <span class="optional-label">(opcional)</span></span>
+          <input id="perfilWebsite" name="website" type="url" autocomplete="url">
+        </label>
+        <label class="registration-field" for="perfilDescricao">
+          <span>Descrição <span class="optional-label">(opcional)</span></span>
+          <textarea id="perfilDescricao" name="descricao" rows="3"></textarea>
+        </label>
+        <label class="registration-field" for="perfilSenha">
+          <span>Nova senha <span class="optional-label">(opcional)</span></span>
+          <input id="perfilSenha" name="senha" type="password" autocomplete="new-password" minlength="6">
+        </label>
+        <p id="mensagemEdicaoPerfil" class="registration-message" role="status" aria-live="polite" hidden></p>
+        <button class="btn btn-primary registration-submit" type="submit">Salvar perfil</button>
+      </form>
+    </section>
+      </section>
+
+      <section id="panel-vagas-publicadas" class="account-tab-panel" data-tab-hash="#minhas-vagas" role="tabpanel" aria-labelledby="tab-minhas-vagas" hidden>
+      <div class="company-content">
+      <section id="minhas-vagas" class="company-vacancy-publisher" aria-labelledby="my-vacancies-title">
+        <div class="candidate-section-heading">
+          <div>
+            <span class="eyebrow">MINHAS VAGAS</span>
+            <h2 id="my-vacancies-title">Vagas publicadas</h2>
+            <p>Acompanhe as oportunidades que sua empresa já divulgou.</p>
+          </div>
+        </div>
+
+        <ul class="job-list">
+          <li class="job-card" data-titulo="Desenvolvedor(a) Front-end" data-empresa="Digital Growth" data-local="São Paulo - SP" data-tipo="CLT" data-salario="R$ 5.500" data-tags="Front-end,React,UX">
+            <div class="job-card-top">
+              <div class="job-identity">
+                <span class="company-icon" aria-hidden="true">D</span>
+                <div class="job-title-company">
+                  <h3>Desenvolvedor(a) Front-end</h3>
+                  <p class="company-name">Digital Growth</p>
+                </div>
+              </div>
+              <span class="job-status">Ativa</span>
+            </div>
+            <div class="job-meta">
+              <span>São Paulo - SP</span>
+              <span>CLT</span>
+            </div>
+            <div class="job-tags">
+              <span>Front-end</span>
+              <span>React</span>
+              <span>UX</span>
+            </div>
+            <div class="job-card-footer">
+              <span class="job-salary">R$ 5.500</span>
+              <button class="details-link editar-vaga-btn" type="button">Editar</button>
+            </div>
+          </li>
+
+          <li class="job-card" data-titulo="Analista de Produto" data-empresa="Nova Agenda" data-local="Rio de Janeiro - RJ" data-tipo="Híbrido" data-salario="R$ 6.200" data-tags="Produto,Pesquisa,Dados">
+            <div class="job-card-top">
+              <div class="job-identity">
+                <span class="company-icon" aria-hidden="true">A</span>
+                <div class="job-title-company">
+                  <h3>Analista de Produto</h3>
+                  <p class="company-name">Nova Agenda</p>
+                </div>
+              </div>
+              <span class="job-status">Ativa</span>
+            </div>
+            <div class="job-meta">
+              <span>Rio de Janeiro - RJ</span>
+              <span>Híbrido</span>
+            </div>
+            <div class="job-tags">
+              <span>Produto</span>
+              <span>Pesquisa</span>
+              <span>Dados</span>
+            </div>
+            <div class="job-card-footer">
+              <span class="job-salary">R$ 6.200</span>
+              <button class="details-link editar-vaga-btn" type="button">Editar</button>
+            </div>
+          </li>
+        </ul>
+
+        <div id="editar-vaga" class="company-vacancy-publisher" style="display: none; margin-top: 2rem;">
           <div class="candidate-section-heading">
             <div>
-              <span class="eyebrow">RECRUTAMENTO</span>
-              <h2 id="publish-vacancy-title">Publique uma vaga</h2>
-              <p>Compartilhe uma oportunidade e encontre profissionais para sua equipe.</p>
+              <span class="eyebrow">EDITAR VAGA</span>
+              <h2>Alterar detalhes da vaga</h2>
             </div>
           </div>
-          <form id="formNovaVaga" class="candidate-search-panel company-vacancy-form">
-            <label class="registration-field" for="vagaTitulo">
+
+          <form id="formEditarVaga" class="candidate-search-panel company-vacancy-form">
+            <label class="registration-field" for="editarTitulo">
               <span>Cargo ou título da vaga</span>
-              <input id="vagaTitulo" name="titulo" type="text" maxlength="120" placeholder="Ex.: Desenvolvedor(a) Front-end" required>
+              <input id="editarTitulo" type="text" required>
             </label>
+
             <div class="registration-field-row">
-              <label class="registration-field" for="vagaLocal">
+              <label class="registration-field" for="editarLocal">
                 <span>Localização</span>
-                <input id="vagaLocal" name="local" type="text" maxlength="120" placeholder="Ex.: São Paulo - SP" required>
+                <input id="editarLocal" type="text" required>
               </label>
-              <label class="registration-field" for="vagaTipo">
+
+              <label class="registration-field" for="editarTipo">
                 <span>Tipo de contratação</span>
-                <select id="vagaTipo" name="tipo" required>
-                  <option value="">Selecione</option>
+                <select id="editarTipo" required>
                   <option value="CLT">CLT</option>
                   <option value="PJ">PJ</option>
                   <option value="Temporário">Temporário</option>
+                  <option value="Híbrido">Híbrido</option>
                 </select>
               </label>
             </div>
-            <label class="registration-field" for="vagaSalario">
-              <span>Salário ou faixa salarial</span>
-              <input id="vagaSalario" name="salario" type="text" maxlength="80" placeholder="Ex.: R$ 4.000 a R$ 5.500" required>
-            </label>
-            <label class="registration-field" for="vagaDescricao">
-              <span>Descrição da vaga <span class="optional-label">(opcional)</span></span>
-              <textarea id="vagaDescricao" name="descricao" maxlength="3000" rows="5" placeholder="Descreva as responsabilidades, requisitos e benefícios da vaga."></textarea>
-            </label>
-            <p id="mensagemNovaVaga" class="registration-message" role="status" aria-live="polite" hidden></p>
-            <button class="btn btn-primary registration-submit" type="submit">Publicar vaga</button>
-          </form>
-        </section>
 
-        <div class="candidate-section-heading">
-          <div>
-            <span class="eyebrow">TALENTOS</span>
-            <h2 id="candidates-title">Perfis de candidatos</h2>
-            <p>Conheça profissionais, suas áreas de interesse e experiências.</p>
-          </div>
-        </div>
-        <section class="candidate-search-panel" aria-label="Busca de candidatos">
-          <form id="buscaCandidatosForm" class="jobs-filters">
-            <div class="search-row">
-              <label class="field search-field" for="buscaCandidatos">
-                <span>Buscar profissionais</span>
-                <input id="buscaCandidatos" name="busca" type="search" placeholder="Nome, área ou experiência" autocomplete="off">
-              </label>
-              <button class="btn btn-primary search-button" type="submit">Buscar</button>
+            <label class="registration-field" for="editarSalario">
+              <span>Salário ou faixa salarial</span>
+              <input id="editarSalario" type="text" required>
+            </label>
+
+            <label class="registration-field" for="editarTags">
+              <span>Tags</span>
+              <input id="editarTags" type="text" placeholder="Ex.: Front-end, React, UX">
+            </label>
+
+            <div class="job-card-footer" style="margin-top: 1rem; justify-content: flex-end; gap: 0.75rem;">
+              <button class="btn btn-muted" type="button" id="cancelarEdicao">Cancelar</button>
+              <button class="btn btn-primary" type="submit">Salvar alterações</button>
             </div>
           </form>
-        </section>
-        <section class="results-section" aria-labelledby="candidate-results-title">
-          <div class="results-heading">
-            <div>
-              <h2 id="candidate-results-title">Profissionais disponíveis</h2>
-              <p id="contagemCandidatos" aria-live="polite">Carregando perfis...</p>
-            </div>
-          </div>
-          <p id="mensagemCandidatos" class="notice" role="status" hidden></p>
-          <ul id="listaCandidatos" class="job-list candidate-list" aria-live="polite"></ul>
-        </section>
+        </div>
+      </section>
+    </div>
       </section>
     </div>
   </main>
   
+  <script src="./js/tabs.js"></script>
+  <script src="./js/perfil.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       // Recupera a sessão
@@ -160,64 +310,13 @@
         return;
       }
 
-      const empresa = JSON.parse(dadosStr);
+      const sessao = JSON.parse(dadosStr);
+      const empresa = sessao.usuario || sessao;
 
       // Preenche dados da empresa na tela
       document.getElementById('nomeEmpresa').textContent = empresa.nome || 'Empresa';
-      document.getElementById('nomeEmpresaCabecalho').textContent = empresa.nome || '';
-      if (empresa.nome) {
-        document.getElementById('iniciaisEmpresa').textContent = empresa.nome.charAt(0).toUpperCase();
-      }
 
-      // Preenche o formulário de perfil da empresa
-      document.getElementById('setorEmpresa').value = empresa.setor || '';
-      document.getElementById('descricaoEmpresa').value = empresa.descricao || '';
-      document.getElementById('siteEmpresa').value = empresa.website || '';
-      document.getElementById('telefoneEmpresa').value = empresa.telefone || '';
-      document.getElementById('cidadeEmpresa').value = empresa.cidade || '';
-      document.getElementById('estadoEmpresa').value = empresa.estado || '';
-
-      // Botão de Sair (Logout)
-      document.getElementById('sairEmpresa').addEventListener('click', () => {
-        localStorage.clear();
-        window.location.href = 'index.html';
-      });
-
-      // 1. Atualizar Perfil da Empresa
-      const formPerfilEmpresa = document.getElementById('formPerfilEmpresa');
-      if (formPerfilEmpresa) {
-        formPerfilEmpresa.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const dadosAtualizados = {
-            setor: document.getElementById('setorEmpresa').value,
-            descricao: document.getElementById('descricaoEmpresa').value,
-            website: document.getElementById('siteEmpresa').value,
-            telefone: document.getElementById('telefoneEmpresa').value,
-            cidade: document.getElementById('cidadeEmpresa').value,
-            estado: document.getElementById('estadoEmpresa').value
-          };
-
-          try {
-            const resposta = await fetch(`/api/empresas/${empresa._id}`, {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(dadosAtualizados)
-            });
-
-            if (resposta.ok) {
-              const atualizada = await resposta.json();
-              localStorage.setItem('usuarioLogado', JSON.stringify(atualizada));
-              alert('Perfil da empresa atualizado com sucesso!');
-            } else {
-              alert('Erro ao atualizar perfil.');
-            }
-          } catch (error) {
-            console.error('Erro:', error);
-          }
-        });
-      }
-
-      // 2. Publicar Vaga (Vinculada ao ID da Empresa)
+      // Publicar Vaga (Vinculada ao ID da Empresa)
       const formNovaVaga = document.getElementById('formNovaVaga');
       if (formNovaVaga) {
         formNovaVaga.addEventListener('submit', async (e) => {
@@ -229,7 +328,7 @@
             tipo: document.getElementById('vagaTipo').value,
             salario: document.getElementById('vagaSalario').value,
             descricao: document.getElementById('vagaDescricao').value,
-            empresaId: empresa._id // Vincula a vaga à empresa logada!
+            empresaId: empresa.id || empresa._id
           };
 
           try {
@@ -253,32 +352,96 @@
           }
         });
       }
+
+      const formEditarVaga = document.getElementById('formEditarVaga');
+      const editarVagaSection = document.getElementById('editar-vaga');
+      const cancelarEdicao = document.getElementById('cancelarEdicao');
+      let cardEmEdicao = null;
+
+      document.querySelectorAll('.editar-vaga-btn').forEach((botao) => {
+        botao.addEventListener('click', () => {
+          cardEmEdicao = botao.closest('.job-card');
+          const titulo = cardEmEdicao.dataset.titulo || cardEmEdicao.querySelector('h3')?.textContent || '';
+          const local = cardEmEdicao.dataset.local || cardEmEdicao.querySelector('.job-meta span')?.textContent || '';
+          const tipo = cardEmEdicao.dataset.tipo || cardEmEdicao.querySelector('.job-meta span:last-child')?.textContent || 'CLT';
+          const salario = cardEmEdicao.dataset.salario || cardEmEdicao.querySelector('.job-salary')?.textContent || '';
+          const tags = cardEmEdicao.dataset.tags || Array.from(cardEmEdicao.querySelectorAll('.job-tags span')).map((tag) => tag.textContent).join(', ');
+
+          document.getElementById('editarTitulo').value = titulo;
+          document.getElementById('editarLocal').value = local;
+          document.getElementById('editarTipo').value = tipo;
+          document.getElementById('editarSalario').value = salario;
+          document.getElementById('editarTags').value = tags;
+
+          if (editarVagaSection) {
+            editarVagaSection.style.display = 'block';
+            editarVagaSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+
+      if (cancelarEdicao) {
+        cancelarEdicao.addEventListener('click', () => {
+          if (editarVagaSection) editarVagaSection.style.display = 'none';
+          formEditarVaga.reset();
+          cardEmEdicao = null;
+        });
+      }
+
+      if (formEditarVaga) {
+        formEditarVaga.addEventListener('submit', (event) => {
+          event.preventDefault();
+
+          if (!cardEmEdicao) {
+            alert('Selecione uma vaga para editar.');
+            return;
+          }
+
+          const titulo = document.getElementById('editarTitulo').value.trim();
+          const local = document.getElementById('editarLocal').value.trim();
+          const tipo = document.getElementById('editarTipo').value;
+          const salario = document.getElementById('editarSalario').value.trim();
+          const tagsValor = document.getElementById('editarTags').value.trim();
+
+          cardEmEdicao.dataset.titulo = titulo;
+          cardEmEdicao.dataset.local = local;
+          cardEmEdicao.dataset.tipo = tipo;
+          cardEmEdicao.dataset.salario = salario;
+          cardEmEdicao.dataset.tags = tagsValor;
+
+          const heading = cardEmEdicao.querySelector('.job-title-company h3');
+          const name = cardEmEdicao.querySelector('.company-name');
+          const location = cardEmEdicao.querySelector('.job-meta span');
+          const tipoSpan = cardEmEdicao.querySelector('.job-meta span:last-child');
+          const salary = cardEmEdicao.querySelector('.job-salary');
+          const tagsContainer = cardEmEdicao.querySelector('.job-tags');
+
+          if (heading) heading.textContent = titulo;
+          if (name && !name.dataset.original) name.dataset.original = name.textContent;
+          if (location) location.textContent = local;
+          if (tipoSpan) tipoSpan.textContent = tipo;
+          if (salary) salary.textContent = salario;
+
+          if (tagsContainer) {
+            tagsContainer.innerHTML = '';
+            const tags = tagsValor ? tagsValor.split(',').map((tag) => tag.trim()).filter(Boolean) : ['Atualizada'];
+            tags.forEach((tag) => {
+              const badge = document.createElement('span');
+              badge.textContent = tag;
+              tagsContainer.appendChild(badge);
+            });
+          }
+
+          alert('Vaga atualizada com sucesso!');
+
+          if (editarVagaSection) editarVagaSection.style.display = 'none';
+          formEditarVaga.reset();
+          cardEmEdicao = null;
+        });
+      }
     });
   </script>
 
   <script src="./js/auth.js"></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // 🔒 COLOCA AQUI ESTA VERIFICAÇÃO NO INÍCIO DE TUDO:
-      const dadosUsuario = localStorage.getItem('usuarioLogado');
-      if (!dadosUsuario) {
-        window.location.replace('login.html');
-        return;
-      }
-
-      // ... (o restante do seu código existente da empresa continua daqui para baixo)
-      const resultado = JSON.parse(dadosUsuario);
-      const spanNome = document.getElementById('nomeEmpresa');
-      if (spanNome && resultado.usuario) {
-        spanNome.textContent = resultado.usuario.nome;
-      }
-
-      document.getElementById('btnSair').addEventListener('click', () => {
-        localStorage.removeItem('usuarioLogado');
-        window.location.replace('login.html');
-      });
-    });
-  </script>
 </body>
 </html>
