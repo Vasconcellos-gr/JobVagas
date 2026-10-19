@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Acompanhe as candidaturas recebidas para as vagas da sua empresa.">
+  <title>Candidaturas | JOBVAGAS</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="jobs-page company-home-page applications-page">
+  <header class="site-header">
+    <div class="jobs-container header-inner">
+      <a class="brand" href="index.html" aria-label="JOBVAGAS - início">
+        <span class="brand-mark" aria-hidden="true">J</span>
+        <span>JOBVAGAS</span>
+      </a>
+      <nav class="main-nav" aria-label="Menu principal">
+        <a href="home_empresa.html#nova-vaga">Publicar vaga</a>
+        <a class="active" href="#candidaturas" aria-current="page">Candidaturas</a>
+      </nav>
+      <div class="header-actions">
+        <a class="link-muted" href="home_empresa.html">Área da empresa</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="jobs-container candidate-main applications-main">
+    <section class="candidate-welcome" aria-labelledby="applications-title">
+      <span class="eyebrow">ÁREA DA EMPRESA</span>
+      <h1 id="applications-title">Candidaturas recebidas</h1>
+      <p>Acompanhe os profissionais interessados nas vagas publicadas pela sua empresa.</p>
+    </section>
+
+    <section class="application-stats" aria-label="Resumo das candidaturas">
+      <article class="application-stat-card">
+        <span class="application-stat-icon" aria-hidden="true">↗</span>
+        <div>
+          <p>Candidaturas recebidas</p>
+          <strong id="totalCandidaturas">0</strong>
+          <span>em todas as vagas</span>
+        </div>
+      </article>
+      <article class="application-stat-card application-stat-new">
+        <span class="application-stat-icon" aria-hidden="true">✦</span>
+        <div>
+          <p>Novas inscrições</p>
+          <strong id="novasCandidaturas">0</strong>
+          <span>aguardando análise</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="candidate-search-panel application-search-panel" aria-label="Pesquisar e filtrar candidaturas">
+      <form id="filtrosCandidaturas" class="jobs-filters">
+        <div class="search-row">
+          <label class="field search-field" for="buscaCandidaturas">
+            <span>Buscar candidaturas</span>
+            <input id="buscaCandidaturas" name="busca" type="search" placeholder="Nome do candidato ou vaga" autocomplete="off">
+          </label>
+          <button class="btn btn-primary search-button" type="submit">Buscar</button>
+        </div>
+        <div class="filter-grid application-filter-grid">
+          <label class="field" for="filtroVaga">
+            <span>Vaga</span>
+            <select id="filtroVaga" name="vaga">
+              <option value="">Todas as vagas</option>
+            </select>
+          </label>
+          <label class="field" for="filtroStatus">
+            <span>Status</span>
+            <select id="filtroStatus" name="status">
+              <option value="">Todos os status</option>
+              <option value="Nova">Nova</option>
+              <option value="Em análise">Em análise</option>
+              <option value="Aprovada">Aprovada</option>
+              <option value="Rejeitada">Rejeitada</option>
+              <option value="Entrevista agendada">Entrevista agendada</option>
+            </select>
+          </label>
+          <label class="field" for="filtroData">
+            <span>Período</span>
+            <select id="filtroData" name="periodo">
+              <option value="">Qualquer período</option>
+              <option value="7">Últimos 7 dias</option>
+              <option value="30">Últimos 30 dias</option>
+            </select>
+          </label>
+        </div>
+      </form>
+    </section>
+
+    <section id="candidaturas" class="results-section application-results" aria-labelledby="application-results-title">
+      <div class="results-heading">
+        <div>
+          <h2 id="application-results-title">Candidatos</h2>
+          <p id="resumoCandidaturas" aria-live="polite">Carregando candidaturas...</p>
+        </div>
+        <label class="application-sort" for="ordenarCandidaturas">
+          <span>Ordenar por</span>
+          <select id="ordenarCandidaturas" name="ordenar">
+            <option value="recentes">Mais recentes</option>
+            <option value="antigas">Mais antigas</option>
+            <option value="nome">Nome do candidato</option>
+          </select>
+        </label>
+      </div>
+
+      <p id="mensagemCandidaturasEmpresa" class="notice" role="status" aria-live="polite">Carregando candidaturas...</p>
+      <ul id="listaCandidaturasEmpresa" class="job-list application-list" aria-live="polite"></ul>
+    </section>
+  </main>
+  <script src="./js/auth.js"></script>
+  <script>
+    // Carrega e exibe somente as candidaturas das vagas da empresa autenticada.
+    document.addEventListener("DOMContentLoaded", async () => {
+      const list = document.querySelector("#listaCandidaturasEmpresa");
+      const message = document.querySelector("#mensagemCandidaturasEmpresa");
+      const form = document.querySelector("#filtrosCandidaturas");
+      const searchInput = document.querySelector("#buscaCandidaturas");
+      const vacancyFilter = document.querySelector("#filtroVaga");
+      const statusFilter = document.querySelector("#filtroStatus");
+      const periodFilter = document.querySelector("#filtroData");
+      const sortSelect = document.querySelector("#ordenarCandidaturas");
+      const totalCount = document.querySelector("#totalCandidaturas");
+      const newCount = document.querySelector("#novasCandidaturas");
+      const summary = document.querySelector("#resumoCandidaturas");
+      let applications = [];
+
+      // Atualiza a mensagem da área de resultados e marca visualmente os erros.
+      function showMessage(text, isError = false) {
+        message.textContent = text;
+        message.hidden = !text;
+        message.classList.toggle("is-error", isError);
+      }
+
+      // Retorna o texto de um campo somente quando ele contém uma string válida.
+      function text(value, fallback = "Não informado") {
+        return typeof value === "string" && value.trim() ? value.trim() : fallback;
+      }
+
+      // Cria um rótulo e um valor para os painéis de currículo e dados do candidato.
+      function appendDetail(listElement, label, value) {
+        const term = document.createElement("dt");
+        term.textContent = label;
+        const description = document.createElement("dd");
+        description.textContent = text(value);
+        listElement.append(term, description);
+      }
+
+      // Monta os painéis expansíveis com os dados reais enviados na candidatura.
+      function createDisclosure(title, className, entries) {
+        const details = document.createElement("details");
+        details.className = "application-disclosure";
+        const summaryElement = document.createElement("summary");
+        summaryElement.className = `btn ${className} application-button`;
+        summaryElement.textContent = title;
+        const panel = document.createElement("div");
+        panel.className = "application-detail-panel";
+        const definitionList = document.createElement("dl");
+
+        entries.forEach(([label, value]) => appendDetail(definitionList, label, value));
+        panel.append(definitionList);
+        details.append(summaryElement, panel);
+        return details;
+      }
+
+      // Constrói o cartão da candidatura sem inserir conteúdo recebido como HTML.
+      function createApplicationCard(application) {
+        const candidate = application.candidatoId && typeof application.candidatoId === "object"
+          ? application.candidatoId
+          : {};
+        const resume = application.curriculo || {};
+        const vacancy = application.vagaId && typeof application.vagaId === "object"
+          ? application.vagaId
+          : {};
+        const candidateName = text(resume.nome, text(candidate.nome, "Candidato"));
+        const candidateEmail = text(resume.email, text(candidate.email));
+        const card = document.createElement("li");
+        card.className = "job-card application-card";
+
+        const heading = document.createElement("div");
+        heading.className = "application-card-heading";
+        const avatar = document.createElement("span");
+        avatar.className = "application-photo application-avatar-initial";
+        avatar.setAttribute("aria-hidden", "true");
+        avatar.textContent = candidateName.charAt(0).toLocaleUpperCase("pt-BR");
+
+        const identity = document.createElement("div");
+        identity.className = "application-candidate";
+        const name = document.createElement("h3");
+        name.textContent = candidateName;
+        const vacancyName = document.createElement("p");
+        vacancyName.className = "company-name";
+        vacancyName.textContent = text(vacancy.titulo, "Vaga não disponível");
+        identity.append(name, vacancyName);
+
+        const status = document.createElement("span");
+        const statusText = text(application.status, "Em análise");
+        status.className = "application-status";
+        if (statusText === "Nova") status.classList.add("status-new");
+        else if (statusText === "Entrevista agendada") status.classList.add("status-interview");
+        else status.classList.add("status-review");
+        status.textContent = statusText;
+        heading.append(avatar, identity, status);
+        card.append(heading);
+
+        const metadata = document.createElement("div");
+        metadata.className = "application-meta";
+        const sentDate = new Date(application.dataCandidatura);
+        const sentDateLabel = document.createElement("span");
+        sentDateLabel.textContent = Number.isNaN(sentDate.getTime())
+          ? "Data de envio não informada"
+          : `Candidatura enviada em ${new Intl.DateTimeFormat("pt-BR", {
+            dateStyle: "medium"
+          }).format(sentDate)}`;
+        metadata.append(sentDateLabel);
+        if (vacancy.local) {
+          const location = document.createElement("span");
+          location.textContent = vacancy.local;
+          metadata.append(location);
+        }
+        card.append(metadata);
+
+        const resumeEntries = [
+          ["Nome", candidateName],
+          ["E-mail", candidateEmail],
+          ["Telefone", text(resume.telefone, text(candidate.telefone))],
+          ["Área de interesse", text(resume.area, text(candidate.perfil))],
+          ["Resumo", text(resume.resumo)],
+          ["Experiência", text(resume.experiencia, text(candidate.experiencia))],
+          ["Formação", text(resume.formacao)],
+          ["Competências", text(resume.competencias)],
+          ["LinkedIn", text(resume.linkedin, text(candidate.linkedin))]
+        ];
+        const candidateEntries = [
+          ["E-mail", candidateEmail],
+          ["Telefone", text(resume.telefone, text(candidate.telefone))],
+          ["Vaga", text(vacancy.titulo)],
+          ["Local", text(vacancy.local)]
+        ];
+        const actions = document.createElement("div");
+        actions.className = "application-actions";
+        actions.append(
+          createDisclosure("Visualizar currículo", "btn-primary", resumeEntries),
+          createDisclosure("Detalhes do candidato", "btn-secondary", candidateEntries)
+        );
+        card.append(actions);
+        return card;
+      }
+
+      // Preenche o filtro com as vagas que aparecem nas candidaturas recebidas.
+      function populateVacancyFilter() {
+        const selectedValue = vacancyFilter.value;
+        const vacancies = new Map();
+        applications.forEach((application) => {
+          const vacancy = application.vagaId;
+          if (vacancy && vacancy._id && typeof vacancy.titulo === "string") {
+            vacancies.set(String(vacancy._id), vacancy.titulo);
+          }
+        });
+        const sortedVacancies = [...vacancies.entries()]
+          .sort((first, second) => first[1].localeCompare(second[1], "pt-BR"));
+
+        vacancyFilter.replaceChildren(new Option("Todas as vagas", ""));
+        sortedVacancies.forEach(([id, title]) => vacancyFilter.add(new Option(title, id)));
+        if (vacancies.has(selectedValue)) vacancyFilter.value = selectedValue;
+      }
+
+      // Aplica busca, filtros e ordenação antes de atualizar a lista e o resumo.
+      function renderApplications() {
+        const search = searchInput.value.trim().toLocaleLowerCase("pt-BR");
+        const selectedVacancyId = vacancyFilter.value;
+        const selectedStatus = statusFilter.value;
+        const periodDays = Number(periodFilter.value);
+        const now = Date.now();
+
+        const filteredApplications = applications.filter((application) => {
+          const candidate = application.candidatoId || {};
+          const resume = application.curriculo || {};
+          const vacancy = application.vagaId || {};
+          const searchableText = [
+            resume.nome, candidate.nome, vacancy.titulo
+          ].filter(Boolean).join(" ").toLocaleLowerCase("pt-BR");
+          const applicationTime = new Date(application.dataCandidatura).getTime();
+          const matchesPeriod = !periodDays || (
+            !Number.isNaN(applicationTime) &&
+            applicationTime >= now - periodDays * 24 * 60 * 60 * 1000
+          );
+
+          return (!search || searchableText.includes(search)) &&
+            (!selectedVacancyId || String(vacancy._id) === selectedVacancyId) &&
+            (!selectedStatus || application.status === selectedStatus) &&
+            matchesPeriod;
+        });
+
+        if (sortSelect.value === "antigas") {
+          filteredApplications.sort(
+            (first, second) => new Date(first.dataCandidatura) - new Date(second.dataCandidatura)
+          );
+        } else if (sortSelect.value === "nome") {
+          filteredApplications.sort((first, second) => {
+            const firstName = text(first.curriculo && first.curriculo.nome, text(first.candidatoId && first.candidatoId.nome, ""));
+            const secondName = text(second.curriculo && second.curriculo.nome, text(second.candidatoId && second.candidatoId.nome, ""));
+            return firstName.localeCompare(secondName, "pt-BR");
+          });
+        } else {
+          filteredApplications.sort(
+            (first, second) => new Date(second.dataCandidatura) - new Date(first.dataCandidatura)
+          );
+        }
+
+        list.replaceChildren(...filteredApplications.map(createApplicationCard));
+        summary.textContent = `Exibindo ${filteredApplications.length} de ${applications.length} candidatura(s).`;
+
+        if (filteredApplications.length === 0) {
+          showMessage(applications.length
+            ? "Nenhuma candidatura corresponde aos filtros selecionados."
+            : "Ainda não há candidatos inscritos nas vagas da sua empresa.");
+        } else {
+          showMessage("");
+        }
+      }
+
+      // Obtém da sessão o identificador da empresa e exige autenticação empresarial.
+      let session;
+      try {
+        session = JSON.parse(localStorage.getItem("usuarioLogado") || "null");
+      } catch (error) {
+        showMessage("Não foi possível ler os dados da sua conta.", true);
+        return;
+      }
+
+      const company = session && (session.usuario || session);
+      const companyId = company && (company.id || company._id || session._id);
+      if (!session || session.tipo !== "empresa" || !companyId) {
+        showMessage("Entre como empresa para visualizar as candidaturas recebidas.", true);
+        return;
+      }
+
+      // Consulta a API da empresa e valida o formato dos dados retornados.
+      try {
+        const response = await fetch(
+          `/api/candidaturas/empresa/${encodeURIComponent(companyId)}?nome=${encodeURIComponent(company.nome || "")}`
+        );
+        const contentType = response.headers.get("content-type") || "";
+        if (!contentType.includes("application/json")) {
+          throw new Error("A API de candidaturas não retornou uma resposta JSON.");
+        }
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.erro || "Não foi possível carregar as candidaturas.");
+        }
+        if (!Array.isArray(result)) {
+          throw new Error("A resposta do servidor não contém uma lista de candidaturas.");
+        }
+
+        applications = result;
+        totalCount.textContent = String(applications.length);
+        newCount.textContent = String(
+          applications.filter((application) =>
+            application.status === "Nova" || application.status === "Em análise"
+          ).length
+        );
+        populateVacancyFilter();
+        renderApplications();
+      } catch (error) {
+        summary.textContent = "Não foi possível carregar as candidaturas.";
+        showMessage(error.message || "Erro ao carregar as candidaturas.", true);
+      }
+
+      // Mantém o formulário na página e atualiza os cartões conforme busca e filtros.
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        renderApplications();
+      });
+      [vacancyFilter, statusFilter, periodFilter, sortSelect].forEach((control) => {
+        control.addEventListener("change", renderApplications);
+      });
+    });
+  </script>
+</body>
+</html>

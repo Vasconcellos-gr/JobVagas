@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body class="jobs-page vacancy-detail-page">
-  <!-- Cabeçalho público; a vaga é identificada pelo parâmetro id da URL. -->
   <header class="site-header">
     <div class="jobs-container header-inner">
       <a class="brand" href="index.html" aria-label="JOBVAGAS - início">
@@ -18,41 +17,241 @@
       <nav class="main-nav" aria-label="Menu principal">
         <a href="index.html">Início</a>
         <a class="active" href="vagas.html" aria-current="page">Vagas</a>
+        <a href="home_candidato.html">Minha área</a>
       </nav>
       <div class="header-actions">
         <a class="link-muted" href="login.html">Entrar</a>
-        <a class="btn btn-primary" href="cadastro.html">Cadastrar</a>
       </div>
     </div>
   </header>
 
   <main class="jobs-container vacancy-detail-main">
-    <a class="registration-back" href="home_candidato.html">← Voltar para minha área</a>
-    <!-- Exibe carregamento/erros até a API retornar a vaga solicitada. -->
+    <a class="registration-back" href="vagas.html">← Voltar para as vagas</a>
     <p id="mensagemDetalheVaga" class="notice" role="status" aria-live="polite">Carregando detalhes da vaga...</p>
     <div id="conteudoDetalheVaga" class="vacancy-detail-layout" hidden>
-      <!-- Informações da vaga e dados públicos da empresa são preenchidos via JavaScript. -->
       <article class="vacancy-detail-card" aria-labelledby="tituloDetalheVaga">
         <span class="eyebrow">OPORTUNIDADE</span>
         <h1 id="tituloDetalheVaga"></h1>
         <p id="empresaDetalheVaga" class="vacancy-detail-company"></p>
-        <div id="metadadosDetalheVaga" class="job-meta vacancy-detail-meta"></div>
-        <p id="salarioDetalheVaga" class="job-salary vacancy-detail-salary"></p>
+        <div class="job-meta vacancy-detail-meta">
+          <span id="localDetalheVaga"></span>
+          <span id="tipoDetalheVaga"></span>
+        </div>
+        <p id="salarioDetalheVaga" class="job-salary vacancy-detail-salary" hidden></p>
         <section class="vacancy-description-section" aria-labelledby="descricaoTitulo">
-          <h2 id="descricaoTitulo">Sobre a vaga</h2>
+          <h2 id="descricaoTitulo">Descrição da vaga</h2>
           <p id="descricaoDetalheVaga"></p>
         </section>
         <p id="dataDetalheVaga" class="vacancy-detail-date"></p>
       </article>
 
-      <aside class="vacancy-company-card" aria-labelledby="empresaTitulo">
-        <span class="eyebrow">EMPRESA</span>
-        <h2 id="empresaTitulo"></h2>
-        <dl id="informacoesEmpresa" class="vacancy-company-info"></dl>
+      <aside class="vacancy-sidebar">
+        <section class="vacancy-company-card" aria-labelledby="resumoVagaTitulo">
+          <span class="eyebrow">RESUMO</span>
+          <h2 id="resumoVagaTitulo">Sobre a oportunidade</h2>
+          <dl class="vacancy-company-info">
+            <dt>Empresa</dt>
+            <dd id="empresaResumoVaga"></dd>
+            <dt>Localização</dt>
+            <dd id="localResumoVaga"></dd>
+            <dt>Tipo de contratação</dt>
+            <dd id="tipoResumoVaga"></dd>
+            <dt>Salário</dt>
+            <dd id="salarioResumoVaga"></dd>
+          </dl>
+        </section>
+        <section class="vacancy-apply-card" aria-labelledby="apply-title">
+          <span class="eyebrow">PRÓXIMO PASSO</span>
+          <h2 id="apply-title">Candidate-se à vaga</h2>
+          <p class="vacancy-apply-hint">Envie sua candidatura usando o currículo que você já preencheu.</p>
+          <button id="enviarCandidatura" class="btn btn-primary registration-submit" type="button">
+            Enviar candidatura
+          </button>
+          <p id="mensagemCandidatura" class="registration-message" role="status" aria-live="polite" hidden></p>
+        </section>
       </aside>
     </div>
   </main>
-  <script src="./js/auth.js"></script>
 
+  <script>
+    // Aguarda a estrutura HTML estar pronta antes de consultar dados ou alterar a página.
+    document.addEventListener("DOMContentLoaded", () => {
+      // O identificador da vaga vem na URL (vaga_detalhes.html?id=...).
+      const query = new URLSearchParams(window.location.search);
+      const vacancyId = query.get("id");
+      const content = document.querySelector("#conteudoDetalheVaga");
+      const message = document.querySelector("#mensagemDetalheVaga");
+      const applyButton = document.querySelector("#enviarCandidatura");
+      const applicationMessage = document.querySelector("#mensagemCandidatura");
+      let selectedJob = null;
+
+      // Envia a candidatura e o currículo salvo para a API.
+      async function submitApplication() {
+        applicationMessage.hidden = true;
+
+        let session;
+        let resume;
+        try {
+          session = JSON.parse(localStorage.getItem("usuarioLogado") || "null");
+          resume = JSON.parse(localStorage.getItem("curriculoCandidato") || "null");
+        } catch (error) {
+          applicationMessage.textContent = "Não foi possível ler os dados da conta ou do currículo salvo.";
+          applicationMessage.hidden = false;
+          return;
+        }
+
+        const candidate = session && (session.usuario || session);
+        const candidateId = candidate && (candidate.id || candidate._id);
+        if (!session || session.tipo !== "candidato" || !candidateId) {
+          applicationMessage.textContent = "Entre como candidato para enviar sua candidatura.";
+          applicationMessage.hidden = false;
+          return;
+        }
+        if (!resume) {
+          applicationMessage.textContent = "Preencha e salve seu currículo antes de enviar a candidatura.";
+          applicationMessage.hidden = false;
+          return;
+        }
+        if (!vacancyId) {
+          applicationMessage.textContent = "Não foi possível identificar esta vaga para enviar a candidatura.";
+          applicationMessage.hidden = false;
+          return;
+        }
+
+        applyButton.disabled = true;
+        applyButton.textContent = "Enviando...";
+        try {
+          const response = await fetch("/api/candidaturas", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              candidatoId: candidateId,
+              vagaId: vacancyId,
+              curriculo: resume
+            })
+          });
+          const result = await response.json();
+          if (!response.ok) {
+            throw new Error(result.erro || "Não foi possível enviar sua candidatura.");
+          }
+
+          applicationMessage.textContent = "Candidatura enviada com sucesso.";
+          applicationMessage.hidden = false;
+          applyButton.textContent = "Candidatura enviada";
+        } catch (error) {
+          applicationMessage.textContent = error.message || "Erro ao enviar sua candidatura.";
+          applicationMessage.hidden = false;
+          applyButton.disabled = false;
+          applyButton.textContent = "Enviar candidatura";
+        }
+      }
+
+      // Recupera a vaga guardada quando a pessoa abriu os detalhes pela listagem.
+      try {
+        selectedJob = JSON.parse(sessionStorage.getItem("vagaDetalheSelecionada") || "null");
+      } catch (error) {
+        sessionStorage.removeItem("vagaDetalheSelecionada");
+      }
+      applyButton.addEventListener("click", submitApplication);
+
+      // Atualiza a mensagem de estado e identifica erros na interface.
+      function showMessage(text, isError = false) {
+        message.textContent = text;
+        message.hidden = !text;
+        message.classList.toggle("is-error", isError);
+      }
+
+      // Preenche texto de um elemento, usando alternativa para valores ausentes.
+      function setText(selector, value, fallback = "Não informado") {
+        const element = document.querySelector(selector);
+        element.textContent = typeof value === "string" && value.trim() ? value : fallback;
+      }
+
+      // Renderiza os dados recebidos para a vaga e revela a área de detalhes.
+      function renderVacancy(job) {
+        const title = typeof job.titulo === "string" && job.titulo.trim()
+          ? job.titulo
+          : "Vaga disponível";
+        const company = typeof job.empresa === "string" && job.empresa.trim()
+          ? job.empresa
+          : "Empresa";
+        const local = typeof job.local === "string" && job.local.trim()
+          ? job.local
+          : "Localização não informada";
+        const type = typeof (job.modalidade || job.tipo) === "string" && (job.modalidade || job.tipo).trim()
+          ? job.modalidade || job.tipo
+          : "Tipo não informado";
+        const salary = typeof job.salario === "string" && job.salario.trim()
+          ? job.salario
+          : "Não informado";
+
+        document.title = `${title} | JOBVAGAS`;
+        setText("#tituloDetalheVaga", title);
+        setText("#empresaDetalheVaga", company);
+        setText("#localDetalheVaga", local);
+        setText("#tipoDetalheVaga", type);
+        setText("#descricaoDetalheVaga", job.descricao, "A empresa não informou uma descrição para esta vaga.");
+        setText("#empresaResumoVaga", company);
+        setText("#localResumoVaga", local);
+        setText("#tipoResumoVaga", type);
+        setText("#salarioResumoVaga", salary);
+
+        const salaryElement = document.querySelector("#salarioDetalheVaga");
+        salaryElement.textContent = salary;
+        salaryElement.hidden = salary === "Não informado";
+
+        const dateElement = document.querySelector("#dataDetalheVaga");
+        const dateValue = job.createdAt || job.dataCriacao;
+        if (dateValue) {
+          const date = new Date(dateValue);
+          dateElement.textContent = Number.isNaN(date.getTime())
+            ? ""
+            : `Publicada em ${new Intl.DateTimeFormat("pt-BR").format(date)}`;
+        } else {
+          dateElement.textContent = "";
+        }
+        content.hidden = false;
+      }
+
+      // Sem ID na URL, usa os dados salvos ou informa que a vaga não foi identificada.
+      if (!vacancyId) {
+        if (selectedJob) {
+          renderVacancy(selectedJob);
+          showMessage("");
+        } else {
+          showMessage("Não foi possível identificar a vaga. Volte à lista e selecione uma oportunidade.", true);
+        }
+        return;
+      }
+
+      // Mostra os dados salvos imediatamente quando correspondem ao ID da URL.
+      if (selectedJob && String(selectedJob._id || selectedJob.id || "") === vacancyId) {
+        renderVacancy(selectedJob);
+        showMessage("");
+      }
+
+      // Busca a versão atualizada da vaga na API pelo identificador da URL.
+      fetch(`/api/vagas/${encodeURIComponent(vacancyId)}`)
+        .then(async (response) => {
+          const result = await response.json();
+          if (!response.ok) {
+            throw new Error(result.erro || "Não foi possível carregar os detalhes desta vaga.");
+          }
+          return result;
+        })
+        .then((job) => {
+          renderVacancy(job);
+          showMessage("");
+        })
+        .catch((error) => {
+          if (!content.hidden) {
+            showMessage("Exibindo os dados selecionados. Não foi possível atualizar a vaga no momento.", true);
+            return;
+          }
+          showMessage(error.message || "Erro ao carregar os detalhes da vaga.", true);
+        });
+    });
+  </script>
+  <script src="./js/auth.js"></script>
 </body>
 </html>
