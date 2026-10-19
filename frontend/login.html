@@ -38,10 +38,10 @@
         <p>Entre na sua conta JOBVAGAS para continuar.</p>
       </div>
 
-      <!-- Adicionado um ID no formulário para controlarmos via JS -->
+      <!-- Formulário com ID para controlarmos via JS -->
       <form class="registration-form" id="formLogin">
         
-        <!-- Elemento para exibir mensagens de erro ou sucesso -->
+        <!-- Mensagem de erro ou sucesso -->
         <div id="mensagemLogin" style="margin-bottom: 15px; font-weight: bold;" hidden></div>
 
         <label class="registration-field" for="loginEmail">
@@ -68,7 +68,7 @@
           >
         </label>
 
-        <!-- NOVO: Campo para o usuário escolher se é Candidato ou Empresa -->
+        <!-- CAMPO ESSENCIAL: Escolher o tipo de usuário -->
         <label class="registration-field" for="tipoUsuario">
           <span>Entrar como</span>
           <select id="tipoUsuario" class="registration-input" style="padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 4px;">
@@ -87,6 +87,8 @@
     </section>
   </main>
 
+  <!-- Scripts no final do body -->
+  <script src="./js/auth.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -103,25 +105,23 @@
         }
       }
 
-      // Intercepta o envio do formulário para usar fetch (AJAX)
+      // Intercepta o envio do formulário
       const formLogin = document.getElementById('formLogin');
       if (formLogin) {
         formLogin.addEventListener('submit', async (e) => {
-          e.preventDefault(); // Evita o recarregamento padrão da página
+          e.preventDefault();
 
           const email = document.getElementById('loginEmail').value;
           const senha = document.getElementById('loginSenha').value;
           const tipo = document.getElementById('tipoUsuario').value; // 'candidato' ou 'empresa'
 
-          // Define a rota correta dependendo da escolha do usuário
+          // Define a rota correta baseada na seleção
           const rotaApi = tipo === 'empresa' ? '/api/empresas/login' : '/api/candidatos/login';
 
           try {
             const resposta = await fetch(rotaApi, {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
+              headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ email, senha })
             });
 
@@ -132,10 +132,14 @@
               mensagem.textContent = 'Login realizado com sucesso! Redirecionando...';
               mensagem.hidden = false;
 
-              // Salva os dados no localStorage
-              localStorage.setItem('usuarioLogado', JSON.stringify(resultado));
+              // GUARDA OS DADOS E O TIPO NO LOCALSTORAGE
+              const dadosSessao = {
+                ...resultado,
+                tipo: tipo
+              };
+              localStorage.setItem('usuarioLogado', JSON.stringify(dadosSessao));
 
-              // Redireciona para o painel correto após 1 segundo
+              // Redireciona para o dashboard correspondente após 1 segundo
               setTimeout(() => {
                 if (tipo === 'empresa') {
                   window.location.href = 'home_empresa.html';

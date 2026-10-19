@@ -241,6 +241,28 @@ app.delete('/api/candidaturas/:id', async (req, res) => {
   }
 });
 
+// Exemplo de rota de login de empresa no server.js
+app.post('/api/empresas/login', async (req, res) => {
+  try {
+    const { email, senha } = req.body;
+    const resultado = await loginEmpresa(email, senha); // Função que usa o bcrypt.compare
+    res.status(200).json(resultado);
+  } catch (error) {
+    res.status(400).json({ erro: error.message });
+  }
+});
+
+// Exemplo de rota de login de candidato no server.js
+app.post('/api/candidatos/login', async (req, res) => {
+  try {
+    const { email, senha } = req.body;
+    const resultado = await loginCandidato(email, senha); // Função que usa o bcrypt.compare
+    res.status(200).json(resultado);
+  } catch (error) {
+    res.status(400).json({ erro: error.message });
+  }
+});
+
 // ▶️ NOVAS ROTAS DE DASHBOARD
 app.get('/home-candidato', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'home_candidato.html'));
