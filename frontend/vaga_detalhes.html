@@ -85,17 +85,15 @@
       const applicationMessage = document.querySelector("#mensagemCandidatura");
       let selectedJob = null;
 
-      // Envia a candidatura e o currículo salvo para a API.
+      // Envia a candidatura com o currículo pertencente à conta conectada.
       async function submitApplication() {
         applicationMessage.hidden = true;
 
         let session;
-        let resume;
         try {
           session = JSON.parse(localStorage.getItem("usuarioLogado") || "null");
-          resume = JSON.parse(localStorage.getItem("curriculoCandidato") || "null");
         } catch (error) {
-          applicationMessage.textContent = "Não foi possível ler os dados da conta ou do currículo salvo.";
+          applicationMessage.textContent = "Não foi possível ler os dados da conta.";
           applicationMessage.hidden = false;
           return;
         }
@@ -104,11 +102,6 @@
         const candidateId = candidate && (candidate.id || candidate._id);
         if (!session || session.tipo !== "candidato" || !candidateId) {
           applicationMessage.textContent = "Entre como candidato para enviar sua candidatura.";
-          applicationMessage.hidden = false;
-          return;
-        }
-        if (!resume) {
-          applicationMessage.textContent = "Preencha e salve seu currículo antes de enviar a candidatura.";
           applicationMessage.hidden = false;
           return;
         }
@@ -121,6 +114,15 @@
         applyButton.disabled = true;
         applyButton.textContent = "Enviando...";
         try {
+          const resumeResponse = await fetch(`/api/candidatos/${encodeURIComponent(candidateId)}/curriculo`);
+          if (!resumeResponse.ok) {
+            throw new Error("Não foi possível carregar seu currículo.");
+          }
+          const resume = await resumeResponse.json();
+          if (!resume) {
+            throw new Error("Preencha e salve seu currículo antes de enviar a candidatura.");
+          }
+
           const response = await fetch("/api/candidaturas", {
             method: "POST",
             headers: { "Content-Type": "application/json" },

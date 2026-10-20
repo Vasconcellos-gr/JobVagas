@@ -151,6 +151,30 @@ app.get('/api/candidatos/:id', async (req, res) => {
   }
 });
 
+app.get('/api/candidatos/:id/curriculo', async (req, res) => {
+  try {
+    const candidato = await candidatosService.obterCurriculoCandidato(req.params.id);
+    if (!candidato) {
+      return res.status(404).json({ erro: 'Candidato não encontrado' });
+    }
+    res.json(candidato.curriculo || null);
+  } catch (error) {
+    res.status(500).json({ erro: error.message });
+  }
+});
+
+app.put('/api/candidatos/:id/curriculo', async (req, res) => {
+  try {
+    const curriculo = await candidatosService.atualizarCurriculoCandidato(req.params.id, req.body);
+    if (!curriculo) {
+      return res.status(404).json({ erro: 'Candidato não encontrado' });
+    }
+    res.json(curriculo.curriculo);
+  } catch (error) {
+    res.status(400).json({ erro: error.message });
+  }
+});
+
 app.post('/api/candidatos', async (req, res) => {
   try {
     const candidato = await candidatosService.criarCandidato(req.body);
