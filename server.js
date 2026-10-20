@@ -277,6 +277,41 @@ app.get('/api/candidaturas/:id', async (req, res) => {
   }
 });
 
+app.get('/api/candidaturas/empresa/:empresaId', async (req, res) => {
+  try {
+    const empresaId = req.params.empresaId;
+
+    // 1. Busca no MongoDB todas as vagas criadas por esta empresa
+    const vagasDaEmpresa = await Vaga.find({ empresaId: empresaId });
+
+    if (vagasDaEmpresa.length === 0) {
+      return res.status(200).json([]); // Se não tem vagas, devolve lista vazia
+    }
+
+    // Extrai apenas os IDs dessas vagas
+    const idsDasVagas = vagasDaEmpresa.map(vaga => vaga._id.toString());
+
+    // 2. Busca todas as candidaturas vinculadas a essas vagas.
+    // Usamos .lean() para converter o formato estrito do Mongoose num objeto leve de JavaScript
+    const candidaturas = await Candidatura.find({ vagaId: { $in: idsDasVagas } }).lean();
+
+    // 3. O seu Front-end espera que o "vagaId" seja o objeto completo da vaga.
+    // Vamos cruzar as informações antes de enviar para a tela:
+    const candidaturasProntas = candidaturas.map(cand => {
+      const vagaCorrespondente = vagasDaEmpresa.find(v => v._id.toString() === cand.vagaId);
+      return {
+        ...cand,
+        vagaId: vagaCorrespondente // Substitui o ID de texto pelo objeto com Título e Local
+      };
+    });
+
+    res.status(200).json(candidaturasProntas);
+  } catch (erro) {
+    console.error('Erro ao buscar candidaturas da empresa:', erro);
+    res.status(500).json({ erro: 'Erro ao carregar a lista de candidatos.' });
+  }
+});
+
 app.post('/api/candidaturas', async (req, res) => {
   try {
     const dados = req.body;
@@ -308,6 +343,29 @@ app.put('/api/candidaturas/:id', async (req, res) => {
     res.json(candidatura);
   } catch (error) {
     res.status(400).json({ erro: error.message });
+  }
+});
+
+// Rota para atualizar o status de uma candidatura
+app.put('/api/candidaturas/:id/status', async (req, res) => {
+  try {
+    const idCandidatura = req.params.id;
+    const { status } = req.body;
+
+    const candidaturaAtualizada = await Candidatura.findByIdAndUpdate(
+      idCandidatura,
+      { status: status },
+      { returnDocument: 'after' }
+    );
+
+    if (!candidaturaAtualizada) {
+      return res.status(404).json({ erro: 'Candidatura não encontrada.' });
+    }
+
+    res.status(200).json(candidaturaAtualizada);
+  } catch (erro) {
+    console.error('Erro ao atualizar status:', erro);
+    res.status(500).json({ erro: 'Erro interno ao tentar atualizar o status.' });
   }
 });
 

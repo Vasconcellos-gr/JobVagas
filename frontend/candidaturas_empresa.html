@@ -238,11 +238,87 @@
           ["Vaga", text(vacancy.titulo)],
           ["Local", text(vacancy.local)]
         ];
+        // Cria a div "actions" que agrupa os botões
         const actions = document.createElement("div");
         actions.className = "application-actions";
+        // 🚀 ADICIONADO: Flexbox para colocar tudo lado a lado
+        actions.style.display = "flex";
+        actions.style.alignItems = "flex-end"; 
+        actions.style.gap = "15px";
+        actions.style.flexWrap = "wrap";
+
+        // Menu (Select) sem borda e margens extras
+        const divStatus = document.createElement("div");
+        divStatus.style.minWidth = "200px";
+
+        const labelStatus = document.createElement("label");
+        labelStatus.className = "field"; 
+        labelStatus.style.marginBottom = "0";
+
+        const spanLabel = document.createElement("span");
+        spanLabel.textContent = "Status da candidatura";
+
+        const selectStatus = document.createElement("select");
+        
+        const opcoes = ["Nova", "Em análise", "Entrevista agendada", "Aprovada", "Rejeitada"];
+        opcoes.forEach(opt => {
+          const option = document.createElement("option");
+          option.value = opt;
+          option.textContent = opt;
+          if (text(application.status, "Nova") === opt) option.selected = true;
+          selectStatus.appendChild(option);
+        });
+
+        labelStatus.append(spanLabel, selectStatus);
+        divStatus.appendChild(labelStatus);
+
+        // Ação de salvar no banco de dados
+        selectStatus.addEventListener("change", async (event) => {
+          const novoStatus = event.target.value;
+          selectStatus.disabled = true;
+
+          const idCandidatura = application._id || application.id;
+
+          if (!idCandidatura) {
+            alert("Erro: ID da candidatura não identificado.");
+            selectStatus.disabled = false;
+            return;
+          }
+
+          try {
+            const resposta = await fetch(`/api/candidaturas/${idCandidatura}/status`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ status: novoStatus })
+            });
+
+            if (resposta.ok) {
+              application.status = novoStatus;
+              status.textContent = novoStatus;
+              status.className = "application-status"; 
+              if (novoStatus === "Nova") status.classList.add("status-new");
+              else if (novoStatus === "Entrevista agendada") status.classList.add("status-interview");
+              else status.classList.add("status-review");
+
+              if (typeof newCount !== 'undefined') {
+                newCount.textContent = String(applications.filter(app => app.status === "Nova" || app.status === "Em análise").length);
+              }
+            } else {
+              const erroDoServidor = await resposta.json();
+              alert("Erro ao alterar o status: " + (erroDoServidor.erro || "Verifique o servidor"));
+            }
+          } catch (erro) {
+            console.error(erro);
+            alert("Erro de comunicação com o servidor.");
+          } finally {
+            selectStatus.disabled = false;
+          }
+        });
+
         actions.append(
           createDisclosure("Visualizar currículo", "btn-primary", resumeEntries),
-          createDisclosure("Detalhes do candidato", "btn-secondary", candidateEntries)
+          createDisclosure("Detalhes do candidato", "btn-secondary", candidateEntries),
+          divStatus
         );
         card.append(actions);
         return card;
