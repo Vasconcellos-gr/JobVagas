@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const connectDB = require('./config/DataBase');
-const Vaga = require('./servicos/vagas/vagasModel');
 
 // Conectar ao MongoDB
 connectDB();
@@ -14,6 +13,8 @@ const vagasService = require('./servicos/vagas/vagasSrc');
 const empresasService = require('./servicos/empresas/empresasSrs');
 const candidatosService = require('./servicos/candidatos/candidatosSrc');
 const candidaturasService = require('./servicos/candidaturas/candidaturasSrc');
+const Candidatura = require('./servicos/candidaturas/candidaturasModel');
+const Vaga = require('./servicos/vagas/vagasModel');
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'frontend')));
@@ -278,10 +279,26 @@ app.get('/api/candidaturas/:id', async (req, res) => {
 
 app.post('/api/candidaturas', async (req, res) => {
   try {
-    const candidatura = await candidaturasService.criarCandidatura(req.body);
-    res.status(201).json(candidatura);
-  } catch (error) {
-    res.status(400).json({ erro: error.message });
+    const dados = req.body;
+
+    // Regra de negócio: impede que o candidato se inscreva 2 vezes na mesma vaga
+    const candidaturaExistente = await Candidatura.findOne({ 
+      vagaId: dados.vagaId, 
+      candidatoId: dados.candidatoId 
+    });
+
+    if (candidaturaExistente) {
+      return res.status(400).json({ erro: 'Você já se candidatou a esta vaga anteriormente.' });
+    }
+
+    // Cria e salva a candidatura no banco de dados
+    const novaCandidatura = new Candidatura(dados);
+    await novaCandidatura.save();
+
+    res.status(201).json({ mensagem: 'Candidatura salva com sucesso!' });
+  } catch (erro) {
+    console.error('Erro ao salvar candidatura:', erro);
+    res.status(500).json({ erro: 'Erro interno ao processar a sua candidatura.' });
   }
 });
 
