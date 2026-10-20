@@ -39,7 +39,7 @@ function atualizarHeader() {
       mainNav.innerHTML = `
         <a href="index.html">Início</a>
         <a href="vagas.html">Vagas</a>
-        <a href="home_candidato.html#minhas-candidaturas">Minhas Candidaturas</a>
+        <a href="home_candidato.html#opcoes">Opções</a>
       `;
     }
 

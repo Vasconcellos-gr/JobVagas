@@ -157,7 +157,7 @@ if (vacancyList) {
       footer.append(salary);
     }
 
-    if (isHomePage) {
+if (isHomePage) {
       const detailsLink = document.createElement("a");
       detailsLink.className = "details-link";
       detailsLink.href = `vagas.html?busca=${encodeURIComponent(
@@ -182,15 +182,34 @@ if (vacancyList) {
       job.descricao,
       "Mais informações sobre esta vaga serão disponibilizadas pela empresa."
     );
+
+    // 1. CRIANDO O NOVO BOTÃO DE CANDIDATAR-SE
+    const applyButton = document.createElement("a");
+    applyButton.className = "btn btn-primary"; // Usa a classe do seu CSS para botões principais
+    applyButton.textContent = "Candidatar-se";
+    applyButton.hidden = true; // Começa escondido, igual à descrição
+    applyButton.style.display = "inline-block"; // Mantém o formato de botão
+    applyButton.style.marginTop = "15px"; // Dá um espaçamento da descrição
+
+    // Pega o ID da vaga ou usa o título como identificador na URL
+    const idDaVaga = job._id || job.id || encodeURIComponent(job.titulo);
+    applyButton.href = `vaga_detalhes.html?id=${idDaVaga}`;
+
+    // 2. ATUALIZANDO O EVENTO DE CLIQUE
     detailsButton.addEventListener("click", () => {
       const expanded = detailsButton.getAttribute("aria-expanded") === "true";
       detailsButton.setAttribute("aria-expanded", String(!expanded));
       detailsButton.textContent = expanded ? "Ver detalhes" : "Ocultar detalhes";
+      
+      // Mostra ou esconde a descrição E o botão simultaneamente
       description.hidden = expanded;
+      applyButton.hidden = expanded;
     });
+
     footer.append(detailsButton);
 
-    item.append(top, meta, tags, footer, description);
+    // 3. INCLUINDO O BOTÃO NO CARD FINAL
+    item.append(top, meta, tags, footer, description, applyButton);
     return item;
   }
 
