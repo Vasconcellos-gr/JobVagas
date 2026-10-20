@@ -50,15 +50,20 @@
           <span class="eyebrow">RESUMO</span>
           <h2 id="resumoVagaTitulo">Sobre a oportunidade</h2>
           <dl class="vacancy-company-info">
-            <dt>Empresa</dt>
-            <dd id="empresaResumoVaga"></dd>
-            <dt>Localização</dt>
-            <dd id="localResumoVaga"></dd>
-            <dt>Tipo de contratação</dt>
-            <dd id="tipoResumoVaga"></dd>
-            <dt>Salário</dt>
-            <dd id="salarioResumoVaga"></dd>
+          <dt>Empresa</dt>
+          <dd id="empresaResumoVaga"></dd>
+          
+          <dt>Localização</dt>
+          <dd id="localResumoVaga"></dd>
+          
+          <dt>Tipo de contratação</dt>
+          <dd id="tipoResumoVaga"></dd>
+          
+          <dt>Salário</dt>
+          <dd id="salarioResumoVaga"></dd>
           </dl>
+        </section>
+      </aside>
         </section>
         <section class="vacancy-apply-card" aria-labelledby="apply-title">
           <span class="eyebrow">PRÓXIMO PASSO</span>
@@ -73,7 +78,7 @@
     </div>
   </main>
 
-  <script>
+<script>
     // Aguarda a estrutura HTML estar pronta antes de consultar dados ou alterar a página.
     document.addEventListener("DOMContentLoaded", () => {
       // O identificador da vaga vem na URL (vaga_detalhes.html?id=...).
@@ -102,16 +107,21 @@
 
         const candidate = session && (session.usuario || session);
         const candidateId = candidate && (candidate.id || candidate._id);
+        
         if (!session || session.tipo !== "candidato" || !candidateId) {
           applicationMessage.textContent = "Entre como candidato para enviar sua candidatura.";
           applicationMessage.hidden = false;
           return;
         }
+        
+        // AVISO: Se você ainda não criou a tela para o candidato salvar o currículo,
+        // pode comentar as 5 linhas abaixo para conseguir testar a candidatura agora.
         if (!resume) {
           applicationMessage.textContent = "Preencha e salve seu currículo antes de enviar a candidatura.";
           applicationMessage.hidden = false;
           return;
         }
+
         if (!vacancyId) {
           applicationMessage.textContent = "Não foi possível identificar esta vaga para enviar a candidatura.";
           applicationMessage.hidden = false;
@@ -126,6 +136,8 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               candidatoId: candidateId,
+              candidatoNome: candidate.nome, // 🚀 Adicionado para a empresa ver o nome
+              candidatoEmail: candidate.email, // 🚀 Adicionado para a empresa ver o email
               vagaId: vacancyId,
               curriculo: resume
             })
@@ -136,10 +148,12 @@
           }
 
           applicationMessage.textContent = "Candidatura enviada com sucesso.";
+          applicationMessage.style.color = '#10b981'; // Cor verde para sucesso
           applicationMessage.hidden = false;
           applyButton.textContent = "Candidatura enviada";
         } catch (error) {
           applicationMessage.textContent = error.message || "Erro ao enviar sua candidatura.";
+          applicationMessage.style.color = '#ef4444'; // Cor vermelha para erro
           applicationMessage.hidden = false;
           applyButton.disabled = false;
           applyButton.textContent = "Enviar candidatura";
@@ -152,38 +166,40 @@
       } catch (error) {
         sessionStorage.removeItem("vagaDetalheSelecionada");
       }
-      applyButton.addEventListener("click", submitApplication);
+      
+      if(applyButton) applyButton.addEventListener("click", submitApplication);
 
       // Atualiza a mensagem de estado e identifica erros na interface.
       function showMessage(text, isError = false) {
-        message.textContent = text;
-        message.hidden = !text;
-        message.classList.toggle("is-error", isError);
+        if(message) {
+            message.textContent = text;
+            message.hidden = !text;
+            message.classList.toggle("is-error", isError);
+        }
       }
 
       // Preenche texto de um elemento, usando alternativa para valores ausentes.
       function setText(selector, value, fallback = "Não informado") {
         const element = document.querySelector(selector);
-        element.textContent = typeof value === "string" && value.trim() ? value : fallback;
+        if(element) {
+            element.textContent = typeof value === "string" && value.trim() ? value : fallback;
+        }
       }
 
       // Renderiza os dados recebidos para a vaga e revela a área de detalhes.
       function renderVacancy(job) {
-        const title = typeof job.titulo === "string" && job.titulo.trim()
-          ? job.titulo
-          : "Vaga disponível";
-        const company = typeof job.empresa === "string" && job.empresa.trim()
-          ? job.empresa
-          : "Empresa";
-        const local = typeof job.local === "string" && job.local.trim()
-          ? job.local
-          : "Localização não informada";
-        const type = typeof (job.modalidade || job.tipo) === "string" && (job.modalidade || job.tipo).trim()
-          ? job.modalidade || job.tipo
-          : "Tipo não informado";
-        const salary = typeof job.salario === "string" && job.salario.trim()
-          ? job.salario
-          : "Não informado";
+        const title = typeof job.titulo === "string" && job.titulo.trim() ? job.titulo : "Vaga disponível";
+        
+        // 🚀 Ajustado para ler empresaNome
+        const companyNomeStr = job.empresaNome || job.empresa;
+        const company = typeof companyNomeStr === "string" && companyNomeStr.trim() ? companyNomeStr : "Empresa Confidencial";
+        
+        // 🚀 Ajustado para ler localizacao
+        const localStr = job.localizacao || job.local;
+        const local = typeof localStr === "string" && localStr.trim() ? localStr : "Localização não informada";
+        
+        const type = typeof (job.modalidade || job.tipo) === "string" && (job.modalidade || job.tipo).trim() ? job.modalidade || job.tipo : "Tipo não informado";
+        const salary = typeof job.salario === "string" && job.salario.trim() ? job.salario : "Não informado";
 
         document.title = `${title} | JOBVAGAS`;
         setText("#tituloDetalheVaga", title);
@@ -197,20 +213,24 @@
         setText("#salarioResumoVaga", salary);
 
         const salaryElement = document.querySelector("#salarioDetalheVaga");
-        salaryElement.textContent = salary;
-        salaryElement.hidden = salary === "Não informado";
+        if(salaryElement) {
+            salaryElement.textContent = salary;
+            salaryElement.hidden = salary === "Não informado";
+        }
 
         const dateElement = document.querySelector("#dataDetalheVaga");
         const dateValue = job.createdAt || job.dataCriacao;
-        if (dateValue) {
-          const date = new Date(dateValue);
-          dateElement.textContent = Number.isNaN(date.getTime())
-            ? ""
-            : `Publicada em ${new Intl.DateTimeFormat("pt-BR").format(date)}`;
-        } else {
-          dateElement.textContent = "";
+        if (dateElement) {
+            if (dateValue) {
+            const date = new Date(dateValue);
+            dateElement.textContent = Number.isNaN(date.getTime())
+                ? ""
+                : `Publicada em ${new Intl.DateTimeFormat("pt-BR").format(date)}`;
+            } else {
+            dateElement.textContent = "";
+            }
         }
-        content.hidden = false;
+        if(content) content.hidden = false;
       }
 
       // Sem ID na URL, usa os dados salvos ou informa que a vaga não foi identificada.
@@ -244,7 +264,7 @@
           showMessage("");
         })
         .catch((error) => {
-          if (!content.hidden) {
+          if (content && !content.hidden) {
             showMessage("Exibindo os dados selecionados. Não foi possível atualizar a vaga no momento.", true);
             return;
           }

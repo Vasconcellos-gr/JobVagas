@@ -89,6 +89,7 @@ if (vacancyList) {
     title.textContent = safeText(job.titulo, "Vaga disponível");
     const company = document.createElement("p");
     company.className = "company-name";
+    
     // 🚀 Ajustado para ler o nome da empresa do banco
     company.textContent = safeText(job.empresaNome || job.empresa, "Empresa Confidencial");
     titleCompany.append(title, company);

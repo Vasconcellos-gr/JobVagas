@@ -169,7 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
         localizacao: document.getElementById('editarLocal').value.trim(),
         tipo: document.getElementById('editarTipo').value,
         salario: document.getElementById('editarSalario').value.trim(),
-        tags: document.getElementById('editarTags').value.trim().split(',').map(tag => tag.trim()).filter(Boolean)
+        tags: document.getElementById('editarTags').value.trim().split(',').map(tag => tag.trim()).filter(Boolean),
+        descricao: document.getElementById('editarDescricao') ? document.getElementById('editarDescricao').value.trim() : ''
       };
 
       try {

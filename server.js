@@ -63,10 +63,32 @@ app.post('/api/vagas', async (req, res) => {
 
 app.put('/api/vagas/:id', async (req, res) => {
   try {
-    const vaga = await vagasService.atualizarVaga(req.params.id, req.body);
-    res.json(vaga);
-  } catch (error) {
-    res.status(400).json({ erro: error.message });
+    const idDaVaga = req.params.id;
+
+    // 🚀 O SEGREDO ESTÁ AQUI: Temos de avisar o servidor para ler a "descricao"
+    const dadosAtualizados = {
+      titulo: req.body.titulo,
+      localizacao: req.body.localizacao,
+      tipo: req.body.tipo,
+      salario: req.body.salario,
+      tags: req.body.tags,
+      descricao: req.body.descricao // <-- Adicionado para salvar no banco!
+    };
+
+    const vagaAtualizada = await Vaga.findByIdAndUpdate(
+      idDaVaga, 
+      dadosAtualizados, 
+      { returnDocument: 'after' } // Retorna a vaga com os dados novos
+    );
+
+    if (!vagaAtualizada) {
+      return res.status(404).json({ erro: 'Vaga não encontrada.' });
+    }
+
+    res.status(200).json(vagaAtualizada);
+  } catch (erro) {
+    console.error('Erro ao atualizar vaga:', erro.message);
+    res.status(500).json({ erro: 'Erro interno ao atualizar a vaga.' });
   }
 });
 
