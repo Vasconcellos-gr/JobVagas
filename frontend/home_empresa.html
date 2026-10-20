@@ -77,6 +77,12 @@
             <span>Salário ou faixa salarial</span>
             <input id="vagaSalario" name="salario" type="text" maxlength="80" placeholder="Ex.: R$ 4.000 a R$ 5.500" required>
           </label>
+          
+          <label class="registration-field" for="vagaTags">
+            <span>Tags <span class="optional-label">(separadas por vírgula)</span></span>
+            <input id="vagaTags" name="tags" type="text" placeholder="Ex.: Node.js, React, Pleno, Remoto">
+          </label>
+
           <label class="registration-field" for="vagaDescricao">
             <span>Descrição da vaga <span class="optional-label">(opcional)</span></span>
             <textarea id="vagaDescricao" name="descricao" maxlength="3000" rows="5" placeholder="Descreva as responsabilidades, requisitos e benefícios da vaga."></textarea>
@@ -191,60 +197,12 @@
           </div>
         </div>
 
-        <ul class="job-list">
-          <li class="job-card" data-titulo="Desenvolvedor(a) Front-end" data-empresa="Digital Growth" data-local="São Paulo - SP" data-tipo="CLT" data-salario="R$ 5.500" data-tags="Front-end,React,UX">
-            <div class="job-card-top">
-              <div class="job-identity">
-                <span class="company-icon" aria-hidden="true">D</span>
-                <div class="job-title-company">
-                  <h3>Desenvolvedor(a) Front-end</h3>
-                  <p class="company-name">Digital Growth</p>
-                </div>
-              </div>
-              <span class="job-status">Ativa</span>
-            </div>
-            <div class="job-meta">
-              <span>São Paulo - SP</span>
-              <span>CLT</span>
-            </div>
-            <div class="job-tags">
-              <span>Front-end</span>
-              <span>React</span>
-              <span>UX</span>
-            </div>
-            <div class="job-card-footer">
-              <span class="job-salary">R$ 5.500</span>
-              <button class="details-link editar-vaga-btn" type="button">Editar</button>
-            </div>
-          </li>
-
-          <li class="job-card" data-titulo="Analista de Produto" data-empresa="Nova Agenda" data-local="Rio de Janeiro - RJ" data-tipo="Híbrido" data-salario="R$ 6.200" data-tags="Produto,Pesquisa,Dados">
-            <div class="job-card-top">
-              <div class="job-identity">
-                <span class="company-icon" aria-hidden="true">A</span>
-                <div class="job-title-company">
-                  <h3>Analista de Produto</h3>
-                  <p class="company-name">Nova Agenda</p>
-                </div>
-              </div>
-              <span class="job-status">Ativa</span>
-            </div>
-            <div class="job-meta">
-              <span>Rio de Janeiro - RJ</span>
-              <span>Híbrido</span>
-            </div>
-            <div class="job-tags">
-              <span>Produto</span>
-              <span>Pesquisa</span>
-              <span>Dados</span>
-            </div>
-            <div class="job-card-footer">
-              <span class="job-salary">R$ 6.200</span>
-              <button class="details-link editar-vaga-btn" type="button">Editar</button>
-            </div>
-          </li>
+<!-- Lista vazia com ID para o JavaScript injetar os dados -->
+        <ul id="listaVagasEmpresa" class="job-list" aria-live="polite">
+          <p id="mensagemCarregando" class="notice">A carregar as suas vagas...</p>
         </ul>
 
+        <!-- Formulário de edição (Apenas UMA vez) -->
         <div id="editar-vaga" class="company-vacancy-publisher" style="display: none; margin-top: 2rem;">
           <div class="candidate-section-heading">
             <div>
@@ -286,20 +244,26 @@
               <input id="editarTags" type="text" placeholder="Ex.: Front-end, React, UX">
             </label>
 
+            <label class="registration-field" for="editarDescricao">
+              <span>Descrição da vaga <span class="optional-label">(opcional)</span></span>
+              <textarea id="editarDescricao" rows="5" maxlength="3000" placeholder="Edite as responsabilidades e requisitos da vaga."></textarea>
+            </label>
+
             <div class="job-card-footer" style="margin-top: 1rem; justify-content: flex-end; gap: 0.75rem;">
               <button class="btn btn-muted" type="button" id="cancelarEdicao">Cancelar</button>
+              <p id="mensagemEditarVaga" class="registration-message" role="status" aria-live="polite" hidden></p>
               <button class="btn btn-primary" type="submit">Salvar alterações</button>
             </div>
           </form>
         </div>
       </section>
     </div>
-      </section>
-    </div>
   </main>
   
   <script src="./js/tabs.js"></script>
   <script src="./js/perfil.js"></script>
+  <script src="./js/vagas.js"></script>
+
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       // Recupera a sessão
@@ -316,129 +280,79 @@
       // Preenche dados da empresa na tela
       document.getElementById('nomeEmpresa').textContent = empresa.nome || 'Empresa';
 
-      // Publicar Vaga (Vinculada ao ID da Empresa)
-      const formNovaVaga = document.getElementById('formNovaVaga');
-      if (formNovaVaga) {
-        formNovaVaga.addEventListener('submit', async (e) => {
-          e.preventDefault();
-
-          const novaVaga = {
-            titulo: document.getElementById('vagaTitulo').value,
-            local: document.getElementById('vagaLocal').value,
-            tipo: document.getElementById('vagaTipo').value,
-            salario: document.getElementById('vagaSalario').value,
-            descricao: document.getElementById('vagaDescricao').value,
-            empresaId: empresa.id || empresa._id
-          };
-
-          try {
-            const resposta = await fetch('/api/vagas', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(novaVaga)
-            });
-
-            const resultado = await resposta.json();
-
-            if (resposta.ok) {
-              alert('Vaga publicada com sucesso!');
-              formNovaVaga.reset();
-            } else {
-              alert('Erro ao publicar vaga: ' + (resultado.erro || 'Verifique os campos'));
-            }
-          } catch (error) {
-            console.error('Erro na requisição:', error);
-            alert('Erro de conexão com o servidor.');
-          }
-        });
-      }
-
       const formEditarVaga = document.getElementById('formEditarVaga');
       const editarVagaSection = document.getElementById('editar-vaga');
       const cancelarEdicao = document.getElementById('cancelarEdicao');
       let cardEmEdicao = null;
 
       document.querySelectorAll('.editar-vaga-btn').forEach((botao) => {
-        botao.addEventListener('click', () => {
-          cardEmEdicao = botao.closest('.job-card');
-          const titulo = cardEmEdicao.dataset.titulo || cardEmEdicao.querySelector('h3')?.textContent || '';
-          const local = cardEmEdicao.dataset.local || cardEmEdicao.querySelector('.job-meta span')?.textContent || '';
-          const tipo = cardEmEdicao.dataset.tipo || cardEmEdicao.querySelector('.job-meta span:last-child')?.textContent || 'CLT';
-          const salario = cardEmEdicao.dataset.salario || cardEmEdicao.querySelector('.job-salary')?.textContent || '';
-          const tags = cardEmEdicao.dataset.tags || Array.from(cardEmEdicao.querySelectorAll('.job-tags span')).map((tag) => tag.textContent).join(', ');
+      botao.addEventListener('click', () => {
+      cardEmEdicao = botao.closest('.job-card');
+        
+      // 🚀 NOVO: Capturamos o ID real da vaga salvo no card
+      idVagaEmEdicao = cardEmEdicao.dataset.id; 
 
-          document.getElementById('editarTitulo').value = titulo;
-          document.getElementById('editarLocal').value = local;
-          document.getElementById('editarTipo').value = tipo;
-          document.getElementById('editarSalario').value = salario;
-          document.getElementById('editarTags').value = tags;
+      const titulo = cardEmEdicao.dataset.titulo || cardEmEdicao.querySelector('h3')?.textContent || '';
+      const local = cardEmEdicao.dataset.local || cardEmEdicao.querySelector('.job-meta span')?.textContent || '';
+      const tipo = cardEmEdicao.dataset.tipo || cardEmEdicao.querySelector('.job-meta span:last-child')?.textContent || 'CLT';
+      const salario = cardEmEdicao.dataset.salario || cardEmEdicao.querySelector('.job-salary')?.textContent || '';
+      const tags = cardEmEdicao.dataset.tags || Array.from(cardEmEdicao.querySelectorAll('.job-tags span')).map((tag) => tag.textContent).join(', ');
 
-          if (editarVagaSection) {
-            editarVagaSection.style.display = 'block';
-            editarVagaSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        });
+      document.getElementById('editarTitulo').value = titulo;
+      document.getElementById('editarLocal').value = local;
+      document.getElementById('editarTipo').value = tipo;
+      document.getElementById('editarSalario').value = salario;
+      document.getElementById('editarTags').value = tags;
+
+      if (editarVagaSection) {
+        editarVagaSection.style.display = 'block';
+        editarVagaSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+if (formEditarVaga) {
+  formEditarVaga.addEventListener('submit', async (event) => { // 🚀 NOVO: 'async' adicionado
+    event.preventDefault();
+
+    // 1. Pega os dados preenchidos no formulário
+    const dadosAtualizados = {
+      titulo: document.getElementById('editarTitulo').value.trim(),
+      localizacao: document.getElementById('editarLocal').value.trim(),
+      tipo: document.getElementById('editarTipo').value,
+      salario: document.getElementById('editarSalario').value.trim(),
+      tags: document.getElementById('editarTags').value.trim().split(',').map(tag => tag.trim()).filter(Boolean)
+    };
+
+    try {
+      // 2. Envia os dados para a API salvar no banco
+      const resposta = await fetch(`/api/vagas/${idVagaEmEdicao}`, {
+        method: 'PUT', // Método usado para atualizações
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dadosAtualizados)
       });
 
-      if (cancelarEdicao) {
-        cancelarEdicao.addEventListener('click', () => {
-          if (editarVagaSection) editarVagaSection.style.display = 'none';
-          formEditarVaga.reset();
-          cardEmEdicao = null;
-        });
+      if (resposta.ok) {
+        alert('Vaga atualizada com sucesso no banco de dados!');
+        
+        // Esconde o formulário de edição
+        if (editarVagaSection) editarVagaSection.style.display = 'none';
+        formEditarVaga.reset();
+        cardEmEdicao = null;
+        idVagaEmEdicao = null;
+
+        // 3. Recarrega a lista do banco para exibir as informações fresquinhas
+        carregarVagasDaEmpresa(); 
+      } else {
+        const erro = await resposta.json();
+        alert(erro.erro || 'Erro ao atualizar a vaga.');
       }
-
-      if (formEditarVaga) {
-        formEditarVaga.addEventListener('submit', (event) => {
-          event.preventDefault();
-
-          if (!cardEmEdicao) {
-            alert('Selecione uma vaga para editar.');
-            return;
-          }
-
-          const titulo = document.getElementById('editarTitulo').value.trim();
-          const local = document.getElementById('editarLocal').value.trim();
-          const tipo = document.getElementById('editarTipo').value;
-          const salario = document.getElementById('editarSalario').value.trim();
-          const tagsValor = document.getElementById('editarTags').value.trim();
-
-          cardEmEdicao.dataset.titulo = titulo;
-          cardEmEdicao.dataset.local = local;
-          cardEmEdicao.dataset.tipo = tipo;
-          cardEmEdicao.dataset.salario = salario;
-          cardEmEdicao.dataset.tags = tagsValor;
-
-          const heading = cardEmEdicao.querySelector('.job-title-company h3');
-          const name = cardEmEdicao.querySelector('.company-name');
-          const location = cardEmEdicao.querySelector('.job-meta span');
-          const tipoSpan = cardEmEdicao.querySelector('.job-meta span:last-child');
-          const salary = cardEmEdicao.querySelector('.job-salary');
-          const tagsContainer = cardEmEdicao.querySelector('.job-tags');
-
-          if (heading) heading.textContent = titulo;
-          if (name && !name.dataset.original) name.dataset.original = name.textContent;
-          if (location) location.textContent = local;
-          if (tipoSpan) tipoSpan.textContent = tipo;
-          if (salary) salary.textContent = salario;
-
-          if (tagsContainer) {
-            tagsContainer.innerHTML = '';
-            const tags = tagsValor ? tagsValor.split(',').map((tag) => tag.trim()).filter(Boolean) : ['Atualizada'];
-            tags.forEach((tag) => {
-              const badge = document.createElement('span');
-              badge.textContent = tag;
-              tagsContainer.appendChild(badge);
-            });
-          }
-
-          alert('Vaga atualizada com sucesso!');
-
-          if (editarVagaSection) editarVagaSection.style.display = 'none';
-          formEditarVaga.reset();
-          cardEmEdicao = null;
-        });
-      }
+    } catch (error) {
+      console.error('Erro de conexão:', error);
+      alert('Erro ao se conectar com o servidor.');
+    }
+  });
+}
     });
   </script>
 

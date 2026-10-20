@@ -1,35 +1,4 @@
-const demoJobs = [
-  {
-    titulo: "Desenvolvedor Backend",
-    empresa: "Tech Solutions",
-    local: "São Paulo - SP",
-    tipo: "CLT",
-    modalidade: "Remoto",
-    area: "Tecnologia",
-    tags: ["Backend", "Node.js", "APIs"],
-    descricao: "Desenvolvimento de APIs e serviços escaláveis com Node.js."
-  },
-  {
-    titulo: "Product Designer",
-    empresa: "Studio Nuvem",
-    local: "São Paulo - SP",
-    tipo: "PJ",
-    modalidade: "Híbrido",
-    area: "Design",
-    tags: ["UI/UX", "Figma", "Produto"],
-    descricao: "Criação de experiências digitais centradas nas pessoas."
-  },
-  {
-    titulo: "Analista de Marketing Digital",
-    empresa: "Viva Comércio",
-    local: "Curitiba - PR",
-    tipo: "CLT",
-    modalidade: "Presencial",
-    area: "Marketing",
-    tags: ["Marketing", "Conteúdo", "SEO"],
-    descricao: "Planejamento de campanhas e análise de resultados digitais."
-  }
-];
+const demoJobs = []; // Deixei vazio pois agora você já usa a API real
 
 const vacancyList = document.querySelector("#listaVagas");
 const isHomePage = document.body.dataset.page === "home";
@@ -90,7 +59,8 @@ if (vacancyList) {
 
   function updateFilters() {
     if (isHomePage) return;
-    updateSelect(locationFilter, jobs.map((job) => safeText(job.local)));
+    // 🚀 Ajustado para ler localizacao do banco de dados
+    updateSelect(locationFilter, jobs.map((job) => safeText(job.localizacao || job.local)));
     updateSelect(areaFilter, jobs.map(getArea));
     updateSelect(
       modalityFilter,
@@ -110,7 +80,8 @@ if (vacancyList) {
     const icon = document.createElement("span");
     icon.className = "company-icon";
     icon.setAttribute("aria-hidden", "true");
-    icon.textContent = safeText(job.empresa, "E").trim().charAt(0).toUpperCase() || "E";
+    // 🚀 Ajustado para ler o nome da empresa do banco
+    icon.textContent = safeText(job.empresaNome || job.empresa, "E").trim().charAt(0).toUpperCase() || "E";
 
     const titleCompany = document.createElement("div");
     titleCompany.className = "job-title-company";
@@ -118,7 +89,8 @@ if (vacancyList) {
     title.textContent = safeText(job.titulo, "Vaga disponível");
     const company = document.createElement("p");
     company.className = "company-name";
-    company.textContent = safeText(job.empresa, "Empresa");
+    // 🚀 Ajustado para ler o nome da empresa do banco
+    company.textContent = safeText(job.empresaNome || job.empresa, "Empresa Confidencial");
     titleCompany.append(title, company);
     identity.append(icon, titleCompany);
 
@@ -130,7 +102,8 @@ if (vacancyList) {
     const meta = document.createElement("div");
     meta.className = "job-meta";
     const location = document.createElement("span");
-    location.textContent = safeText(job.local, "Localização não informada");
+    // 🚀 Ajustado para ler a localização correta do banco
+    location.textContent = safeText(job.localizacao || job.local, "Localização não informada");
     const modality = document.createElement("span");
     modality.textContent = safeText(job.modalidade || job.tipo, "Modalidade não informada");
     meta.append(location, modality);
@@ -157,12 +130,12 @@ if (vacancyList) {
       footer.append(salary);
     }
 
-if (isHomePage) {
+    if (isHomePage) {
       const detailsLink = document.createElement("a");
       detailsLink.className = "details-link";
-      detailsLink.href = `vagas.html?busca=${encodeURIComponent(
-        safeText(job.titulo)
-      )}`;
+      // 🚀 Atualizado para enviar o ID correto na página inicial também
+      const idDaVaga = job._id || job.id;
+      detailsLink.href = `vaga_detalhes.html?id=${idDaVaga}`;
       detailsLink.textContent = "Ver vaga →";
       footer.append(detailsLink);
       item.append(top, meta, tags, footer);
@@ -183,32 +156,25 @@ if (isHomePage) {
       "Mais informações sobre esta vaga serão disponibilizadas pela empresa."
     );
 
-    // 1. CRIANDO O NOVO BOTÃO DE CANDIDATAR-SE
     const applyButton = document.createElement("a");
-    applyButton.className = "btn btn-primary"; // Usa a classe do seu CSS para botões principais
+    applyButton.className = "btn btn-primary";
     applyButton.textContent = "Candidatar-se";
-    applyButton.hidden = true; // Começa escondido, igual à descrição
-    applyButton.style.display = "inline-block"; // Mantém o formato de botão
-    applyButton.style.marginTop = "15px"; // Dá um espaçamento da descrição
+    applyButton.hidden = true;
+    applyButton.style.display = "inline-block";
+    applyButton.style.marginTop = "15px";
 
-    // Pega o ID da vaga ou usa o título como identificador na URL
     const idDaVaga = job._id || job.id || encodeURIComponent(job.titulo);
     applyButton.href = `vaga_detalhes.html?id=${idDaVaga}`;
 
-    // 2. ATUALIZANDO O EVENTO DE CLIQUE
     detailsButton.addEventListener("click", () => {
       const expanded = detailsButton.getAttribute("aria-expanded") === "true";
       detailsButton.setAttribute("aria-expanded", String(!expanded));
       detailsButton.textContent = expanded ? "Ver detalhes" : "Ocultar detalhes";
-      
-      // Mostra ou esconde a descrição E o botão simultaneamente
       description.hidden = expanded;
       applyButton.hidden = expanded;
     });
 
     footer.append(detailsButton);
-
-    // 3. INCLUINDO O BOTÃO NO CARD FINAL
     item.append(top, meta, tags, footer, description, applyButton);
     return item;
   }
@@ -235,8 +201,8 @@ if (isHomePage) {
     const filteredJobs = jobs.filter((job) => {
       const searchableText = [
         job.titulo,
-        job.empresa,
-        job.local,
+        job.empresaNome || job.empresa, // 🚀 Busca pelo nome da empresa real
+        job.localizacao || job.local,   // 🚀 Busca pela localização real
         job.descricao,
         ...(Array.isArray(job.tags) ? job.tags : [])
       ]
@@ -246,10 +212,9 @@ if (isHomePage) {
 
       return (
         (!term || searchableText.includes(term)) &&
-        (!selectedLocation || job.local === selectedLocation) &&
+        (!selectedLocation || safeText(job.localizacao || job.local) === selectedLocation) &&
         (!selectedArea || getArea(job) === selectedArea) &&
-        (!selectedModality ||
-          safeText(job.modalidade || job.tipo) === selectedModality)
+        (!selectedModality || safeText(job.modalidade || job.tipo) === selectedModality)
       );
     });
 
@@ -261,8 +226,7 @@ if (isHomePage) {
     if (filteredJobs.length === 0) {
       const emptyState = document.createElement("li");
       emptyState.className = "empty-state";
-      emptyState.textContent =
-        "Nenhuma vaga encontrada. Tente ajustar sua busca ou seus filtros.";
+      emptyState.textContent = "Nenhuma vaga encontrada. Tente ajustar sua busca ou seus filtros.";
       vacancyList.append(emptyState);
     }
   }
@@ -276,22 +240,15 @@ if (isHomePage) {
 
     try {
       const response = await fetch("/api/vagas");
-      if (!response.ok) {
-        throw new Error(`A API respondeu com status ${response.status}.`);
-      }
+      if (!response.ok) throw new Error(`A API respondeu com status ${response.status}.`);
 
       const data = await response.json();
-      if (!Array.isArray(data)) {
-        throw new Error("A resposta da API não contém uma lista de vagas.");
-      }
-
       jobs = data;
       notice.hidden = true;
     } catch (error) {
       console.error("Não foi possível carregar as vagas da API:", error);
       jobs = demoJobs;
-      notice.textContent =
-        "Não foi possível conectar à API. Exibindo vagas de demonstração.";
+      notice.textContent = "Não foi possível conectar à API. Exibindo vagas de demonstração.";
       notice.hidden = false;
     } finally {
       if (reloadButton) {

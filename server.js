@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const connectDB = require('./config/DataBase');
+const Vaga = require('./servicos/vagas/vagasModel');
 
 // Conectar ao MongoDB
 connectDB();
@@ -41,10 +42,22 @@ app.get('/api/vagas/:id', async (req, res) => {
 
 app.post('/api/vagas', async (req, res) => {
   try {
-    const vaga = await vagasService.criarVaga(req.body);
-    res.status(201).json(vaga);
-  } catch (error) {
-    res.status(400).json({ erro: error.message });
+    const novaVaga = new Vaga({
+      titulo: req.body.titulo,
+      empresaId: req.body.empresaId,
+      empresaNome: req.body.empresaNome,
+      localizacao: req.body.localizacao, 
+      tipo: req.body.tipo,
+      salario: req.body.salario,
+      tags: req.body.tags || [],
+      descricao: req.body.descricao
+    });
+    
+    await novaVaga.save();
+    res.status(201).json(novaVaga);
+  } catch (erro) {
+    console.error('Erro ao publicar vaga:', erro.message);
+    res.status(400).json({ erro: 'Erro ao publicar', detalhes: erro.message });
   }
 });
 
@@ -59,10 +72,37 @@ app.put('/api/vagas/:id', async (req, res) => {
 
 app.delete('/api/vagas/:id', async (req, res) => {
   try {
-    await vagasService.deletarVaga(req.params.id);
-    res.json({ mensagem: 'Vaga deletada' });
-  } catch (error) {
-    res.status(400).json({ erro: error.message });
+    const idDaVaga = req.params.id;
+
+    // Comando do Mongoose que busca pelo ID e apaga do banco imediatamente
+    const vagaExcluida = await Vaga.findByIdAndDelete(idDaVaga);
+
+    // Se o banco não encontrou nenhuma vaga com esse ID
+    if (!vagaExcluida) {
+      return res.status(404).json({ erro: 'Vaga não encontrada.' });
+    }
+
+    // Se a exclusão foi um sucesso
+    res.status(200).json({ mensagem: 'Vaga excluída com sucesso!' });
+
+  } catch (erro) {
+    console.error('Erro ao excluir vaga:', erro.message);
+    res.status(500).json({ erro: 'Erro interno ao tentar excluir a vaga.' });
+  }
+});
+
+app.get('/api/vagas/empresa/:empresaId', async (req, res) => {
+  try {
+    const { empresaId } = req.params;
+    
+    // Procura no banco de dados todas as vagas que tenham este empresaId
+    const vagas = await Vaga.find({ empresaId: empresaId }).sort({ dataCriacao: -1 });
+    
+    // Devolve as vagas com sucesso (mesmo que seja uma lista vazia [])
+    res.status(200).json(vagas);
+  } catch (erro) {
+    console.error('Erro na rota de vagas da empresa:', erro);
+    res.status(500).json({ erro: 'Erro interno ao buscar as vagas.' });
   }
 });
 
