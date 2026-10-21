@@ -28,7 +28,7 @@ function atualizarHeader() {
   if (dados.tipo === 'empresa') {
     if (mainNav) {
       mainNav.innerHTML = `
-        <a href="home_empresa.html#nova-vaga">Publicar vaga</a>
+        <a href="home_empresa.html#Opcoes">Opções</a>
         <a href="candidaturas_empresa.html">Candidatos</a>
       `;
     }
