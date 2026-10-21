@@ -66,7 +66,6 @@ app.put('/api/vagas/:id', async (req, res) => {
   try {
     const idDaVaga = req.params.id;
 
-    // 🚀 O SEGREDO ESTÁ AQUI: Temos de avisar o servidor para ler a "descricao"
     const dadosAtualizados = {
       titulo: req.body.titulo,
       localizacao: req.body.localizacao,
@@ -178,7 +177,7 @@ app.delete('/api/empresas/:id', async (req, res) => {
   }
 });
 
-// ▶️ NOVO: Rota de Login para Empresas
+// Rota de Login para Empresas
 app.post('/api/empresas/login', async (req, res) => {
   try {
     const { email, senha } = req.body;
@@ -265,7 +264,7 @@ app.delete('/api/candidatos/:id', async (req, res) => {
   }
 });
 
-// ▶️ NOVO: Rota de Login para Candidatos
+// Rota de Login para Candidatos
 app.post('/api/candidatos/login', async (req, res) => {
   try {
     const { email, senha } = req.body;
@@ -305,7 +304,7 @@ app.get('/api/candidaturas/empresa/:empresaId', async (req, res) => {
   try {
     const empresaId = req.params.empresaId;
 
-    // 1. Busca no MongoDB todas as vagas criadas por esta empresa
+    // Busca no MongoDB todas as vagas criadas por esta empresa
     const vagasDaEmpresa = await Vaga.find({ empresaId: empresaId });
 
     if (vagasDaEmpresa.length === 0) {
@@ -424,7 +423,7 @@ app.post('/api/candidatos/login', async (req, res) => {
   }
 });
 
-// ▶️ NOVAS ROTAS DE DASHBOARD
+// ROTAS DE DASHBOARD
 app.get('/home-candidato', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'home_candidato.html'));
 });
