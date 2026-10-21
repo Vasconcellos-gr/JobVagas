@@ -85,7 +85,6 @@
   </main>
 
   <script>
-    // Aguarda o carregamento do formulário antes de ler a sessão ou registrar eventos.
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.querySelector("#formCurriculo");
       const message = document.querySelector("#mensagemCurriculo");
@@ -100,43 +99,52 @@
         "competencias",
         "linkedin"
       ];
-      const sessionKey = "usuarioLogado";
-      const resumeKey = "curriculoCandidato";
-      let session = null;
-
-      // Recupera a sessão para facilitar o preenchimento dos dados de contato do candidato.
+      let session;
       try {
-        session = JSON.parse(localStorage.getItem(sessionKey) || "null");
+        session = JSON.parse(localStorage.getItem("usuarioLogado") || "null");
       } catch (error) {
         message.textContent = "Não foi possível ler os dados da sessão. Confira o acesso à sua conta.";
         message.hidden = false;
+        return;
       }
 
       const candidate = session && (session.usuario || session);
+      const candidateId = candidate && (candidate.id || candidate._id);
+      if (!session || session.tipo !== "candidato" || !candidateId) {
+        message.textContent = "Entre como candidato para acessar seu currículo.";
+        message.hidden = false;
+        return;
+      }
 
-      // Preenche primeiro o currículo salvo e complementa com os dados da conta.
-      try {
-        const savedResume = JSON.parse(localStorage.getItem(resumeKey) || "null") || {};
-        const initialValues = {
+      const preencherFormulario = (curriculo = {}) => {
+        const valoresIniciais = {
           nome: candidate && candidate.nome,
           email: candidate && candidate.email,
           telefone: candidate && candidate.telefone,
           area: candidate && candidate.perfil,
           experiencia: candidate && candidate.experiencia,
           linkedin: candidate && candidate.linkedin,
-          ...savedResume
+          ...curriculo
         };
 
         fields.forEach((field) => {
-          form.elements[field].value = initialValues[field] || "";
+          form.elements[field].value = valoresIniciais[field] || "";
         });
-      } catch (error) {
-        message.textContent = "Não foi possível carregar o currículo salvo.";
-        message.hidden = false;
-      }
+      };
 
-      // Salva as informações para reutilização ao enviar uma candidatura.
-      form.addEventListener("submit", (event) => {
+      fetch(`/api/candidatos/${encodeURIComponent(candidateId)}/curriculo`)
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error("Não foi possível carregar o currículo salvo.");
+          }
+          preencherFormulario(await response.json() || {});
+        })
+        .catch((error) => {
+          message.textContent = error.message;
+          message.hidden = false;
+        });
+
+      form.addEventListener("submit", async (event) => {
         event.preventDefault();
         message.hidden = true;
 
@@ -145,11 +153,19 @@
         );
 
         try {
-          localStorage.setItem(resumeKey, JSON.stringify(resume));
+          const response = await fetch(`/api/candidatos/${encodeURIComponent(candidateId)}/curriculo`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(resume)
+          });
+          const result = await response.json();
+          if (!response.ok) {
+            throw new Error(result.erro || "Não foi possível salvar o currículo.");
+          }
           message.textContent = "Currículo salvo. Volte à vaga para enviar sua candidatura.";
           message.hidden = false;
         } catch (error) {
-          message.textContent = "Não foi possível salvar o currículo neste navegador.";
+          message.textContent = error.message || "Não foi possível salvar o currículo.";
           message.hidden = false;
         }
       });

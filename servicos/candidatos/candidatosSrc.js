@@ -19,6 +19,18 @@ async function obterCandidatoPorId(id) {
   return await Candidato.findById(id);
 }
 
+async function obterCurriculoCandidato(id) {
+  return await Candidato.findById(id).select('curriculo');
+}
+
+async function atualizarCurriculoCandidato(id, curriculo) {
+  return await Candidato.findByIdAndUpdate(
+    id,
+    { $set: { curriculo } },
+    { new: true, runValidators: true, select: 'curriculo' }
+  );
+}
+
 async function atualizarCandidato(id, dados) {
   if (dados.senha) {
       const saltRounds = 10;
@@ -60,6 +72,8 @@ module.exports = {
   obterTodosCandidatos,
   criarCandidato,
   obterCandidatoPorId,
+  obterCurriculoCandidato,
+  atualizarCurriculoCandidato,
   atualizarCandidato,
   deletarCandidato,
   loginCandidato

@@ -1,5 +1,17 @@
 const mongoose = require('mongoose');
 
+const curriculoSchema = new mongoose.Schema({
+  nome: String,
+  email: String,
+  telefone: String,
+  area: String,
+  resumo: String,
+  experiencia: String,
+  formacao: String,
+  competencias: String,
+  linkedin: String
+}, { _id: false });
+
 const candidatoSchema = new mongoose.Schema({
   nome: { 
     type: String, 
@@ -32,6 +44,10 @@ const candidatoSchema = new mongoose.Schema({
   },
   linkedin: { 
     type: String 
+  },
+  curriculo: {
+    type: curriculoSchema,
+    default: undefined
   },
   dataCriacao: { 
     type: Date, 
