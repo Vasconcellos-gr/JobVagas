@@ -15,6 +15,7 @@ const candidatosService = require('./servicos/candidatos/candidatosSrc');
 const candidaturasService = require('./servicos/candidaturas/candidaturasSrc');
 const Candidatura = require('./servicos/candidaturas/candidaturasModel');
 const Vaga = require('./servicos/vagas/vagasModel');
+const Empresa = require('./servicos/empresas/empresasModel');
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'frontend')));
@@ -332,6 +333,43 @@ app.get('/api/candidaturas/empresa/:empresaId', async (req, res) => {
   } catch (erro) {
     console.error('Erro ao buscar candidaturas da empresa:', erro);
     res.status(500).json({ erro: 'Erro ao carregar a lista de candidatos.' });
+  }
+});
+
+// ==================== ROTA DE CANDIDATURAS DO CANDIDATO ====================
+app.get('/api/candidaturas/candidato/:candidatoId', async (req, res) => {
+  try {
+    const candidatoId = req.params.candidatoId;
+
+    const candidaturas = await Candidatura.find({ candidatoId: candidatoId }).lean();
+
+    if (candidaturas.length === 0) {
+      return res.status(200).json([]);
+    }
+
+    const idsDasVagas = candidaturas.map(c => c.vagaId);
+    const vagasEncontradas = await Vaga.find({ _id: { $in: idsDasVagas } }).lean();
+
+    const idsDasEmpresas = vagasEncontradas.map(v => v.empresaId).filter(Boolean);
+    const empresasEncontradas = await Empresa.find({ _id: { $in: idsDasEmpresas } }).lean();
+
+    const candidaturasProntas = candidaturas.map(cand => {
+      const vagaCorrespondente = vagasEncontradas.find(v => v._id.toString() === cand.vagaId?.toString()) || {};
+      const empresaCorrespondente = empresasEncontradas.find(e => e._id.toString() === vagaCorrespondente.empresaId?.toString()) || {};
+
+      return {
+        ...cand,
+        vagaId: {
+          ...vagaCorrespondente,
+          empresaId: empresaCorrespondente
+        }
+      };
+    });
+
+    res.status(200).json(candidaturasProntas);
+  } catch (erro) {
+    console.error('Erro ao buscar candidaturas do candidato:', erro);
+    res.status(500).json({ erro: 'Erro ao carregar a sua lista de candidaturas.' });
   }
 });
 

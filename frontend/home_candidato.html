@@ -18,7 +18,7 @@
       <nav class="main-nav" aria-label="Menu principal">
         <a href="index.html">Início</a>
         <a href="vagas.html">Vagas</a>
-        <a href="#opcoes">Opções</a>
+        <a href="#minhas-candidaturas">Minhas Candidaturas</a>
       </nav>
       <div class="header-actions">
         <span id="nomeNoCabecalho" class="candidate-header-name"></span>
@@ -62,223 +62,201 @@
       </section>
 
       <section id="panel-perfil" class="account-tab-panel" data-tab-hash="#perfil" role="tabpanel" aria-labelledby="tab-perfil" hidden>
-      <section id="perfil" class="candidate-profile-card account-profile-section" aria-labelledby="candidate-profile-title">
-      <div class="candidate-section-heading">
-        <div>
-          <span class="eyebrow">MEU PERFIL</span>
-          <h2 id="candidate-profile-title">Perfil profissional</h2>
-          <p>Confira os dados vinculados à sua conta.</p>
-        </div>
-      </div>
-      <p id="mensagemPerfil" class="notice" role="status" aria-live="polite">Carregando perfil...</p>
-      <dl class="account-profile-details">
-        <div><dt>Nome</dt><dd data-profile-value="nome">—</dd></div>
-        <div><dt>E-mail</dt><dd data-profile-value="email">—</dd></div>
-        <div><dt>Telefone</dt><dd data-profile-value="telefone">—</dd></div>
-        <div><dt>Data de nascimento</dt><dd data-profile-value="dataNascimento">—</dd></div>
-        <div><dt>Área ou cargo de interesse</dt><dd data-profile-value="perfil">—</dd></div>
-        <div><dt>Experiência</dt><dd data-profile-value="experiencia">—</dd></div>
-        <div><dt>LinkedIn</dt><dd data-profile-value="linkedin">—</dd></div>
-      </dl>
-    </section>
+        <section id="perfil" class="candidate-profile-card account-profile-section" aria-labelledby="candidate-profile-title">
+          <div class="candidate-section-heading">
+            <div>
+              <span class="eyebrow">MEU PERFIL</span>
+              <h2 id="candidate-profile-title">Perfil profissional</h2>
+              <p>Confira os dados vinculados à sua conta.</p>
+            </div>
+          </div>
+          <p id="mensagemPerfil" class="notice" role="status" aria-live="polite">Carregando perfil...</p>
+          <dl class="account-profile-details">
+            <div><dt>Nome</dt><dd data-profile-value="nome">—</dd></div>
+            <div><dt>E-mail</dt><dd data-profile-value="email">—</dd></div>
+            <div><dt>Telefone</dt><dd data-profile-value="telefone">—</dd></div>
+            <div><dt>Data de nascimento</dt><dd data-profile-value="dataNascimento">—</dd></div>
+            <div><dt>Área ou cargo de interesse</dt><dd data-profile-value="perfil">—</dd></div>
+            <div><dt>Experiência</dt><dd data-profile-value="experiencia">—</dd></div>
+            <div><dt>LinkedIn</dt><dd data-profile-value="linkedin">—</dd></div>
+          </dl>
+        </section>
       </section>
 
       <section id="panel-editar-perfil" class="account-tab-panel" data-tab-hash="#editar-perfil" role="tabpanel" aria-labelledby="tab-editar-perfil" hidden>
-      <section id="editar-perfil" class="candidate-profile-card account-profile-section" aria-labelledby="edit-candidate-profile-title">
-      <div class="candidate-section-heading">
-        <div>
-          <span class="eyebrow">CONFIGURAÇÕES DA CONTA</span>
-          <h2 id="edit-candidate-profile-title">Editar perfil</h2>
-          <p>Atualize seus dados profissionais. Deixe a senha em branco para mantê-la.</p>
-        </div>
-      </div>
-      <form id="formPerfil" class="candidate-profile-form">
-        <label class="registration-field" for="perfilNome">
-          <span>Nome completo</span>
-          <input id="perfilNome" name="nome" type="text" autocomplete="name" required>
-        </label>
-        <label class="registration-field" for="perfilEmail">
-          <span>E-mail</span>
-          <input id="perfilEmail" name="email" type="email" autocomplete="email" required>
-        </label>
-        <label class="registration-field" for="perfilTelefone">
-          <span>Telefone</span>
-          <input id="perfilTelefone" name="telefone" type="tel" autocomplete="tel" maxlength="15" required>
-        </label>
-        <label class="registration-field" for="perfilDataNascimento">
-          <span>Data de nascimento</span>
-          <input id="perfilDataNascimento" name="dataNascimento" type="date" autocomplete="bday" required>
-        </label>
-        <label class="registration-field" for="perfilArea">
-          <span>Área ou cargo de interesse</span>
-          <input id="perfilArea" name="perfil" type="text" required>
-        </label>
-        <label class="registration-field" for="perfilExperiencia">
-          <span>Experiência profissional</span>
-          <textarea id="perfilExperiencia" name="experiencia" rows="3" required></textarea>
-        </label>
-        <label class="registration-field" for="perfilLinkedin">
-          <span>LinkedIn <span class="optional-label">(opcional)</span></span>
-          <input id="perfilLinkedin" name="linkedin" type="url" autocomplete="url">
-        </label>
-        <label class="registration-field" for="perfilSenha">
-          <span>Nova senha <span class="optional-label">(opcional)</span></span>
-          <input id="perfilSenha" name="senha" type="password" autocomplete="new-password" minlength="6">
-        </label>
-        <p id="mensagemEdicaoPerfil" class="registration-message" role="status" aria-live="polite" hidden></p>
-        <button class="btn btn-primary registration-submit" type="submit">Salvar perfil</button>
-      </form>
-    </section>
+        <section id="editar-perfil" class="candidate-profile-card account-profile-section" aria-labelledby="edit-candidate-profile-title">
+          <div class="candidate-section-heading">
+            <div>
+              <span class="eyebrow">CONFIGURAÇÕES DA CONTA</span>
+              <h2 id="edit-candidate-profile-title">Editar perfil</h2>
+              <p>Atualize seus dados profissionais. Deixe a senha em branco para mantê-la.</p>
+            </div>
+          </div>
+          <form id="formPerfil" class="candidate-profile-form">
+            <label class="registration-field" for="perfilNome">
+              <span>Nome completo</span>
+              <input id="perfilNome" name="nome" type="text" autocomplete="name" required>
+            </label>
+            <label class="registration-field" for="perfilEmail">
+              <span>E-mail</span>
+              <input id="perfilEmail" name="email" type="email" autocomplete="email" required>
+            </label>
+            <label class="registration-field" for="perfilTelefone">
+              <span>Telefone</span>
+              <input id="perfilTelefone" name="telefone" type="tel" autocomplete="tel" maxlength="15" required>
+            </label>
+            <label class="registration-field" for="perfilDataNascimento">
+              <span>Data de nascimento</span>
+              <input id="perfilDataNascimento" name="dataNascimento" type="date" autocomplete="bday" required>
+            </label>
+            <label class="registration-field" for="perfilArea">
+              <span>Área ou cargo de interesse</span>
+              <input id="perfilArea" name="perfil" type="text" required>
+            </label>
+            <label class="registration-field" for="perfilExperiencia">
+              <span>Experiência profissional</span>
+              <textarea id="perfilExperiencia" name="experiencia" rows="3" required></textarea>
+            </label>
+            <label class="registration-field" for="perfilLinkedin">
+              <span>LinkedIn <span class="optional-label">(opcional)</span></span>
+              <input id="perfilLinkedin" name="linkedin" type="url" autocomplete="url">
+            </label>
+            <label class="registration-field" for="perfilSenha">
+              <span>Nova senha <span class="optional-label">(opcional)</span></span>
+              <input id="perfilSenha" name="senha" type="password" autocomplete="new-password" minlength="6">
+            </label>
+            <p id="mensagemEdicaoPerfil" class="registration-message" role="status" aria-live="polite" hidden></p>
+            <button class="btn btn-primary registration-submit" type="submit">Salvar perfil</button>
+          </form>
+        </section>
       </section>
     </div>
   </main>
 
   <script src="./js/tabs.js"></script>
   <script src="./js/perfil.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Lê a sessão criada no login e exige autenticação para acessar a área do candidato.
-      const dadosStr = localStorage.getItem('usuarioLogado');
-      if (!dadosStr) {
-        alert('Você precisa fazer login para acessar esta página.');
-        window.location.replace('login.html');
-        return;
-      }
-
-      // O login atual guarda os dados em sessao.usuario; a alternativa mantém suporte
-      // a sessões antigas que armazenavam diretamente os dados do candidato.
-      const sessao = JSON.parse(dadosStr);
-      const usuario = sessao.usuario || sessao;
-
-      // Preenche a saudação com o nome disponível na sessão.
-      document.getElementById('nomeCandidato').textContent = usuario.nome || 'Candidato';
-    });
-  </script>
   <script src="./js/auth.js"></script>
   <script>
-    // Carrega as candidaturas do candidato atual após a página estar pronta.
     document.addEventListener("DOMContentLoaded", async () => {
-      const list = document.querySelector("#listaMinhasCandidaturas");
-      const message = document.querySelector("#mensagemMinhasCandidaturas");
+      const lista = document.querySelector("#listaMinhasCandidaturas");
+      const mensagem = document.querySelector("#mensagemMinhasCandidaturas");
 
-      // Atualiza a mensagem da lista e aplica o estilo de erro quando necessário.
-      function showMessage(text, isError = false) {
-        message.textContent = text;
-        message.hidden = !text;
-        message.classList.toggle("is-error", isError);
+      function exibirMensagem(texto, ehErro = false) {
+        mensagem.textContent = texto;
+        mensagem.hidden = !texto;
+        mensagem.classList.toggle("is-error", ehErro);
       }
 
-      // Cria o cartão de uma candidatura com os dados da vaga e da empresa.
-      function createApplicationCard(application) {
-        const vacancy = application.vagaId && typeof application.vagaId === "object"
-          ? application.vagaId
-          : {};
-        const company = vacancy.empresaId && typeof vacancy.empresaId === "object"
-          ? vacancy.empresaId
-          : {};
-        const card = document.createElement("li");
-        card.className = "job-card application-card";
+      function criarCartaoCandidatura(aplicacao) {
+        const vaga = aplicacao.vagaId && typeof aplicacao.vagaId === "object" ? aplicacao.vagaId : {};
+        const empresa = vaga.empresaId && typeof vaga.empresaId === "object" ? vaga.empresaId : {};
+        
+        const cartao = document.createElement("li");
+        cartao.className = "job-card application-card";
 
-        const heading = document.createElement("div");
-        heading.className = "job-card-top";
-        const identity = document.createElement("div");
-        identity.className = "job-identity";
-        const icon = document.createElement("span");
-        icon.className = "company-icon";
-        icon.setAttribute("aria-hidden", "true");
-        icon.textContent = (company.nome || "E").trim().charAt(0).toUpperCase() || "E";
+        const cabecalho = document.createElement("div");
+        cabecalho.className = "job-card-top";
+        const identidade = document.createElement("div");
+        identidade.className = "job-identity";
+        const icone = document.createElement("span");
+        icone.className = "company-icon";
+        icone.setAttribute("aria-hidden", "true");
+        icone.textContent = (empresa.nome || "E").trim().charAt(0).toUpperCase();
 
-        const companyInfo = document.createElement("div");
-        companyInfo.className = "job-title-company";
-        const companyName = document.createElement("h3");
-        companyName.textContent = company.nome || "Empresa não identificada";
-        const vacancyTitle = document.createElement("p");
-        vacancyTitle.className = "company-name";
-        vacancyTitle.textContent = vacancy.titulo || "Vaga não disponível";
-        companyInfo.append(companyName, vacancyTitle);
-        identity.append(icon, companyInfo);
+        const infoEmpresa = document.createElement("div");
+        infoEmpresa.className = "job-title-company";
+        const nomeEmpresa = document.createElement("h3");
+        nomeEmpresa.textContent = empresa.nome || "Empresa não identificada";
+        const tituloVaga = document.createElement("p");
+        tituloVaga.className = "company-name";
+        tituloVaga.textContent = vaga.titulo || "Vaga não disponível";
+        infoEmpresa.append(nomeEmpresa, tituloVaga);
+        identidade.append(icone, infoEmpresa);
 
-        const status = document.createElement("span");
-        status.className = "application-status";
-        status.textContent = application.status || "Em análise";
-        heading.append(identity, status);
-        card.append(heading);
+        const statusEl = document.createElement("span");
+        statusEl.className = "application-status";
+        statusEl.textContent = aplicacao.status || "Em análise";
+        cabecalho.append(identidade, statusEl);
+        cartao.append(cabecalho);
 
-        const metadata = document.createElement("div");
-        metadata.className = "job-meta";
-        if (vacancy.local) {
-          const location = document.createElement("span");
-          location.textContent = vacancy.local;
-          metadata.append(location);
+        const metadados = document.createElement("div");
+        metadados.className = "job-meta";
+        if (vaga.local) {
+          const localizacao = document.createElement("span");
+          localizacao.textContent = vaga.local;
+          metadados.append(localizacao);
         }
-        const sentDate = new Date(application.dataCandidatura);
-        if (!Number.isNaN(sentDate.getTime())) {
-          const date = document.createElement("span");
-          date.textContent = `Currículo enviado em ${new Intl.DateTimeFormat("pt-BR").format(sentDate)}`;
-          metadata.append(date);
+        const dataEnvio = new Date(aplicacao.dataCandidatura);
+        if (!Number.isNaN(dataEnvio.getTime())) {
+          const dataEl = document.createElement("span");
+          dataEl.textContent = `Currículo enviado em ${new Intl.DateTimeFormat("pt-BR").format(dataEnvio)}`;
+          metadados.append(dataEl);
         }
-        if (metadata.childElementCount) card.append(metadata);
+        if (metadados.childElementCount) cartao.append(metadados);
 
-        const vacancyId = vacancy._id || (
-          typeof application.vagaId === "string" ? application.vagaId : ""
-        );
-        if (vacancyId) {
+        const idVaga = vaga._id || (typeof aplicacao.vagaId === "string" ? aplicacao.vagaId : "");
+        if (idVaga) {
           const link = document.createElement("a");
           link.className = "details-link";
-          link.href = `vaga_detalhes.html?id=${encodeURIComponent(vacancyId)}`;
+          link.href = `vaga_detalhes.html?id=${encodeURIComponent(idVaga)}`;
           link.textContent = "Ver vaga";
-          const footer = document.createElement("div");
-          footer.className = "job-card-footer";
-          footer.append(link);
-          card.append(footer);
+          const rodape = document.createElement("div");
+          rodape.className = "job-card-footer";
+          rodape.append(link);
+          cartao.append(rodape);
         }
 
-        return card;
+        return cartao;
       }
 
-      // Usa a sessão do navegador para solicitar somente as candidaturas deste candidato.
-      let session;
+      // Recupera os dados da sessão com suporte flexível a formatos de salvamento
+      let sessao;
       try {
-        session = JSON.parse(localStorage.getItem("usuarioLogado") || "null");
-      } catch (error) {
-        showMessage("Não foi possível ler os dados da sua conta.", true);
+        sessao = JSON.parse(localStorage.getItem("usuarioLogado") || "null");
+      } catch (erro) {
+        exibirMensagem("Não foi possível ler os dados da sua conta.", true);
         return;
       }
 
-      const candidate = session && (session.usuario || session);
-      const candidateId = candidate && (candidate.id || candidate._id);
-      if (!session || session.tipo !== "candidato" || !candidateId) {
-        showMessage("Entre como candidato para visualizar suas candidaturas.", true);
+      const candidatoObj = sessao && (sessao.usuario || sessao);
+      const idCandidato = candidatoObj && (candidatoObj._id || candidatoObj.id || sessao._id);
+
+      if (!sessao || !idCandidato) {
+        exibirMensagem("Entre como candidato para visualizar suas candidaturas.", true);
         return;
       }
 
+      // Preenche o nome na saudação superior
+      const nomeCandidatoEl = document.getElementById('nomeCandidato');
+      const nomeCabecalhoEl = document.getElementById('nomeNoCabecalho');
+      if (nomeCandidatoEl) nomeCandidatoEl.textContent = candidatoObj.nome || 'Candidato';
+      if (nomeCabecalhoEl) nomeCabecalhoEl.textContent = candidatoObj.nome || '';
+
       try {
-        const response = await fetch(
-          `/api/candidaturas/candidato/${encodeURIComponent(candidateId)}`
-        );
-        const contentType = response.headers.get("content-type") || "";
-        if (!contentType.includes("application/json")) {
-          throw new Error(
-            "A API de candidaturas não retornou JSON. Reinicie o servidor Node com `npm start` e acesse a aplicação por http://localhost:3000."
-          );
+        const resposta = await fetch(`/api/candidaturas/candidato/${encodeURIComponent(idCandidato)}`);
+        const tipoConteudo = resposta.headers.get("content-type") || "";
+        
+        if (!tipoConteudo.includes("application/json")) {
+          throw new Error("A API não retornou uma resposta JSON válida.");
         }
-        const result = await response.json();
-        if (!response.ok) {
-          throw new Error(result.erro || "Não foi possível carregar suas candidaturas.");
+        
+        const resultado = await resposta.json();
+        if (!resposta.ok) {
+          throw new Error(resultado.erro || "Não foi possível carregar suas candidaturas.");
         }
-        if (!Array.isArray(result)) {
+        if (!Array.isArray(resultado)) {
           throw new Error("A resposta do servidor não contém uma lista de candidaturas.");
         }
 
-        if (result.length === 0) {
-          showMessage("Você ainda não enviou seu currículo para nenhuma empresa.");
+        if (resultado.length === 0) {
+          exibirMensagem("Você ainda não enviou seu currículo para nenhuma empresa.");
           return;
         }
 
-        list.replaceChildren(...result.map(createApplicationCard));
-        showMessage("");
-      } catch (error) {
-        showMessage(error.message || "Erro ao carregar suas candidaturas.", true);
+        lista.replaceChildren(...resultado.map(criarCartaoCandidatura));
+        exibirMensagem("");
+      } catch (erro) {
+        exibirMensagem(erro.message || "Erro ao carregar suas candidaturas.", true);
       }
     });
   </script>
