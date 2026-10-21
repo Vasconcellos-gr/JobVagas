@@ -29,6 +29,7 @@ function renderizarVagasDaEmpresa(vagas) {
     card.dataset.tipo = vaga.tipo || 'CLT';
     card.dataset.salario = vaga.salario || '';
     card.dataset.tags = vaga.tags ? vaga.tags.join(', ') : '';
+    card.dataset.descricao = vaga.descricao || '';
 
     card.innerHTML = `
     <div class="job-card-top">
@@ -103,6 +104,10 @@ function ativarBotoesEdicao() {
       document.getElementById('editarTipo').value = cardEmEdicao.dataset.tipo;
       document.getElementById('editarSalario').value = cardEmEdicao.dataset.salario;
       document.getElementById('editarTags').value = cardEmEdicao.dataset.tags;
+      
+      if (document.getElementById('editarDescricao')) {
+        document.getElementById('editarDescricao').value = cardEmEdicao.dataset.descricao || '';
+      }
 
       if (editarVagaSection) {
         editarVagaSection.style.display = 'block';
