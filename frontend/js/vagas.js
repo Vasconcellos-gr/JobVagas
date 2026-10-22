@@ -49,9 +49,9 @@ function renderizarVagasDaEmpresa(vagas) {
     </div>
     <div class="job-card-footer">
         <span class="job-salary">${vaga.salario || 'A combinar'}</span>
-        <div style="display: flex; gap: 10px;">
+        <div class="job-card-actions">
             <button class="details-link editar-vaga-btn" type="button">Editar</button>
-            <button class="details-link excluir-vaga-btn" type="button" style="color: #ef4444; border-color: #ef4444;">Excluir</button>
+            <button class="details-link excluir-vaga-btn" type="button">Excluir</button>
         </div>
     </div>
     `;
@@ -105,7 +105,7 @@ function ativarBotoesEdicao() {
       document.getElementById('editarTags').value = cardEmEdicao.dataset.tags;
 
       if (editarVagaSection) {
-        editarVagaSection.style.display = 'block';
+        editarVagaSection.hidden = false;
         editarVagaSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (cancelarEdicao) {
     cancelarEdicao.addEventListener('click', () => {
-      if (editarVagaSection) editarVagaSection.style.display = 'none';
+      if (editarVagaSection) editarVagaSection.hidden = true;
       if (formEditarVaga) formEditarVaga.reset();
       cardEmEdicao = null;
       idVagaEmEdicao = null;
@@ -185,12 +185,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (resposta.ok) {
           if (msgEdicao) {
             msgEdicao.textContent = 'Vaga atualizada com sucesso!';
-            msgEdicao.style.color = '#10b981';
+            msgEdicao.classList.remove('is-error');
+            msgEdicao.classList.add('is-success');
             msgEdicao.hidden = false;
           }
           
           setTimeout(() => {
-            if (editarVagaSection) editarVagaSection.style.display = 'none';
+            if (editarVagaSection) editarVagaSection.hidden = true;
             formEditarVaga.reset();
             if (msgEdicao) msgEdicao.hidden = true;
             cardEmEdicao = null;
@@ -201,7 +202,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           if (msgEdicao) {
             msgEdicao.textContent = 'Erro ao atualizar a vaga.';
-            msgEdicao.style.color = '#ef4444';
+            msgEdicao.classList.add('is-error');
+            msgEdicao.classList.remove('is-success');
             msgEdicao.hidden = false;
           }
         }
@@ -259,7 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (resposta.ok) {
           if (msgAviso) {
             msgAviso.textContent = 'Vaga publicada com sucesso!';
-            msgAviso.style.color = '#10b981';
+            msgAviso.classList.remove('is-error');
+            msgAviso.classList.add('is-success');
             msgAviso.hidden = false;
           }
           
@@ -272,7 +275,8 @@ document.addEventListener('DOMContentLoaded', () => {
           const erro = await resposta.json();
           if (msgAviso) {
             msgAviso.textContent = 'Erro: ' + (erro.detalhes || erro.erro);
-            msgAviso.style.color = '#ef4444';
+            msgAviso.classList.add('is-error');
+            msgAviso.classList.remove('is-success');
             msgAviso.hidden = false;
           }
         }

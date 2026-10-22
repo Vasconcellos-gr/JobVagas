@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const txtErro = resultado.erro || resultado.mensagem || 'Erro ao cadastrar empresa.';
           if (mensagemEmpresa) {
             mensagemEmpresa.textContent = txtErro;
-            mensagemEmpresa.style.color = 'red';
+            mensagemEmpresa.classList.add('is-error');
             mensagemEmpresa.hidden = false;
           }
         }
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Erro na requisição Fetch:', error);
         if (mensagemEmpresa) {
           mensagemEmpresa.textContent = 'Erro de conexão com o servidor.';
-          mensagemEmpresa.style.color = 'red';
+          mensagemEmpresa.classList.add('is-error');
           mensagemEmpresa.hidden = false;
         }
       }

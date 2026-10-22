@@ -159,10 +159,9 @@ if (vacancyList) {
 
     const applyButton = document.createElement("a");
     applyButton.className = "btn btn-primary";
+    applyButton.classList.add("job-apply-button");
     applyButton.textContent = "Candidatar-se";
     applyButton.hidden = true;
-    applyButton.style.display = "inline-block";
-    applyButton.style.marginTop = "15px";
 
     const idDaVaga = job._id || job.id || encodeURIComponent(job.titulo);
     applyButton.href = `vaga_detalhes.html?id=${idDaVaga}`;

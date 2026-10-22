@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const path = require('path');
 const connectDB = require('./config/DataBase');
 
@@ -285,6 +286,21 @@ app.get('/api/candidaturas', async (req, res) => {
     res.json(candidaturas);
   } catch (error) {
     res.status(500).json({ erro: error.message });
+  }
+});
+
+app.get('/api/candidaturas/candidato/:candidatoId', async (req, res) => {
+  const { candidatoId } = req.params;
+  if (!mongoose.isValidObjectId(candidatoId)) {
+    return res.status(400).json({ erro: 'Identificador de candidato inválido.' });
+  }
+
+  try {
+    const candidaturas = await candidaturasService.obterCandidaturasPorCandidato(candidatoId);
+    res.json(candidaturas);
+  } catch (error) {
+    console.error('Erro ao buscar candidaturas do candidato:', error);
+    res.status(500).json({ erro: 'Não foi possível carregar suas candidaturas.' });
   }
 });
 

@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Confira os detalhes de uma oportunidade na JOBVAGAS.">
   <title>Detalhes da vaga | JOBVAGAS</title>
+  <link rel="stylesheet" href="./css/vendor/normalize.css">
+  <link rel="stylesheet" href="./css/vendor/skeleton.css">
+  <link rel="stylesheet" href="./css/global.css">
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body class="jobs-page vacancy-detail-page">
@@ -146,12 +149,14 @@
           }
 
           applicationMessage.textContent = "Candidatura enviada com sucesso.";
-          applicationMessage.style.color = '#10b981'; // Cor verde para sucesso
+          applicationMessage.classList.remove("is-error");
+          applicationMessage.classList.add("is-success");
           applicationMessage.hidden = false;
           applyButton.textContent = "Candidatura enviada";
         } catch (error) {
           applicationMessage.textContent = error.message || "Erro ao enviar sua candidatura.";
-          applicationMessage.style.color = '#ef4444'; // Cor vermelha para erro
+          applicationMessage.classList.add("is-error");
+          applicationMessage.classList.remove("is-success");
           applicationMessage.hidden = false;
           applyButton.disabled = false;
           applyButton.textContent = "Enviar candidatura";

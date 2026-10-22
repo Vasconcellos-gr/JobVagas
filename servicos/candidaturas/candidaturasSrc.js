@@ -17,6 +17,13 @@ async function obterCandidaturaPorId(id) {
     .populate('candidato');
 }
 
+async function obterCandidaturasPorCandidato(candidatoId) {
+  return await Candidatura.find({ candidatoId })
+    .populate('vagaId')
+    .sort({ dataCandidatura: -1 })
+    .lean();
+}
+
 async function atualizarCandidatura(id, dados) {
   return await Candidatura.findByIdAndUpdate(id, dados, { new: true });
 }
@@ -29,6 +36,7 @@ module.exports = {
   obterTodasCandidaturas,
   criarCandidatura,
   obterCandidaturaPorId,
+  obterCandidaturasPorCandidato,
   atualizarCandidatura,
   deletarCandidatura
 };
