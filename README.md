@@ -37,7 +37,11 @@ JobVagas/
 │   └── DataBase.js              # Configuração e conexão com o MongoDB
 ├── frontend/                    # Interface web estática
 │   ├── css/
-│   │   └── style.css            # Estilos globais
+|   |   ├── vendor/
+|   |   |    ├── normalize.css   # Normalise css
+|   |   |    └── skeleton.css    # Estilo Skeleton
+|   |   ├── global.css           # Estilos globais
+│   │   └── style.css            # Estilos paginação
 │   ├── js/
 │   │   ├── app.js               # Utilitários globais do cliente
 │   │   ├── auth.js              # Lógica de login, cadastro e sessão
