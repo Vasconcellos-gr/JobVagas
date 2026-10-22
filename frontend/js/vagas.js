@@ -103,6 +103,11 @@ function ativarBotoesEdicao() {
       document.getElementById('editarTipo').value = cardEmEdicao.dataset.tipo;
       document.getElementById('editarSalario').value = cardEmEdicao.dataset.salario;
       document.getElementById('editarTags').value = cardEmEdicao.dataset.tags;
+      document.getElementById('editarDescriçao').value = cardEmEdicao.dataset.titulo;
+
+      if (document.getElementById('editarDescricao')) {
+        document.getElementById('editarDescricao').value = cardEmEdicao.dataset.descricao || '';
+      }
 
       if (editarVagaSection) {
         editarVagaSection.hidden = false;
@@ -227,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const sessao = JSON.parse(dadosSessao);
       
-      // 2. Monta a vaga com TODOS os campos necessários
+      // Monta a vaga com TODOS os campos necessários
       const dadosNovaVaga = {
         titulo: document.getElementById('vagaTitulo').value.trim(),
         localizacao: document.getElementById('vagaLocal').value.trim(), 
@@ -235,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
         salario: document.getElementById('vagaSalario').value.trim(),
         descricao: document.getElementById('vagaDescricao').value.trim(),
         
-        // 🚀 LÊ AS TAGS, SEPARA POR VÍRGULA E LIMPA OS ESPAÇOS
+        // LÊ AS TAGS, SEPARA POR VÍRGULA E LIMPA OS ESPAÇOS
         tags: document.getElementById('vagaTags').value.trim() 
                 ? document.getElementById('vagaTags').value.split(',').map(tag => tag.trim()).filter(Boolean) 
                 : [], 
