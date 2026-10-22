@@ -1,202 +1,194 @@
-# JobVagas
+# 💼 JobVagas
 
-Plataforma para busca e gerenciamento de vagas de emprego, conectando candidatos, empresas e oportunidades em um único sistema.
+> Plataforma centralizada para gestão de vagas e recrutamento, integrando candidatos e empresas em um único ecossistema web.
 
-## Visão geral
+![NodeJS](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
-O JobVagas é uma aplicação web em Node.js com Express que permite:
-- listar vagas disponíveis;
-- cadastrar empresas;
-- cadastrar candidatos;
-- registrar candidaturas;
-- gerenciar cadastro, autenticação e fluxo de vagas.
+---
 
-A interface do sistema fica na pasta `frontend`, enquanto a lógica de negócio e acesso a dados ficam em `servicos` e `config`.
+## 📌 Visão Geral
 
-## Stack tecnológica
+O **JobVagas** é uma aplicação Full Stack com backend construído em **Node.js + Express** e persistência em **MongoDB**. O sistema disponibiliza painéis dedicados para candidatos e empresas gerenciarem todo o fluxo de oportunidades de trabalho, inscrições e triagem de perfis.
 
-- Node.js
-- Express
-- MongoDB
-- Mongoose
-- JavaScript
-- HTML, CSS e JavaScript para o frontend estático
+### 🎯 Principais Objetivos
+- Facilitar a publicação, filtragem e busca de oportunidades de emprego.
+- Oferecer uma área administrativa intuitiva para empresas gerenciarem inscrições.
+- Disponibilizar espaço para candidatos cadastrarem currículo e monitorarem status de candidaturas.
 
-## 📁 Estrutura de Diretórios
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- **Backend:** Node.js, Express.js
+- **Banco de Dados:** MongoDB (com ODM Mongoose)
+- **Frontend:** HTML5, CSS3, JavaScript Vanilla
+- **Gerenciamento de Dependências:** npm
+
+---
+
+## 📁 Estrutura do Projeto
 
 ```text
 JobVagas/
 ├── config/
-│   └── DataBase.js            # Configuração e conexão com o banco de dados
-├── frontend/                  # Interface do usuário (páginas e lógica de tela)
+│   └── DataBase.js              # Configuração e conexão com o MongoDB
+├── frontend/                    # Interface web estática
 │   ├── css/
-│   │   └── style.css          # Estilização global da aplicação
+│   │   └── style.css            # Estilos globais
 │   ├── js/
-│   │   ├── app.js             # Script base/geral do frontend
-│   │   ├── auth.js            # Lógica de autenticação e controle de sessão
-│   │   ├── candidato.js       # Ações e manipulações do painel do candidato
-│   │   ├── empresa.js         # Ações e manipulações do painel da empresa
-│   │   ├── perfil.js          # Gerenciamento de exibição e edição de perfil
-│   │   ├── tabs.js            # Controle de navegação por abas/abas dinâmicas
-│   │   └── vagas.js           # Listagem, busca e detalhes de vagas
-│   ├── cadastro.html          # Tela de cadastro (candidatos e empresas)
-│   ├── candidato.html         # Página de visualização de perfil de candidato
-│   ├── candidaturas_empresa.html # Visualização de inscritos por parte da empresa
-│   ├── curriculo.html         # Formulário/visualização de currículo
-│   ├── empresa.html           # Perfil público ou detalhes da empresa
-│   ├── home_candidato.html    # Dashboard principal do candidato
-│   ├── home_empresa.html      # Dashboard principal da empresa
-│   ├── index.html             # Página inicial do sistema
-│   ├── login.html             # Tela de acesso/login
-│   ├── vaga_detalhes.html     # Exibição detalhada de uma oportunidade
-│   └── vagas.html             # Listagem geral e busca de vagas abertas
-├── servicos/                  # Módulos de domínio, regras de negócio e persistência
+│   │   ├── app.js               # Utilitários globais do cliente
+│   │   ├── auth.js              # Lógica de login, cadastro e sessão
+│   │   ├── candidato.js         # Interações do painel do candidato
+│   │   ├── empresa.js           # Interações do painel da empresa
+│   │   ├── perfil.js            # Visualização e edição de perfil
+│   │   ├── tabs.js              # Controle de alternância de abas
+│   │   └── vagas.js             # Renderização e filtros de vagas
+│   ├── cadastro.html            # Cadastro inicial (candidato ou empresa)
+│   ├── candidato.html           # Visualização de perfil
+│   ├── candidaturas_empresa.html# Gestão de inscritos pela empresa
+│   ├── curriculo.html           # Cadastro/edição de currículo
+│   ├── empresa.html             # Perfil público da empresa
+│   ├── home_candidato.html      # Dashboard do candidato
+│   ├── home_empresa.html        # Dashboard da empresa
+│   ├── index.html               # Landing page principal
+│   ├── login.html               # Acesso ao sistema
+│   ├── vaga_detalhes.html       # Visualização individual de vaga
+│   └── vagas.html               # Catálogo público de vagas
+├── servicos/                    # Camadas de domínio e regras de negócio
 │   ├── candidatos/
-│   │   ├── candidatosModel.js # Esquema/definição de dados de candidatos
-│   │   └── candidatosSrc.js   # Regras de negócio e comunicação de candidatos
+│   │   ├── candidatosModel.js   # Model/Schema de candidatos
+│   │   └── candidatosSrc.js     # Regras de negócio e rotas de candidatos
 │   ├── candidaturas/
-│   │   ├── candidaturasModel.js # Esquema/definição de dados de candidaturas
-│   │   └── candidaturasSrc.js   # Controle de envios e status de candidaturas
+│   │   ├── candidaturasModel.js # Model/Schema de candidaturas
+│   │   └── candidaturasSrc.js   # Regras de negócio e validações
 │   ├── empresas/
-│   │   ├── empresasModel.js   # Esquema/definição de dados de empresas
-│   │   └── empresasSrs.js     # Regras de negócio e operações de empresas
+│   │   ├── empresasModel.js     # Model/Schema de empresas
+│   │   └── empresasSrs.js       # Regras de negócio e autenticação de empresas
 │   └── vagas/
-│       ├── vagasModel.js      # Esquema/definição de dados de vagas
-│       └── vagasSrc.js        # Operações de criação, edição e busca de vagas
-├── .env                       # Variáveis de ambiente locais (ignorado no git)
-├── .env_exemplo               # Modelo de exemplo para preenchimento de variáveis
-├── .gitignore                 # Arquivos e diretórios ignorados pelo controle de versão
-├── package.json               # Gerenciador de dependências e scripts do projeto
-├── package-lock.json          # Trava de versões exatas das dependências instaladas
-├── README.md                  # Documentação descritiva do projeto
-└── server.js                  # Ponto de entrada do backend e inicialização do servidor
+│       ├── vagasModel.js        # Model/Schema de vagas
+│       └── vagasSrc.js          # CRUD e filtros de vagas
+├── .env                         # Variáveis de ambiente locais (não versionado)
+├── .env_exemplo                 # Exemplo de configuração das variáveis
+├── .gitignore                   # Arquivos ignorados pelo Git
+├── package.json                 # Manifesto do projeto e dependências
+├── package-lock.json            # Bloqueio de versões exatas
+├── README.md                    # Documentação do projeto
+└── server.js                    # Inicialização do servidor Express
 ```
 
-## Funcionalidades principais
+---
 
-### Vagas
-- criação, listagem, atualização e exclusão de vagas;
-- busca por empresa;
-- filtros e listagem para a interface pública.
+### ⚡ Funcionalidades
 
-### Empresas
-- cadastro de empresas;
-- autenticação via login;
-- relacionamento com as vagas publicadas.
+### 🏢 Para Empresas
+- Cadastro e autenticação via login.
+- Painel para criação, edição e exclusão de vagas.
+- Acompanhamento de candidatos inscritos por vaga.
+- Atualização do status da candidatura (ex.: Em análise, Aprovado, Reprovado).
 
-### Candidatos
-- cadastro de candidatos;
-- autenticação via login;
-- atualização de currículo;
-- consulta de candidaturas.
+### 👤 Para Candidatos
+- Cadastro individual e login na plataforma.
+- Preenchimento e edição de dados curriculares.
+- Busca e filtragem de vagas abertas.
+- Envio de candidatura com proteção contra inscrições duplicadas na mesma vaga.
+- Acompanhamento do status de cada processo seletivo inscrito.
 
-### Candidaturas
-- inscrição do candidato em uma vaga;
-- prevenção de múltiplas inscrições duplicadas;
-- atualização de status da candidatura.
+---
 
-## Pré-requisitos
+### 🚀 Como Executar o Projeto
 
-Antes de rodar o projeto, certifique-se de ter instalado:
-- Node.js
-- MongoDB local ou uma URI de conexão válida
-- npm
+### Pré-requisitos
+- [Node.js](https://nodejs.org/) (versão LTS recomendada)
+- Instância local do [MongoDB](https://www.mongodb.com/) em execução ou conexão via MongoDB Atlas.
+- Gerenciador de pacotes `npm`.
 
-## Configuração do ambiente
+### Passo a Passo
 
-1. Clone o repositório:
+1. **Clonar o repositório:**
+   ```bash
+   git clone https://github.com/Vasconcellos-gr/JobVagas.git
+   cd JobVagas
+   ```
 
-```bash
-git clone https://github.com/Vasconcellos-gr/JobVagas.git
-cd JobVagas
-```
+2. **Instalar as dependências:**
+   ```bash
+   npm install
+   ```
 
-2. Crie o arquivo `.env` com base no exemplo:
+3. **Configurar as variáveis de ambiente:**
+   Crie uma cópia do arquivo `.env_exemplo` nomeando-a como `.env`:
+   ```bash
+   cp .env_exemplo .env
+   ```
+   Abra o arquivo `.env` e preencha as configurações:
+   ```env
+   PORT=3000
+   MONGODB_URI=mongodb://localhost:27017/jobvagas
+   NODE_ENV=development
+   ```
 
-```bash
-cp .env_exemplo .env
-```
+4. **Executar a aplicação:**
+   ```bash
+   npm start
+   ```
 
-3. Ajuste as variáveis de ambiente conforme o seu banco:
+5. **Acessar no navegador:**
+   Abra [http://localhost:3000](http://localhost:3000) para visualizar a aplicação.
 
-```env
-MONGODB_URI=mongodb://localhost:27017/jobvagas
-NODE_ENV=development
-PORT=3000
-```
+---
 
-## Instalação
+### 🔌 Endpoints da API
 
-```bash
-npm install
-```
+### 📋 Vagas (`/api/vagas`)
+| Método | Endpoint | Descrição |
+| :--- | :--- | :--- |
+| `GET` | `/api/vagas` | Lista todas as vagas publicadas |
+| `GET` | `/api/vagas/:id` | Retorna os detalhes de uma vaga específica |
+| `POST` | `/api/vagas` | Cria uma nova oportunidade de vaga |
+| `PUT` | `/api/vagas/:id` | Atualiza os dados de uma vaga |
+| `DELETE` | `/api/vagas/:id` | Remove uma vaga |
 
-## Execução
+### 🏢 Empresas (`/api/empresas`)
+| Método | Endpoint | Descrição |
+| :--- | :--- | :--- |
+| `GET` | `/api/empresas` | Lista todas as empresas cadastradas |
+| `GET` | `/api/empresas/:id` | Retorna o perfil de uma empresa |
+| `POST` | `/api/empresas` | Cadastra uma nova empresa |
+| `POST` | `/api/empresas/login` | Realiza autenticação da empresa |
+| `PUT` | `/api/empresas/:id` | Atualiza os dados da empresa |
+| `DELETE` | `/api/empresas/:id` | Remove uma conta de empresa |
 
-Para iniciar a aplicação:
+### 👤 Candidatos (`/api/candidatos`)
+| Método | Endpoint | Descrição |
+| :--- | :--- | :--- |
+| `GET` | `/api/candidatos` | Lista candidatos |
+| `GET` | `/api/candidatos/:id` | Retorna o perfil de um candidato |
+| `POST` | `/api/candidatos` | Registra um novo candidato |
+| `POST` | `/api/candidatos/login` | Realiza autenticação do candidato |
+| `PUT` | `/api/candidatos/:id` | Atualiza os dados/currículo do candidato |
+| `DELETE` | `/api/candidatos/:id` | Remove a conta do candidato |
 
-```bash
-npm start
-```
+### 📑 Candidaturas (`/api/candidaturas`)
+| Método | Endpoint | Descrição |
+| :--- | :--- | :--- |
+| `GET` | `/api/candidaturas` | Lista todas as candidaturas registradas |
+| `GET` | `/api/candidaturas/:id` | Retorna detalhes de uma candidatura |
+| `POST` | `/api/candidaturas` | Aplica o candidato a uma vaga |
+| `PUT` | `/api/candidaturas/:id` | Atualiza dados gerais de uma candidatura |
+| `PUT` | `/api/candidaturas/:id/status` | Altera o status do processo seletivo |
+| `DELETE` | `/api/candidaturas/:id` | Cancela ou remove uma candidatura |
 
-ou
+---
 
-```bash
-node server.js
-```
+### 👥 Autores
 
-O servidor será iniciado na porta configurada (por padrão `3000`) e a aplicação estará disponível em:
+Desenvolvido pelo time:
 
-```bash
-http://localhost:3000
-```
+- **Gustavo** 
+- **Davi**
+- **João Vitor**
 
-## APIs principais
-
-A aplicação expõe rotas REST para cada domínio principal:
-
-### Vagas
-- `GET /api/vagas`
-- `GET /api/vagas/:id`
-- `POST /api/vagas`
-- `PUT /api/vagas/:id`
-- `DELETE /api/vagas/:id`
-
-### Empresas
-- `GET /api/empresas`
-- `GET /api/empresas/:id`
-- `POST /api/empresas`
-- `PUT /api/empresas/:id`
-- `DELETE /api/empresas/:id`
-- `POST /api/empresas/login`
-
-### Candidatos
-- `GET /api/candidatos`
-- `GET /api/candidatos/:id`
-- `POST /api/candidatos`
-- `PUT /api/candidatos/:id`
-- `DELETE /api/candidatos/:id`
-- `POST /api/candidatos/login`
-
-### Candidaturas
-- `GET /api/candidaturas`
-- `GET /api/candidaturas/:id`
-- `POST /api/candidaturas`
-- `PUT /api/candidaturas/:id`
-- `PUT /api/candidaturas/:id/status`
-- `DELETE /api/candidaturas/:id`
-
-## Observações
-
-- O frontend é estático e servido diretamente pelo Express.
-- O arquivo `server.js` centraliza a configuração das rotas e a inicialização da aplicação.
-- A conexão com o MongoDB está em `config/DataBase.js`.
-- O projeto foi estruturado em módulos por domínio para facilitar manutenção e escalabilidade.
-
-## Autor
-
-Projeto desenvolvido por:
-
-Gustavo,
-Davi,
-João Vitor
+---
