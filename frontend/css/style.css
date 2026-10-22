@@ -1,55 +1,4 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 2rem;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-nav {
-  display: flex;
-  gap: 1rem;
-}
-
-button {
-  padding: 0.6rem 1rem;
-  cursor: pointer;
-}
-
-.jobs-page {
-  --jobs-blue: #0878e8;
-  --jobs-blue-hover: #066dcc;
-  --jobs-navy: #123b5d;
-  --jobs-text: #26384a;
-  --jobs-muted: #64748b;
-  --jobs-bg: #f5f8fc;
-  --jobs-white: #fff;
-  --jobs-border: #dce5ee;
-  --jobs-green: #22a06b;
-  min-width: 320px;
-  min-height: 100vh;
-  padding: 0;
-  background: var(--jobs-bg);
-  color: var(--jobs-text);
-  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-.jobs-page *,
-.jobs-page *::before,
-.jobs-page *::after {
-  box-sizing: border-box;
-}
-
-.jobs-page a {
-  color: inherit;
-  text-decoration: none;
-}
-
+/* Shared site shell and job listing components */
 .jobs-container {
   width: min(100% - 48px, 1200px);
   margin: 0 auto;
@@ -60,6 +9,15 @@ button {
   margin: 0;
   border-bottom: 1px solid var(--jobs-border);
   background: var(--jobs-white);
+}
+
+.application-status-control {
+  min-width: min(200px, 100%);
+  align-self: flex-end;
+}
+
+.application-status-field {
+  margin-bottom: 0;
 }
 
 .jobs-page .header-inner {
@@ -166,32 +124,6 @@ button {
   color: var(--jobs-muted);
 }
 
-.jobs-page .btn {
-  display: inline-flex;
-  min-height: 50px;
-  justify-content: center;
-  align-items: center;
-  padding: 0 21px;
-  border: 0;
-  border-radius: 10px;
-  cursor: pointer;
-  font: inherit;
-  font-weight: 700;
-  transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
-}
-
-.jobs-page .btn-primary {
-  background: var(--jobs-blue);
-  box-shadow: 0 8px 18px rgb(8 120 232 / 20%);
-  color: var(--jobs-white);
-}
-
-.jobs-page .btn-primary:hover {
-  transform: translateY(-1px);
-  background: var(--jobs-blue-hover);
-  box-shadow: 0 10px 20px rgb(8 120 232 / 25%);
-}
-
 .jobs-main {
   padding-top: 54px;
   padding-bottom: 80px;
@@ -252,46 +184,6 @@ button {
   grid-template-columns: minmax(0, 1fr) 92px;
   align-items: end;
   gap: 12px;
-}
-
-.jobs-page .field {
-  display: grid;
-  min-width: 0;
-  gap: 9px;
-  color: var(--jobs-navy);
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.jobs-page .field input,
-.jobs-page .field select {
-  width: 100%;
-  height: 52px;
-  padding: 0 15px;
-  border: 1px solid var(--jobs-border);
-  border-radius: 10px;
-  outline: none;
-  background-color: var(--jobs-white);
-  color: var(--jobs-text);
-  font: inherit;
-  font-size: 15px;
-  font-weight: 400;
-  transition: border-color 160ms ease, box-shadow 160ms ease;
-}
-
-.jobs-page .field select {
-  cursor: pointer;
-}
-
-.jobs-page .field input::placeholder {
-  color: #8492a2;
-  opacity: 1;
-}
-
-.jobs-page .field input:focus,
-.jobs-page .field select:focus {
-  border-color: var(--jobs-blue);
-  box-shadow: 0 0 0 3px rgb(8 120 232 / 13%);
 }
 
 .jobs-page .search-button {
@@ -377,12 +269,19 @@ button {
 .job-card-top {
   justify-content: space-between;
   gap: 16px;
+  min-width: 0;
 }
 
 .job-identity {
   min-width: 0;
   align-items: center;
   gap: 14px;
+}
+
+.job-title-company {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .company-icon {
@@ -439,6 +338,13 @@ button {
   font-size: 14px;
 }
 
+.job-meta > span,
+.job-tags > span,
+.job-salary {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .job-meta span + span::before {
   margin-right: 20px;
   color: #a9b7c4;
@@ -463,12 +369,27 @@ button {
 
 .job-card-footer {
   display: flex;
+  min-width: 0;
   justify-content: space-between;
   align-items: center;
   gap: 16px;
   margin: 16px 0 0 60px;
   padding-top: 14px;
   border-top: 1px solid #eef2f6;
+}
+
+.jobs-page .job-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.jobs-page .excluir-vaga-btn {
+  color: #b42318;
+}
+
+.jobs-page .excluir-vaga-btn:hover {
+  color: #8f1d14;
 }
 
 .job-salary {
@@ -486,6 +407,10 @@ button {
   font-family: inherit;
   font-size: 14px;
   font-weight: 700;
+}
+
+.job-apply-button {
+  margin-top: 15px;
 }
 
 .jobs-page .details-link:hover {
@@ -722,6 +647,7 @@ button {
   }
 }
 
+/* Registration, login, and curriculum pages */
 .registration-main {
   max-width: 920px;
   padding-top: 48px;
@@ -865,7 +791,7 @@ button {
 }
 
 .curriculum-card .registration-submit {
-  min-height: 50px !important;
+  min-height: 50px;
   font-size: 15px;
 }
 
@@ -930,101 +856,6 @@ button {
   font-size: 13px;
 }
 
-.registration-form {
-  display: grid;
-  gap: 13px;
-}
-
-.registration-field {
-  display: grid;
-  min-width: 0;
-  gap: 6px;
-  color: var(--jobs-navy);
-  font-size: 12px;
-  font-weight: 650;
-}
-
-.registration-field > span > span[aria-hidden="true"] {
-  color: #d14343;
-}
-
-.registration-field .optional-label,
-.registration-field small {
-  color: var(--jobs-muted);
-  font-weight: 400;
-}
-
-.registration-field input,
-.registration-field textarea {
-  width: 100%;
-  min-width: 0;
-  min-height: 40px;
-  padding: 9px 11px;
-  border: 1px solid var(--jobs-border);
-  border-radius: 7px;
-  outline: none;
-  background: var(--jobs-white);
-  color: var(--jobs-text);
-  font: inherit;
-  font-size: 13px;
-  font-weight: 400;
-  transition: border-color 160ms ease, box-shadow 160ms ease;
-}
-
-.registration-field textarea {
-  min-height: 74px;
-  resize: vertical;
-}
-
-.registration-field input::placeholder,
-.registration-field textarea::placeholder {
-  color: #8492a2;
-  opacity: 1;
-}
-
-.registration-field input:focus,
-.registration-field textarea:focus {
-  border-color: var(--jobs-blue);
-  box-shadow: 0 0 0 3px rgb(8 120 232 / 12%);
-}
-
-.registration-field input[type="file"] {
-  padding: 8px;
-}
-
-.registration-field-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 13px;
-}
-
-.registration-message {
-  margin: 0;
-  color: var(--jobs-navy);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.registration-message.is-error {
-  color: #b42318;
-}
-
-.registration-message.is-success {
-  color: #16794b;
-}
-
-.registration-submit {
-  width: 100%;
-  min-height: 43px !important;
-  border-radius: 7px !important;
-  font-size: 13px;
-}
-
-.registration-submit:disabled {
-  cursor: wait;
-  opacity: 0.7;
-}
-
 @media (max-width: 576px) {
   .registration-main {
     padding-top: 32px;
@@ -1061,17 +892,20 @@ button {
     padding: 26px 20px;
   }
 
-  .registration-field-row {
-    grid-template-columns: 1fr;
+  .registration-field-row .columns {
+    width: 100%;
+    margin-left: 0;
   }
+
 }
 
+/* Shared candidate and company account components */
 .home-page {
   background: var(--jobs-white);
 }
 
 .candidate-home-page {
-  background: #f5f8fc;
+  background: var(--jobs-bg);
 }
 
 .candidate-header-name {
@@ -1412,7 +1246,7 @@ button {
 }
 
 .company-home-page {
-  background: #f5f8fc;
+  background: var(--jobs-bg);
 }
 
 .company-layout {
@@ -1426,6 +1260,16 @@ button {
 
 .company-vacancy-publisher {
   margin-bottom: 34px;
+}
+
+.vacancy-editor {
+  margin-top: 2rem;
+}
+
+.vacancy-editor-actions {
+  margin-top: 1rem;
+  justify-content: flex-end;
+  gap: 0.75rem;
 }
 
 .company-vacancy-form {
@@ -1480,6 +1324,7 @@ button {
   text-underline-offset: 3px;
 }
 
+/* Company dashboards and vacancy details */
 .vacancy-detail-main {
   max-width: 1000px;
   padding-top: 42px;
@@ -1510,6 +1355,7 @@ button {
   border-radius: 14px;
   background: var(--jobs-white);
   box-shadow: 0 8px 24px rgb(18 59 93 / 5%);
+  scroll-margin-top: 20px;
 }
 
 .vacancy-apply-card h2 {
@@ -1637,6 +1483,7 @@ button {
   }
 }
 
+/* Public landing page */
 .home-page .home-main {
   padding-bottom: 42px;
 }
@@ -2083,22 +1930,11 @@ button {
   }
 }
 
-  .jobs-page .btn-secondary {
-    border: 1px solid var(--jobs-border);
-    background: var(--jobs-white);
-    color: var(--jobs-navy);
-  }
-
-  .jobs-page .btn-secondary:hover {
-    border-color: #b9d9fb;
-    background: #f4f9ff;
-    color: var(--jobs-blue);
-  }
-
   .applications-main {
     padding-top: 42px;
   }
 
+  /* Application management components */
   .application-stats {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2359,15 +2195,6 @@ button {
   .vacancy-sidebar {
     display: grid;
     gap: 18px;
-  }
-
-  .vacancy-apply-card {
-    padding: 24px;
-    border: 1px solid var(--jobs-border);
-    border-radius: 14px;
-    background: var(--jobs-white);
-    box-shadow: 0 8px 24px rgb(18 59 93 / 5%);
-    scroll-margin-top: 20px;
   }
 
   .vacancy-apply-card h2 {

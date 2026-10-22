@@ -1,0 +1,230 @@
+/* Shared theme tokens and base controls. Skeleton is loaded before this file. */
+:root {
+  --jobs-blue: #0878e8;
+  --jobs-blue-hover: #066dcc;
+  --jobs-navy: #123b5d;
+  --jobs-text: #26384a;
+  --jobs-muted: #64748b;
+  --jobs-bg: #f5f8fc;
+  --jobs-white: #fff;
+  --jobs-border: #dce5ee;
+  --jobs-green: #22a06b;
+  --jobs-font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --jobs-space-1: 0.25rem;
+  --jobs-space-2: 0.5rem;
+  --jobs-space-3: 0.75rem;
+  --jobs-space-4: 1rem;
+  --jobs-space-6: 1.5rem;
+  --jobs-space-8: 2rem;
+}
+
+.jobs-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+  background: var(--jobs-bg);
+  color: var(--jobs-text);
+  font-family: var(--jobs-font-family);
+  font-size: 1.5em;
+  line-height: 1.6;
+}
+
+.jobs-page *,
+.jobs-page *::before,
+.jobs-page *::after {
+  box-sizing: border-box;
+}
+
+.jobs-page a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.jobs-page button:not(.btn) {
+  height: auto;
+  border-radius: 0;
+  line-height: inherit;
+  letter-spacing: inherit;
+  text-transform: none;
+}
+
+.jobs-page .btn {
+  display: inline-flex;
+  min-height: 50px;
+  justify-content: center;
+  align-items: center;
+  padding: 0 var(--jobs-space-6);
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: normal;
+  text-transform: none;
+  transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.jobs-page .btn-primary {
+  background: var(--jobs-blue);
+  box-shadow: 0 8px 18px rgb(8 120 232 / 20%);
+  color: var(--jobs-white);
+}
+
+.jobs-page .btn-primary:hover {
+  transform: translateY(-1px);
+  background: var(--jobs-blue-hover);
+  box-shadow: 0 10px 20px rgb(8 120 232 / 25%);
+}
+
+.jobs-page .btn-secondary,
+.jobs-page .btn-muted {
+  border: 1px solid var(--jobs-border);
+  background: var(--jobs-white);
+  color: var(--jobs-navy);
+}
+
+.jobs-page .btn-secondary:hover,
+.jobs-page .btn-muted:hover {
+  border-color: #b9d9fb;
+  background: #f4f9ff;
+  color: var(--jobs-blue);
+}
+
+.jobs-page .field {
+  display: grid;
+  min-width: 0;
+  gap: 9px;
+  margin-bottom: 0;
+  color: var(--jobs-navy);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.jobs-page .field input,
+.jobs-page .field select,
+.registration-field input,
+.registration-field select,
+.registration-field textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--jobs-border);
+  border-radius: 8px;
+  background: var(--jobs-white);
+  color: var(--jobs-text);
+  font: inherit;
+}
+
+.jobs-page .field input,
+.jobs-page .field select {
+  height: 52px;
+  padding: 0 15px;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.jobs-page .field select {
+  cursor: pointer;
+}
+
+.jobs-page .field input::placeholder,
+.registration-field input::placeholder,
+.registration-field textarea::placeholder {
+  color: #8492a2;
+  opacity: 1;
+}
+
+.jobs-page .field input:focus,
+.jobs-page .field select:focus,
+.registration-field input:focus,
+.registration-field select:focus,
+.registration-field textarea:focus {
+  border-color: var(--jobs-blue);
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(8 120 232 / 13%);
+}
+
+.registration-field {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+  margin-bottom: 0;
+  color: var(--jobs-navy);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.registration-field > span > span[aria-hidden="true"] {
+  color: #d14343;
+}
+
+.registration-field .optional-label,
+.registration-field small {
+  color: var(--jobs-muted);
+  font-weight: 400;
+}
+
+.registration-field input,
+.registration-field select,
+.registration-field textarea {
+  min-height: 40px;
+  padding: 9px 11px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 400;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.registration-field textarea {
+  min-height: 74px;
+  resize: vertical;
+}
+
+.registration-field input[type="file"] {
+  padding: 8px;
+}
+
+.registration-form {
+  display: grid;
+  gap: var(--jobs-space-3);
+}
+
+.registration-message {
+  margin: 0;
+  color: var(--jobs-navy);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.registration-message.is-error {
+  color: #b42318;
+}
+
+.registration-message.is-success {
+  color: #16794b;
+}
+
+.login-message {
+  margin-bottom: var(--jobs-space-3);
+  font-weight: 700;
+}
+
+.login-message.is-success {
+  color: #16794b;
+}
+
+.login-message.is-error {
+  color: #b42318;
+}
+
+.jobs-page .registration-submit {
+  width: 100%;
+  min-height: 43px;
+  border-radius: 7px;
+  font-size: 13px;
+}
+
+.registration-submit:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}

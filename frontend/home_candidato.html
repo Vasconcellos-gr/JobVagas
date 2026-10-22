@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Gerencie seu perfil profissional e encontre oportunidades na JOBVAGAS.">
   <title>Meu perfil | JOBVAGAS</title>
+  <link rel="stylesheet" href="./css/vendor/normalize.css">
+  <link rel="stylesheet" href="./css/vendor/skeleton.css">
+  <link rel="stylesheet" href="./css/global.css">
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body class="jobs-page candidate-home-page" data-page="candidate-home" data-profile-type="candidato">
@@ -147,31 +150,36 @@
         mensagem.classList.toggle("is-error", ehErro);
       }
 
-      function criarCartaoCandidatura(aplicacao) {
-        const vaga = aplicacao.vagaId && typeof aplicacao.vagaId === "object" ? aplicacao.vagaId : {};
-        const empresa = vaga.empresaId && typeof vaga.empresaId === "object" ? vaga.empresaId : {};
-        
-        const cartao = document.createElement("li");
-        cartao.className = "job-card application-card";
+      // Cria o cartão de uma candidatura com os dados da vaga e da empresa.
+      function createApplicationCard(application) {
+        const vacancy = application.vagaId && typeof application.vagaId === "object"
+          ? application.vagaId
+          : {};
+        const company = vacancy.empresaId && typeof vacancy.empresaId === "object"
+          ? vacancy.empresaId
+          : {};
+        const companyLabel = company.nome || vacancy.empresaNome || "Empresa não identificada";
+        const card = document.createElement("li");
+        card.className = "job-card application-card";
 
-        const cabecalho = document.createElement("div");
-        cabecalho.className = "job-card-top";
-        const identidade = document.createElement("div");
-        identidade.className = "job-identity";
-        const icone = document.createElement("span");
-        icone.className = "company-icon";
-        icone.setAttribute("aria-hidden", "true");
-        icone.textContent = (empresa.nome || "E").trim().charAt(0).toUpperCase();
+        const heading = document.createElement("div");
+        heading.className = "job-card-top";
+        const identity = document.createElement("div");
+        identity.className = "job-identity";
+        const icon = document.createElement("span");
+        icon.className = "company-icon";
+        icon.setAttribute("aria-hidden", "true");
+        icon.textContent = companyLabel.trim().charAt(0).toUpperCase() || "E";
 
-        const infoEmpresa = document.createElement("div");
-        infoEmpresa.className = "job-title-company";
-        const nomeEmpresa = document.createElement("h3");
-        nomeEmpresa.textContent = empresa.nome || "Empresa não identificada";
-        const tituloVaga = document.createElement("p");
-        tituloVaga.className = "company-name";
-        tituloVaga.textContent = vaga.titulo || "Vaga não disponível";
-        infoEmpresa.append(nomeEmpresa, tituloVaga);
-        identidade.append(icone, infoEmpresa);
+        const companyInfo = document.createElement("div");
+        companyInfo.className = "job-title-company";
+        const companyName = document.createElement("h3");
+        companyName.textContent = companyLabel;
+        const vacancyTitle = document.createElement("p");
+        vacancyTitle.className = "company-name";
+        vacancyTitle.textContent = vacancy.titulo || "Vaga não disponível";
+        companyInfo.append(companyName, vacancyTitle);
+        identity.append(icon, companyInfo);
 
         const statusEl = document.createElement("span");
         statusEl.className = "application-status";
@@ -179,12 +187,13 @@
         cabecalho.append(identidade, statusEl);
         cartao.append(cabecalho);
 
-        const metadados = document.createElement("div");
-        metadados.className = "job-meta";
-        if (vaga.local) {
-          const localizacao = document.createElement("span");
-          localizacao.textContent = vaga.local;
-          metadados.append(localizacao);
+        const metadata = document.createElement("div");
+        metadata.className = "job-meta";
+        const locationName = vacancy.local || vacancy.localizacao;
+        if (locationName) {
+          const location = document.createElement("span");
+          location.textContent = locationName;
+          metadata.append(location);
         }
         const dataEnvio = new Date(aplicacao.dataCandidatura);
         if (!Number.isNaN(dataEnvio.getTime())) {

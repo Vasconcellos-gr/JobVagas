@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const txtErro = resultado.erro || resultado.mensagem || 'Erro ao cadastrar candidato.';
           if (mensagemCandidato) {
             mensagemCandidato.textContent = txtErro;
-            mensagemCandidato.style.color = 'red';
+            mensagemCandidato.classList.add('is-error');
             mensagemCandidato.hidden = false;
           }
         }
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Erro na requisição Fetch:', error);
         if (mensagemCandidato) {
           mensagemCandidato.textContent = 'Erro de conexão com o servidor.';
-          mensagemCandidato.style.color = 'red';
+          mensagemCandidato.classList.add('is-error');
           mensagemCandidato.hidden = false;
         }
       }

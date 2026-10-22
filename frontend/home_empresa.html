@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Gerencie o perfil da sua empresa e conheça profissionais na JOBVAGAS.">
   <title>Área da empresa | JOBVAGAS</title>
+  <link rel="stylesheet" href="./css/vendor/normalize.css">
+  <link rel="stylesheet" href="./css/vendor/skeleton.css">
+  <link rel="stylesheet" href="./css/global.css">
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body class="jobs-page company-home-page" data-profile-type="empresa">
@@ -58,12 +61,12 @@
             <span>Cargo ou título da vaga</span>
             <input id="vagaTitulo" name="titulo" type="text" maxlength="120" placeholder="Ex.: Desenvolvedor(a) Front-end" required>
           </label>
-          <div class="registration-field-row">
-            <label class="registration-field" for="vagaLocal">
+          <div class="registration-field-row row">
+            <label class="registration-field six columns" for="vagaLocal">
               <span>Localização</span>
               <input id="vagaLocal" name="local" type="text" maxlength="120" placeholder="Ex.: São Paulo - SP" required>
             </label>
-            <label class="registration-field" for="vagaTipo">
+            <label class="registration-field six columns" for="vagaTipo">
               <span>Tipo de contratação</span>
               <select id="vagaTipo" name="tipo" required>
                 <option value="">Selecione</option>
@@ -158,12 +161,12 @@
           <span>Bairro <span class="optional-label">(opcional)</span></span>
           <input id="perfilBairro" name="bairro" type="text">
         </label>
-        <div class="registration-field-row">
-          <label class="registration-field" for="perfilCidade">
+        <div class="registration-field-row row">
+          <label class="registration-field six columns" for="perfilCidade">
             <span>Cidade</span>
             <input id="perfilCidade" name="cidade" type="text" required>
           </label>
-          <label class="registration-field" for="perfilEstado">
+          <label class="registration-field six columns" for="perfilEstado">
             <span>Estado (UF)</span>
             <input id="perfilEstado" name="estado" type="text" maxlength="2" required>
           </label>
@@ -203,7 +206,7 @@
         </ul>
 
         <!-- Formulário de edição (Apenas UMA vez) -->
-        <div id="editar-vaga" class="company-vacancy-publisher" style="display: none; margin-top: 2rem;">
+        <div id="editar-vaga" class="company-vacancy-publisher vacancy-editor" hidden>
           <div class="candidate-section-heading">
             <div>
               <span class="eyebrow">EDITAR VAGA</span>
@@ -217,13 +220,13 @@
               <input id="editarTitulo" type="text" required>
             </label>
 
-            <div class="registration-field-row">
-              <label class="registration-field" for="editarLocal">
+            <div class="registration-field-row row">
+              <label class="registration-field six columns" for="editarLocal">
                 <span>Localização</span>
                 <input id="editarLocal" type="text" required>
               </label>
 
-              <label class="registration-field" for="editarTipo">
+              <label class="registration-field six columns" for="editarTipo">
                 <span>Tipo de contratação</span>
                 <select id="editarTipo" required>
                   <option value="CLT">CLT</option>
@@ -249,7 +252,7 @@
               <textarea id="editarDescricao" rows="5" maxlength="3000" placeholder="Edite as responsabilidades e requisitos da vaga."></textarea>
             </label>
 
-            <div class="job-card-footer" style="margin-top: 1rem; justify-content: flex-end; gap: 0.75rem;">
+            <div class="job-card-footer vacancy-editor-actions">
               <button class="btn btn-muted" type="button" id="cancelarEdicao">Cancelar</button>
               <p id="mensagemEditarVaga" class="registration-message" role="status" aria-live="polite" hidden></p>
               <button class="btn btn-primary" type="submit">Salvar alterações</button>
@@ -305,7 +308,7 @@
       document.getElementById('editarTags').value = tags;
 
       if (editarVagaSection) {
-        editarVagaSection.style.display = 'block';
+        editarVagaSection.hidden = false;
         editarVagaSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
@@ -336,7 +339,7 @@ if (formEditarVaga) {
         alert('Vaga atualizada com sucesso no banco de dados!');
         
         // Esconde o formulário de edição
-        if (editarVagaSection) editarVagaSection.style.display = 'none';
+        if (editarVagaSection) editarVagaSection.hidden = true;
         formEditarVaga.reset();
         cardEmEdicao = null;
         idVagaEmEdicao = null;
