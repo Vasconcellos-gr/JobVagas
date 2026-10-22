@@ -151,56 +151,65 @@
       }
 
       // Cria o cartão de uma candidatura com os dados da vaga e da empresa.
-      function createApplicationCard(application) {
-        const vacancy = application.vagaId && typeof application.vagaId === "object"
-          ? application.vagaId
+      function criarCartaoCandidatura(aplicacao) {
+        const vaga = aplicacao.vagaId && typeof aplicacao.vagaId === "object"
+          ? aplicacao.vagaId
           : {};
-        const company = vacancy.empresaId && typeof vacancy.empresaId === "object"
-          ? vacancy.empresaId
+        const empresa = vaga.empresaId && typeof vaga.empresaId === "object"
+          ? vaga.empresaId
           : {};
-        const companyLabel = company.nome || vacancy.empresaNome || "Empresa não identificada";
-        const card = document.createElement("li");
-        card.className = "job-card application-card";
+        const nomeEmpresa = empresa.nome || vaga.empresaNome || "Empresa não identificada";
+        
+        const cartao = document.createElement("li");
+        cartao.className = "job-card application-card";
 
-        const heading = document.createElement("div");
-        heading.className = "job-card-top";
-        const identity = document.createElement("div");
-        identity.className = "job-identity";
-        const icon = document.createElement("span");
-        icon.className = "company-icon";
-        icon.setAttribute("aria-hidden", "true");
-        icon.textContent = companyLabel.trim().charAt(0).toUpperCase() || "E";
+        const cabecalho = document.createElement("div");
+        cabecalho.className = "job-card-top";
+        
+        const identidade = document.createElement("div");
+        identidade.className = "job-identity";
+        
+        const icone = document.createElement("span");
+        icone.className = "company-icon";
+        icone.setAttribute("aria-hidden", "true");
+        icone.textContent = nomeEmpresa.trim().charAt(0).toUpperCase() || "E";
 
-        const companyInfo = document.createElement("div");
-        companyInfo.className = "job-title-company";
-        const companyName = document.createElement("h3");
-        companyName.textContent = companyLabel;
-        const vacancyTitle = document.createElement("p");
-        vacancyTitle.className = "company-name";
-        vacancyTitle.textContent = vacancy.titulo || "Vaga não disponível";
-        companyInfo.append(companyName, vacancyTitle);
-        identity.append(icon, companyInfo);
+        const infoEmpresa = document.createElement("div");
+        infoEmpresa.className = "job-title-company";
+        
+        const tituloEmpresa = document.createElement("h3");
+        tituloEmpresa.textContent = nomeEmpresa;
+        
+        const tituloVaga = document.createElement("p");
+        tituloVaga.className = "company-name";
+        tituloVaga.textContent = vaga.titulo || "Vaga não disponível";
+        
+        infoEmpresa.append(tituloEmpresa, tituloVaga);
+        identidade.append(icone, infoEmpresa);
 
         const statusEl = document.createElement("span");
         statusEl.className = "application-status";
         statusEl.textContent = aplicacao.status || "Em análise";
+        
         cabecalho.append(identidade, statusEl);
         cartao.append(cabecalho);
 
-        const metadata = document.createElement("div");
-        metadata.className = "job-meta";
-        const locationName = vacancy.local || vacancy.localizacao;
-        if (locationName) {
-          const location = document.createElement("span");
-          location.textContent = locationName;
-          metadata.append(location);
+        const metadados = document.createElement("div");
+        metadados.className = "job-meta";
+        const nomeLocal = vaga.local || vaga.localizacao;
+        if (nomeLocal) {
+          const local = document.createElement("span");
+          local.textContent = nomeLocal;
+          metadados.append(local);
         }
+        
         const dataEnvio = new Date(aplicacao.dataCandidatura);
         if (!Number.isNaN(dataEnvio.getTime())) {
           const dataEl = document.createElement("span");
           dataEl.textContent = `Currículo enviado em ${new Intl.DateTimeFormat("pt-BR").format(dataEnvio)}`;
           metadados.append(dataEl);
         }
+        
         if (metadados.childElementCount) cartao.append(metadados);
 
         const idVaga = vaga._id || (typeof aplicacao.vagaId === "string" ? aplicacao.vagaId : "");
@@ -209,6 +218,7 @@
           link.className = "details-link";
           link.href = `vaga_detalhes.html?id=${encodeURIComponent(idVaga)}`;
           link.textContent = "Ver vaga";
+          
           const rodape = document.createElement("div");
           rodape.className = "job-card-footer";
           rodape.append(link);
