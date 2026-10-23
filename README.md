@@ -35,6 +35,7 @@ O **JobVagas** é uma aplicação Full Stack com backend construído em **Node.j
 JobVagas/
 ├── config/
 │   └── DataBase.js              # Configuração e conexão com o MongoDB
+├── cypress/                     # Ferramenta de Teste Cypress
 ├── frontend/                    # Interface web estática
 │   ├── css/
 |   |   ├── vendor/
@@ -64,16 +65,21 @@ JobVagas/
 ├── servicos/                    # Camadas de domínio e regras de negócio
 │   ├── candidatos/
 │   │   ├── candidatosModel.js   # Model/Schema de candidatos
-│   │   └── candidatosSrc.js     # Regras de negócio e rotas de candidatos
+│   │   ├── candidatosSrc.js     # Regras de negócio e rotas de candidatos
+│   │   └── server.js            # Rotas do Microserviço de candidatos
 │   ├── candidaturas/
 │   │   ├── candidaturasModel.js # Model/Schema de candidaturas
-│   │   └── candidaturasSrc.js   # Regras de negócio e validações
+│   │   ├── candidaturasSrc.js   # Regras de negócio e validações
+│   │   └── server.js            # Rotas do Microserviço de candidaturas
 │   ├── empresas/
 │   │   ├── empresasModel.js     # Model/Schema de empresas
-│   │   └── empresasSrs.js       # Regras de negócio e autenticação de empresas
+│   │   ├── empresasSrs.js       # Regras de negócio e autenticação de empresas
+│   │   └── server.js            # Rotas do Microserviço de empresas
 │   └── vagas/
 │       ├── vagasModel.js        # Model/Schema de vagas
-│       └── vagasSrc.js          # CRUD e filtros de vagas
+│       ├── vagasSrc.js          # CRUD e filtros de vagas
+│       └── server.js            # Rotas do Microserviço de vagas
+├── testes/                      # Responsável pelos testes do Jest
 ├── .env                         # Variáveis de ambiente locais (não versionado)
 ├── .env_exemplo                 # Exemplo de configuração das variáveis
 ├── .gitignore                   # Arquivos ignorados pelo Git
