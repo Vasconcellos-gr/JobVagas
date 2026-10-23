@@ -3,9 +3,6 @@ const mongoose = require('mongoose');
 const path = require('path');
 const connectDB = require('./config/DataBase');
 
-// Conectar ao MongoDB
-
-
 const app = express();
 app.use(express.json());
 
@@ -496,7 +493,7 @@ app.get('/', (req, res) => {
 
 // Responsavel pelo start 
 if (require.main === module) {
-  
+
   connectDB();
 
   const PORT = process.env.PORT || 3000;

@@ -12,7 +12,7 @@ let mongoServer;
 describe('API de Vagas', () => {
     let empresaTesteId;
 
-  // Ligar a um banco de dados DE TESTE (para não sujar os dados reais)
+  // Ligar a um banco de dados
     beforeAll(async () => {
       mongoServer = await MongoMemoryServer.create({
       binary: {
@@ -23,7 +23,7 @@ describe('API de Vagas', () => {
       const uri = mongoServer.getUri();
         await mongoose.connect(uri);
     
-    // Cria uma empresa falsa 
+    // Cria uma empresa
     const empresa = new Usuario({
     nome: 'Empresa Teste',
     cnpj: '19.944.519/0001-89',
@@ -49,7 +49,6 @@ describe('API de Vagas', () => {
     }
   });
 
-  // O TESTE EM SI
 it('Deve criar uma nova vaga com sucesso', async () => {
     const novaVaga = {
       titulo: 'Desenvolvedor Node.js',
