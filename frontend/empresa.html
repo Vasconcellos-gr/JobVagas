@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cadastre sua empresa na JOBVAGAS e encontre novos talentos.">
+  <title>Cadastro de empresa | JOBVAGAS</title>
+  <link rel="stylesheet" href="./css/vendor/normalize.css">
+  <link rel="stylesheet" href="./css/vendor/skeleton.css">
+  <link rel="stylesheet" href="./css/global.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body class="jobs-page registration-page">
+
+  <!-- ==================== CABEÇALHO ==================== -->
+  <header class="site-header">
+    <div class="jobs-container header-inner">
+      <a class="brand" href="index.html" aria-label="JOBVAGAS - início">
+        <span class="brand-mark" aria-hidden="true">J</span>
+        <span>JOBVAGAS</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Menu principal">
+        <a href="index.html">Início</a>
+        <a href="vagas.html">Vagas</a>
+        <a href="empresa.html">Empresas</a>
+      </nav>
+
+      <div class="header-actions">
+        <a class="link-muted" href="login.html">Entrar</a>
+        <a class="btn btn-primary" href="cadastro.html">Cadastrar</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
+  <main class="jobs-container registration-main">
+    <section class="registration-form-card" aria-labelledby="registration-title">
+      <a class="registration-back" href="cadastro.html">Voltar à escolha de perfil</a>
+
+      <div class="registration-form-heading">
+        <span class="registration-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M4 20V7h16v13M8 7V4h8v3M2 20h20M8 11h2m4 0h2m-8 4h2m4 0h2"></path>
+          </svg>
+        </span>
+        <h1 id="registration-title">Cadastro de Empresa</h1>
+        <p>Preencha os dados da sua empresa para encontrar os talentos certos.</p>
+      </div>
+
+      <form id="formEmpresa" class="registration-form">
+
+        <!-- Nome da empresa -->
+        <label class="registration-field" for="empresaNome">
+          <span>Nome da empresa <span aria-hidden="true">*</span></span>
+          <input id="empresaNome" name="nome" type="text" autocomplete="organization" placeholder="Digite o nome da empresa" required>
+        </label>
+
+        <!-- CNPJ da empresa -->
+        <label class="registration-field" for="empresaCnpj">
+          <span>CNPJ <span aria-hidden="true">*</span></span>
+          <input id="empresaCnpj" name="cnpj" type="text" placeholder="00.000.000/0000-00" maxlength="18" required>
+        </label>
+
+        <!-- E-mail corporativo -->
+        <label class="registration-field" for="empresaEmail">
+          <span>E-mail corporativo <span aria-hidden="true">*</span></span>
+          <input id="empresaEmail" name="email" type="email" autocomplete="email" placeholder="contato@empresa.com" required>
+        </label>
+
+        <!-- Senha da empresa -->
+        <label class="registration-field" for="empresaSenha">
+          <span>Senha <span aria-hidden="true">*</span></span>
+          <input id="empresaSenha" name="senha" type="password" placeholder="Crie uma senha para acesso" minlength="6" required>
+        </label>
+
+        <!-- Telefone da empresa -->
+        <label class="registration-field" for="empresaTelefone">
+          <span>Telefone <span aria-hidden="true">*</span></span>
+          <input id="empresaTelefone" name="telefone" type="tel" autocomplete="tel" placeholder="(51) 99999-9999" maxlength="15" required>
+        </label>
+
+        <!-- Setor de atuação -->
+        <label class="registration-field" for="empresaSetor">
+          <span>Setor <span aria-hidden="true">*</span></span>
+          <input id="empresaSetor" name="setor" type="text" placeholder="Ex.: Tecnologia" required>
+        </label>
+
+        <!-- Endereço e Bairro -->
+        <div class="registration-field-row row">
+          <label class="registration-field six columns" for="empresaEndereco">
+            <span>Endereço</span>
+            <input id="empresaEndereco" name="endereco" type="text" placeholder="Ex.: Av. Paulista, 1000">
+          </label>
+
+          <label class="registration-field six columns" for="empresaBairro">
+            <span>Bairro</span>
+            <input id="empresaBairro" name="bairro" type="text" placeholder="Ex.: Bela Vista">
+          </label>
+        </div>
+
+        <!-- Cidade e Estado -->
+        <div class="registration-field-row row">
+          <label class="registration-field six columns" for="empresaCidade">
+            <span>Cidade <span aria-hidden="true">*</span></span>
+            <input id="empresaCidade" name="cidade" type="text" placeholder="Ex.: Porto Alegre" required>
+          </label>
+
+          <label class="registration-field six columns" for="empresaEstado">
+            <span>Estado (UF) <span aria-hidden="true">*</span></span>
+            <input id="empresaEstado" name="estado" type="text" placeholder="Ex.: RS" required>
+          </label>
+        </div>
+
+        <!-- Site da empresa -->
+        <label class="registration-field" for="empresaWebsite">
+          <span>Site <span class="optional-label">(opcional)</span></span>
+          <input id="empresaWebsite" name="website" type="url" autocomplete="url" placeholder="https://www.empresa.com.br">
+        </label>
+
+        <!-- Descrição da empresa -->
+        <label class="registration-field" for="empresaDescricao">
+          <span>Descrição da empresa <span class="optional-label">(opcional)</span></span>
+          <textarea id="empresaDescricao" name="descricao" rows="3" placeholder="Conte um pouco sobre a sua empresa."></textarea>
+        </label>
+
+        <!-- Mensagem de erro caso o cadastro falhe -->
+        <p id="mensagemEmpresa" class="registration-message" role="status" aria-live="polite" hidden></p>
+
+        <!-- Botão de envio -->
+        <button class="btn btn-primary registration-submit" type="submit">Cadastrar empresa</button>
+
+      </form>
+    </section>
+  </main>
+
+  <script src="./js/empresa.js"></script>
+  <script src="./js/auth.js"></script>
+</body>
+</html>

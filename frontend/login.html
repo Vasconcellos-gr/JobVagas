@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Acesse sua conta da JOBVAGAS.">
+  <title>Entrar | JOBVAGAS</title>
+  <link rel="stylesheet" href="./css/vendor/normalize.css">
+  <link rel="stylesheet" href="./css/vendor/skeleton.css">
+  <link rel="stylesheet" href="./css/global.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="jobs-page registration-page">
+  <header class="site-header">
+    <div class="jobs-container header-inner">
+      <a class="brand" href="index.html" aria-label="JOBVAGAS - início">
+        <span class="brand-mark" aria-hidden="true">J</span>
+        <span>JOBVAGAS</span>
+      </a>
+      <nav class="main-nav" aria-label="Menu principal">
+        <a href="index.html">Início</a>
+        <a href="vagas.html">Vagas</a>
+      </nav>
+      <div class="header-actions">
+        <a class="link-muted" href="login.html" aria-current="page">Entrar</a>
+        <a class="btn btn-primary" href="cadastro.html">Cadastrar</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="jobs-container registration-main login-main">
+    <section class="registration-form-card login-card" aria-labelledby="login-title">
+      <div class="registration-form-heading">
+        <span class="registration-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <circle cx="12" cy="8" r="3.5"></circle>
+            <path d="M5 20a7 7 0 0 1 14 0"></path>
+          </svg>
+        </span>
+        <h1 id="login-title">Bem-vindo de volta!</h1>
+        <p>Entre na sua conta JOBVAGAS para continuar.</p>
+      </div>
+
+      <!-- Formulário com ID para controlarmos via JS -->
+      <form class="registration-form" id="formLogin">
+        
+        <!-- Mensagem de erro ou sucesso -->
+        <div id="mensagemLogin" class="login-message" hidden></div>
+
+        <label class="registration-field" for="loginEmail">
+          <span>E-mail</span>
+          <input
+            id="loginEmail"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="seu@email.com"
+            required
+          >
+        </label>
+
+        <label class="registration-field" for="loginSenha">
+          <span>Senha</span>
+          <input
+            id="loginSenha"
+            name="senha"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Digite sua senha"
+            required
+          >
+        </label>
+
+        <!-- CAMPO ESSENCIAL: Escolher o tipo de usuário -->
+        <label class="registration-field" for="tipoUsuario">
+          <span>Entrar como</span>
+          <select id="tipoUsuario" class="registration-input">
+            <option value="candidato">Candidato</option>
+            <option value="empresa">Empresa</option>
+          </select>
+        </label>
+
+        <button class="btn btn-primary registration-submit" type="submit">Entrar</button>
+      </form>
+
+      <p class="registration-login">
+        Ainda não tem uma conta?
+        <a href="cadastro.html">Cadastre-se</a>
+      </p>
+    </section>
+  </main>
+
+  <!-- Scripts no final do body -->
+  <script src="./js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const mensagem = document.getElementById('mensagemLogin');
+      
+      // Verifica se veio redirecionado do cadastro
+      if (urlParams.get('cadastrado') === 'true') {
+        if (mensagem) {
+          mensagem.textContent = 'Cadastro realizado com sucesso! Faça seu login para continuar.';
+          mensagem.classList.add('is-success');
+          mensagem.hidden = false;
+        } else {
+          alert('Cadastro realizado com sucesso! Faça seu login para continuar.');
+        }
+      }
+
+      // Intercepta o envio do formulário
+      const formLogin = document.getElementById('formLogin');
+      if (formLogin) {
+        formLogin.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          const email = document.getElementById('loginEmail').value;
+          const senha = document.getElementById('loginSenha').value;
+          const tipo = document.getElementById('tipoUsuario').value; // 'candidato' ou 'empresa'
+
+          // Define a rota correta baseada na seleção
+          const rotaApi = tipo === 'empresa' ? '/api/empresas/login' : '/api/candidatos/login';
+
+          try {
+            const resposta = await fetch(rotaApi, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, senha })
+            });
+
+            const resultado = await resposta.json();
+
+            if (resposta.ok) {
+              mensagem.classList.remove('is-error');
+              mensagem.classList.add('is-success');
+              mensagem.textContent = 'Login realizado com sucesso! Redirecionando...';
+              mensagem.hidden = false;
+
+              // GUARDA OS DADOS E O TIPO NO LOCALSTORAGE
+              const dadosSessao = {
+                ...resultado,
+                tipo: tipo
+              };
+              localStorage.setItem('usuarioLogado', JSON.stringify(dadosSessao));
+
+              // Redireciona para o dashboard correspondente após 1 segundo
+              setTimeout(() => {
+                if (tipo === 'empresa') {
+                  window.location.href = 'home_empresa.html';
+                } else {
+                  window.location.href = 'home_candidato.html';
+                }
+              }, 1000);
+
+            } else {
+              mensagem.classList.remove('is-success');
+              mensagem.classList.add('is-error');
+              mensagem.textContent = resultado.erro || 'E-mail ou senha inválidos.';
+              mensagem.hidden = false;
+            }
+          } catch (error) {
+            console.error('Erro na requisição:', error);
+            mensagem.classList.remove('is-success');
+            mensagem.classList.add('is-error');
+            mensagem.textContent = 'Erro de conexão com o servidor.';
+            mensagem.hidden = false;
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

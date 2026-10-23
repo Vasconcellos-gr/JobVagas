@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Preencha seu currículo profissional para enviar às empresas.">
+  <title>Meu currículo | JOBVAGAS</title>
+  <link rel="stylesheet" href="./css/vendor/normalize.css">
+  <link rel="stylesheet" href="./css/vendor/skeleton.css">
+  <link rel="stylesheet" href="./css/global.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="jobs-page registration-page curriculum-page candidate-home-page">
+  <header class="site-header">
+    <div class="jobs-container header-inner">
+      <a class="brand" href="index.html" aria-label="JOBVAGAS - início">
+        <span class="brand-mark" aria-hidden="true">J</span>
+        <span>JOBVAGAS</span>
+      </a>
+      <nav class="main-nav" aria-label="Menu principal">
+        <a href="vagas.html">Vagas</a>
+        <a href="curriculo.html" aria-current="page">Currículos</a>
+      </nav>
+      <div class="header-actions">
+        <a class="link-muted" href="home_candidato.html">Minha área</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="jobs-container registration-main curriculum-main">
+    <nav class="account-tabs-navigation curriculum-account-navigation" aria-label="Área do candidato">
+      <div class="account-tab-list">
+        <a class="account-tab curriculum-tab-link" href="home_candidato.html#minhas-candidaturas">Minhas candidaturas</a>
+        <a class="account-tab curriculum-tab-link" href="home_candidato.html#perfil">Ver perfil</a>
+        <a class="account-tab curriculum-tab-link" href="home_candidato.html#editar-perfil">Editar perfil</a>
+        <a class="account-tab curriculum-tab-link curriculum-tab-active" href="curriculo.html" aria-current="page">Currículo</a>
+      </div>
+    </nav>
+    <section class="registration-form-card curriculum-card" aria-labelledby="resume-title">
+      <div class="registration-form-heading">
+        <span class="eyebrow">CURRÍCULO PROFISSIONAL</span>
+        <h1 id="resume-title">Preencha seu currículo</h1>
+        <p>Salve suas informações para enviá-las às empresas ao se candidatar.</p>
+      </div>
+      <form id="formCurriculo" class="registration-form">
+        <label class="registration-field" for="curriculoNome">
+          <span>Nome completo</span>
+          <input id="curriculoNome" name="nome" type="text" maxlength="120" required>
+        </label>
+        <div class="registration-field-row row">
+          <label class="registration-field six columns" for="curriculoEmail">
+            <span>E-mail</span>
+            <input id="curriculoEmail" name="email" type="email" maxlength="160" required>
+          </label>
+          <label class="registration-field six columns" for="curriculoTelefone">
+            <span>Telefone</span>
+            <input id="curriculoTelefone" name="telefone" type="tel" maxlength="30" required>
+          </label>
+        </div>
+        <label class="registration-field" for="curriculoArea">
+          <span>Área ou cargo de interesse</span>
+          <input id="curriculoArea" name="area" type="text" maxlength="120" required>
+        </label>
+        <label class="registration-field" for="curriculoResumo">
+          <span>Resumo profissional</span>
+          <textarea id="curriculoResumo" name="resumo" maxlength="1500" rows="4" required></textarea>
+        </label>
+        <label class="registration-field" for="curriculoExperiencia">
+          <span>Experiência profissional</span>
+          <textarea id="curriculoExperiencia" name="experiencia" maxlength="3000" rows="5" required></textarea>
+        </label>
+        <label class="registration-field" for="curriculoFormacao">
+          <span>Formação acadêmica</span>
+          <textarea id="curriculoFormacao" name="formacao" maxlength="2000" rows="4" required></textarea>
+        </label>
+        <label class="registration-field" for="curriculoCompetencias">
+          <span>Competências</span>
+          <textarea id="curriculoCompetencias" name="competencias" maxlength="1500" rows="3" placeholder="Ex.: comunicação, Excel, JavaScript" required></textarea>
+        </label>
+        <label class="registration-field" for="curriculoLinkedin">
+          <span>LinkedIn <span class="optional-label">(opcional)</span></span>
+          <input id="curriculoLinkedin" name="linkedin" type="url" placeholder="https://www.linkedin.com/in/seu-perfil">
+        </label>
+        <p id="mensagemCurriculo" class="registration-message" role="status" aria-live="polite" hidden></p>
+        <button class="btn btn-primary registration-submit" type="submit">Salvar currículo</button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.querySelector("#formCurriculo");
+      const message = document.querySelector("#mensagemCurriculo");
+      const fields = [
+        "nome",
+        "email",
+        "telefone",
+        "area",
+        "resumo",
+        "experiencia",
+        "formacao",
+        "competencias",
+        "linkedin"
+      ];
+      let session;
+      try {
+        session = JSON.parse(localStorage.getItem("usuarioLogado") || "null");
+      } catch (error) {
+        message.textContent = "Não foi possível ler os dados da sessão. Confira o acesso à sua conta.";
+        message.hidden = false;
+        return;
+      }
+
+      const candidate = session && (session.usuario || session);
+      const candidateId = candidate && (candidate.id || candidate._id);
+      if (!session || session.tipo !== "candidato" || !candidateId) {
+        message.textContent = "Entre como candidato para acessar seu currículo.";
+        message.hidden = false;
+        return;
+      }
+
+      const preencherFormulario = (curriculo = {}) => {
+        const valoresIniciais = {
+          nome: candidate && candidate.nome,
+          email: candidate && candidate.email,
+          telefone: candidate && candidate.telefone,
+          area: candidate && candidate.perfil,
+          experiencia: candidate && candidate.experiencia,
+          linkedin: candidate && candidate.linkedin,
+          ...curriculo
+        };
+
+        fields.forEach((field) => {
+          form.elements[field].value = valoresIniciais[field] || "";
+        });
+      };
+
+      fetch(`/api/candidatos/${encodeURIComponent(candidateId)}/curriculo`)
+        .then(async (response) => {
+          if (!response.ok) {
+            throw new Error("Não foi possível carregar o currículo salvo.");
+          }
+          preencherFormulario(await response.json() || {});
+        })
+        .catch((error) => {
+          message.textContent = error.message;
+          message.hidden = false;
+        });
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        message.hidden = true;
+
+        const resume = Object.fromEntries(
+          fields.map((field) => [field, form.elements[field].value.trim()])
+        );
+
+        try {
+          const response = await fetch(`/api/candidatos/${encodeURIComponent(candidateId)}/curriculo`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(resume)
+          });
+          const result = await response.json();
+          if (!response.ok) {
+            throw new Error(result.erro || "Não foi possível salvar o currículo.");
+          }
+          message.textContent = "Currículo salvo. Volte à vaga para enviar sua candidatura.";
+          message.hidden = false;
+        } catch (error) {
+          message.textContent = error.message || "Não foi possível salvar o currículo.";
+          message.hidden = false;
+        }
+      });
+    });
+  </script>
+  <script src="./js/auth.js"></script>
+</body>
+</html>
