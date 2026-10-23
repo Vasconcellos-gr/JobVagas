@@ -4,9 +4,11 @@ const path = require('path');
 const connectDB = require('./config/DataBase');
 
 // Conectar ao MongoDB
-connectDB();
+
 
 const app = express();
+app.use(express.json());
+
 const PORT = 3000;
 
 // Importar serviços
@@ -491,6 +493,16 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
-});
+
+// Responsavel pelo start 
+if (require.main === module) {
+  
+  connectDB();
+
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando em http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
