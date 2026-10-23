@@ -24,8 +24,9 @@ O **JobVagas** é uma aplicação Full Stack com backend construído em **Node.j
 
 - **Backend:** Node.js, Express.js
 - **Banco de Dados:** MongoDB (com ODM Mongoose)
-- **Frontend:** HTML5, CSS3, JavaScript Vanilla
+- **Frontend:** HTML5, CSS (Skeleton), JavaScript
 - **Gerenciamento de Dependências:** npm
+- **Testes:** Jest, Cypress
 
 ---
 
