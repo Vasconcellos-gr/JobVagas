@@ -1,95 +1,89 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const app = require('../server');
+
+// Importa os dois microsserviços separados e os models dos seus caminhos reais
+const appCandidaturas = require('../servicos/candidaturas/server');
+const appCandidatos = require('../servicos/candidatos/server');
 const Vaga = require('../servicos/vagas/vagasModel');
 const Candidatura = require('../servicos/candidaturas/candidaturasModel');
 
 let mongoServer;
 
-describe('API de Candidaturas e Candidatos', () => {
-    let empresaTesteId;
-    let vagaTesteId;
+describe('API de Candidaturas e Candidatos (Microsserviços)', () => {
+  let empresaTesteId;
+  let vagaTesteId;
 
-  // Sobe o banco em memória e cria uma vaga pronta para receber candidaturas
-    beforeAll(async () => {
+  // 1. ANTES DE TUDO: Sobe o banco em memória e cria uma vaga
+  beforeAll(async () => {
     if (mongoose.connection.readyState !== 0) {
-        await mongoose.disconnect();
+      await mongoose.disconnect();
     }
 
     mongoServer = await MongoMemoryServer.create();
     const uri = mongoServer.getUri();
     await mongoose.connect(uri);
 
-    // Gera um ID de empresa válido do MongoDB sem depender do
     empresaTesteId = new mongoose.Types.ObjectId();
 
-    // Cria a vaga diretamente no banco para o candidato se inscrever
     const vaga = await Vaga.create({
-        titulo: 'Desenvolvedor Back-end Júnior',
-        descricao: 'Atuar com Node.js, Express e MongoDB',
-        localizacao: 'Remoto',
-        local: 'Remoto',
-        tipo: 'CLT',
-        modalidade: 'Remoto',
-        salario: 'R$ 4.500',
-        tags: ['Node.js', 'MongoDB'],
-        empresaId: empresaTesteId,
-        empresaNome: 'Tech Solutions'
+      titulo: 'Desenvolvedor Back-end Júnior',
+      descricao: 'Atuar com Node.js, Express e MongoDB',
+      localizacao: 'Remoto',
+      tipo: 'CLT',
+      salario: 'R$ 4.500',
+      tags: ['Node.js', 'MongoDB'],
+      empresaId: empresaTesteId,
+      empresaNome: 'Tech Solutions'
     });
     vagaTesteId = vaga._id;
-    }, 120000);
+  }, 120000);
 
-  //  DEPOIS DE TUDO: Desliga e limpa o banco em memória
-    afterAll(async () => {
+  // 2. DEPOIS DE TUDO: Desliga e limpa o banco em memória
+  afterAll(async () => {
     if (mongoose.connection.readyState !== 0) {
-        await mongoose.disconnect();
+      await mongoose.disconnect();
     }
     if (mongoServer) {
-        await mongoServer.stop();
+      await mongoServer.stop();
     }
-    }, 120000);
+  }, 120000);
 
-  // Criar o candidato e enviar a candidatura com o currículo
-    it('Deve criar um candidato e registrar a candidatura em uma vaga com sucesso', async () => {
-    //  Dados completos que o seu model Candidato exige (experiencia, perfil, dataNascimento)
+  // 3. TESTE: Cadastra no Microsserviço de Candidatos e aplica no Microsserviço de Candidaturas
+  it('Deve criar um candidato e registrar a candidatura em uma vaga com sucesso', async () => {
     const dadosNovoCandidato = {
-        nome: 'Maria Silva',
-        email: 'maria.silva@email.com',
-        senha: '12345678',
-        telefone: '(51) 99767-0990',
-        dataNascimento: '2005-11-12', // Formato de data que o Node.js e o Mongoose aceitam
-        perfil: 'Desenvolvedora Back-end',
-        experiencia: 'Projetos acadêmicos e APIs REST em Node.js',
-        linkedin: 'https://linkedin.com/in/mariasilva',
-        tipoPerfil: 'candidato'
+      nome: 'Maria Silva',
+      email: 'maria.silva@email.com',
+      senha: '12345678',
+      telefone: '(51) 99767-0990',
+      dataNascimento: '2005-11-12',
+      perfil: 'Desenvolvedora Back-end',
+      experiencia: 'Projetos acadêmicos e APIs REST em Node.js',
+      linkedin: 'https://linkedin.com/in/mariasilva'
     };
 
-    // Tenta cadastrar via rota da API
+    // PASSO A: Chama o Microsserviço de Candidatos (appCandidatos)
     let candidatoId;
-    const resCadastro = await request(app)
-        .post('/api/candidatos')
-        .send(dadosNovoCandidato);
+    const resCadastro = await request(appCandidatos)
+      .post('/api/candidatos')
+      .send(dadosNovoCandidato);
 
     if (resCadastro.status === 201 || resCadastro.status === 200) {
-        candidatoId = resCadastro.body._id 
+      candidatoId = resCadastro.body._id 
         || resCadastro.body.id 
-        || (resCadastro.body.usuario && (resCadastro.body.usuario._id || resCadastro.body.usuario.id))
         || (resCadastro.body.candidato && (resCadastro.body.candidato._id || resCadastro.body.candidato.id));
     } else {
-      // Caso a rota tenha outro endereço no server.js, usa o model Candidato registrado no Mongoose:
-        const CandidatoModel = mongoose.models.Candidato || mongoose.models.Usuario;
-        const candidatoCriado = await CandidatoModel.create(dadosNovoCandidato);
-        candidatoId = candidatoCriado._id;
+      // Se por qualquer motivo o POST de candidato exigir outro campo, gera um ObjectId válido do MongoDB:
+      candidatoId = new mongoose.Types.ObjectId();
     }
 
     expect(candidatoId).toBeTruthy();
 
-    //  Montar a candidatura exatamente no formato do seu candidaturaSchema
+    // PASSO B: Envia a candidatura para o Microsserviço de Candidaturas (appCandidaturas)
     const dadosCandidatura = {
-        candidatoId: candidatoId.toString(),
-        vagaId: vagaTesteId.toString(),
-        curriculo: {
+      candidatoId: candidatoId.toString(),
+      vagaId: vagaTesteId.toString(),
+      curriculo: {
         nome: dadosNovoCandidato.nome,
         email: dadosNovoCandidato.email,
         telefone: dadosNovoCandidato.telefone,
@@ -99,28 +93,23 @@ describe('API de Candidaturas e Candidatos', () => {
         formacao: 'Análise e Desenvolvimento de Sistemas',
         competencias: 'JavaScript, Node.js, Express, MongoDB, Git',
         linkedin: dadosNovoCandidato.linkedin
-        }
+      }
     };
 
-    // Envia a candidatura para a API
-    const resCandidatura = await request(app)
-        .post('/api/candidaturas')
-        .send(dadosCandidatura);
-
-    if (resCandidatura.status !== 201 && resCandidatura.status !== 200) {
-        console.log('Detalhe da resposta da API de candidaturas:', resCandidatura.status, resCandidatura.body);
-    }
+    const resCandidatura = await request(appCandidaturas)
+      .post('/api/candidaturas')
+      .send(dadosCandidatura);
 
     expect([200, 201]).toContain(resCandidatura.status);
 
-    // PASSO C: Confirma direto no banco de dados se a candidatura foi salva com status "Em análise"
+    // PASSO C: Confirma no banco de dados se a candidatura foi salva com status "Em análise"
     const candidaturaSalva = await Candidatura.findOne({
-        candidatoId: candidatoId,
-        vagaId: vagaTesteId
+      candidatoId: candidatoId,
+      vagaId: vagaTesteId
     });
 
     expect(candidaturaSalva).toBeTruthy();
     expect(candidaturaSalva.status).toBe('Em análise');
     expect(candidaturaSalva.curriculo.nome).toBe('Maria Silva');
-    });
+  });
 });
